@@ -34,9 +34,12 @@
 
         <guava.version>21.0</guava.version>
         <common.lang3.version>3.5</common.lang3.version>
-        <spring.boot.version>2.0.0.BUILD-SNAPSHOT</spring.boot.version>
+        <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
 
         <junit.version>4.12</junit.version>
+
+        <!-- project -->
+        <team.core.version>1.0.0-SNAPSHOT</team.core.version>
     </properties>
 
     <dependencyManagement>
@@ -65,6 +68,15 @@
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- project -->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-core</artifactId>
+                <version>${team.core.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
