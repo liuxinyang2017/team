@@ -37,7 +37,7 @@ public class CoreSecurityUtilsTest {
     @Test
     public void encodeHex() {
         String inputString = "测试abc123";
-        String rightResult = "E6B58BE8AF95616263313233";
+        String rightResult = "e6b58be8af95616263313233";
         String result = CoreSecurityUtils.encodeHex(inputString.getBytes());
         Assert.assertTrue(rightResult.equals(result));
     }
@@ -47,7 +47,7 @@ public class CoreSecurityUtilsTest {
      */
     @Test
     public void decodeHex() {
-        String inputString = "E6B58BE8AF95616263313233";
+        String inputString = "e6b58be8af95616263313233";
         String rightResult = "测试abc123";
         byte[] result = CoreSecurityUtils.decodeHex(inputString);
         Assert.assertTrue(rightResult.equals(new String(result)));

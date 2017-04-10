@@ -37,19 +37,19 @@ public class CoreSecurityUtils {
     /**
      * 十六进制编码
      * @param input 输入数据
-     * @return 编码结果
+     * @return 编码结果 小写字母
      */
     public static String encodeHex(byte[] input) {
-        return BaseEncoding.base16().encode(input);
+        return BaseEncoding.base16().lowerCase().encode(input);
     }
 
     /**
      * 十六进制解码
-     * @param encodeString 已编码字符串
+     * @param encodeString 已编码字符串 小写字母
      * @return 解码结果
      */
     public static byte[] decodeHex(String encodeString) {
-        return BaseEncoding.base16().decode(encodeString);
+        return BaseEncoding.base16().lowerCase().decode(encodeString);
     }
 
     /**
