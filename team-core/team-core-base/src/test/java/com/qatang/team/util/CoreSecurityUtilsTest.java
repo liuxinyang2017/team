@@ -1,7 +1,15 @@
 package com.qatang.team.util;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 
 /**
  * 安全工具集合测试类
@@ -9,6 +17,33 @@ import org.junit.Test;
  * @author qatang
  */
 public class CoreSecurityUtilsTest {
+
+    private ThreadLocal<String> publicKeyThreadLocal = new ThreadLocal<>();
+
+    private ThreadLocal<String> privateKeyThreadLocal = new ThreadLocal<>();
+
+    @Before
+    public void generateRSATest() throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(1024);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+
+        //公钥
+        PublicKey publicKey = keyPair.getPublic();
+        System.out.println(String.format("publicKey algorithm : %s", publicKey.getAlgorithm()));
+        System.out.println(String.format("publicKey format : %s", publicKey.getFormat()));
+        //私钥
+        PrivateKey privateKey = keyPair.getPrivate();
+        System.out.println(String.format("privateKey algorithm : %s", privateKey.getAlgorithm()));
+        System.out.println(String.format("privateKey format : %s", privateKey.getFormat()));
+
+        String publicKeyStr = CoreSecurityUtils.encodeBase64(publicKey.getEncoded());
+        publicKeyThreadLocal.set(publicKeyStr);
+
+        String privateKeyStr = CoreSecurityUtils.encodeBase64(privateKey.getEncoded());
+        privateKeyThreadLocal.set(privateKeyStr);
+    }
+
     /**
      * base64编码测试
      */
@@ -83,7 +118,44 @@ public class CoreSecurityUtilsTest {
         String inputString = "测试abc123";
         long rightResult = 3782298985L;
         long result = CoreSecurityUtils.digestCRC32(inputString.getBytes());
-        System.out.println(result);
         Assert.assertTrue(rightResult == result);
+    }
+
+    /**
+     * RSA私钥签名与公钥验签测试
+     */
+    @Test
+    public void signRSA() {
+        String inputString = "测试abc123";
+
+        byte[] encodedPublicKey = CoreSecurityUtils.decodeBase64(publicKeyThreadLocal.get());
+        byte[] encodedPrivateKey = CoreSecurityUtils.decodeBase64(privateKeyThreadLocal.get());
+
+        // 私钥签名
+        byte[] result = CoreSecurityUtils.signRSA(inputString.getBytes(), encodedPrivateKey);
+        System.out.println(CoreSecurityUtils.encodeBase64(result));
+
+        // 公钥验签
+        boolean verifyResult = CoreSecurityUtils.verifySignRSA(inputString.getBytes(), encodedPublicKey, result);
+        Assert.assertTrue(verifyResult);
+    }
+
+    /**
+     * RSA公钥加密与私钥解密测试
+     */
+    @Test
+    public void encryptRSA() {
+        String inputString = "测试abc123";
+
+        byte[] encodedPublicKey = CoreSecurityUtils.decodeBase64(publicKeyThreadLocal.get());
+        byte[] encodedPrivateKey = CoreSecurityUtils.decodeBase64(privateKeyThreadLocal.get());
+
+        // 公钥加密
+        byte[] encryptResult = CoreSecurityUtils.encryptRSA(inputString.getBytes(), encodedPublicKey);
+        System.out.println(CoreSecurityUtils.encodeBase64(encryptResult));
+
+        // 私钥解密
+        byte[] decryptResult = CoreSecurityUtils.decryptRSA(encryptResult, encodedPrivateKey);
+        Assert.assertTrue(inputString.equals(new String(decryptResult)));
     }
 }

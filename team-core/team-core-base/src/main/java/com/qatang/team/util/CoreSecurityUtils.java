@@ -3,6 +3,14 @@ package com.qatang.team.util;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
 
+import javax.crypto.Cipher;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
 /**
  * 安全工具集合类
  *
@@ -79,5 +87,105 @@ public class CoreSecurityUtils {
      */
     public static long digestCRC32(byte[] input) {
         return Hashing.crc32c().hashBytes(input).padToLong();
+    }
+
+    /**
+     * RSA用私钥对信息生成数字签名
+     *
+     * @param input 源数据
+     * @param encodedPrivateKey 私钥
+     * @return 签名结果
+     */
+    public static byte[] signRSA(byte[] input, byte[] encodedPrivateKey) throws RuntimeException {
+        try {
+            //构造PKCS8EncodedKeySpec对象
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encodedPrivateKey);
+            //指定加密算法
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            //取私钥匙对象
+            PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+            //用私钥对信息生成数字签名
+            Signature signature = Signature.getInstance("SHA1WithRSA");
+            signature.initSign(privateKey);
+            signature.update(input);
+            return signature.sign();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * RSA用公钥验证数字签名
+     *
+     * @param input 源数据
+     * @param encodedPublicKey 公钥
+     * @param sign 签名
+     * @return 签名结果
+     */
+    public static boolean verifySignRSA(byte[] input, byte[] encodedPublicKey, byte[] sign) throws RuntimeException {
+        try {
+            //构造X509EncodedKeySpec对象
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(encodedPublicKey);
+            //指定加密算法
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            //取公钥匙对象
+            PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
+            //用公钥对信息生成数字签名
+            Signature signature = Signature.getInstance("SHA1WithRSA");
+            signature.initVerify(publicKey);
+            signature.update(input);
+            //验证签名是否正常
+            return signature.verify(sign);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * RSA公钥加密
+     *
+     * @param input 源数据
+     * @param encodedPublicKey 公钥
+     * @return 加密后的结果
+     */
+    public static byte[] encryptRSA(byte[] input, byte[] encodedPublicKey) throws RuntimeException {
+        try {
+            //构造X509EncodedKeySpec对象
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(encodedPublicKey);
+            //指定加密算法
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            //取公钥匙对象
+            PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
+            //加密
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");// 不能直接使用RSA，要写全转换模式，不然与android不一致
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            return cipher.doFinal(input);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * RSA私钥解密
+     *
+     * @param input 源数据
+     * @param encodePrivateKey 私钥
+     * @return 解密后的结果
+     */
+    public static byte[] decryptRSA(byte[] input, byte[] encodePrivateKey) throws RuntimeException {
+        try {
+            //构造PKCS8EncodedKeySpec对象
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(encodePrivateKey);
+            //指定加密算法
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            //取公钥匙对象
+            PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+            //解密
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");// 不能直接使用RSA，要写全转换模式，不然与android不一致
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            return cipher.doFinal(input);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
