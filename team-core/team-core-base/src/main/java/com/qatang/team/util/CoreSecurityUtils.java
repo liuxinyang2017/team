@@ -207,7 +207,7 @@ public class CoreSecurityUtils {
             DESedeKeySpec deSedeKeySpec = new DESedeKeySpec(encodedKey);
             //指定加密算法
             SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance("DESede");
-            //取公钥匙对象
+            //取对称密钥对象
             SecretKey secretKey = secretKeyFactory.generateSecret(deSedeKeySpec);
             //加密
             Cipher cipher = Cipher.getInstance("DESede/ECB/PKCS5Padding");
