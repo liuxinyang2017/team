@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.qatang.team</groupId>
-            <artifactId>team-api-enums</artifactId>
+            <artifactId>team-enums-base</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>team-api-enums</module>
         <module>team-data-api</module>
     </modules>
 

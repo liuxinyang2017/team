@@ -40,6 +40,7 @@
 
         <!-- project -->
         <team.core.version>1.0.0-SNAPSHOT</team.core.version>
+        <team.enums.version>1.0.0-SNAPSHOT</team.enums.version>
         <team.api.version>1.0.0-SNAPSHOT</team.api.version>
     </properties>
 
@@ -81,8 +82,10 @@
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
-                <artifactId>team-api-enums</artifactId>
-                <version>${team.api.version}</version>
+                <artifactId>team-enums</artifactId>
+                <version>${team.enums.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

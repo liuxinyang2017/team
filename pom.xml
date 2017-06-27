@@ -14,5 +14,6 @@
         <module>team-core</module>
         <module>team-algorithm</module>
         <module>team-api</module>
+        <module>team-enums</module>
     </modules>
 </project>
