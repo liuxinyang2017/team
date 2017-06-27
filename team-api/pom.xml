@@ -13,5 +13,11 @@
         <module>team-data-api</module>
     </modules>
 
-
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshots Repositories</name>
+            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
+        </repository>
+    </distributionManagement>
 </project>

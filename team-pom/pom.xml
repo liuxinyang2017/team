@@ -15,6 +15,11 @@
             <name>Public Repositories</name>
             <url>http://nexus.qatang.com:18081/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshots Repositories</name>
+            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -24,6 +29,14 @@
             <url>http://nexus.qatang.com:18081/repository/maven-public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshots Repositories</name>
+            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <java.source.version>1.8</java.source.version>

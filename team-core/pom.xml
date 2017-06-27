@@ -13,6 +13,14 @@
 	    <module>team-core-base</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshots Repositories</name>
+            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <team.core.version>1.0.0-SNAPSHOT</team.core.version>
     </properties>
