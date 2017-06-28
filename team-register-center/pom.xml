@@ -3,8 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>team-parent</artifactId>
         <groupId>com.qatang.team</groupId>
+        <artifactId>team-pom</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../team-pom/pom.xml</relativePath>
     </parent>
@@ -12,39 +12,22 @@
 
     <artifactId>team-register-center</artifactId>
 
-    <repositories>
-        <repository>
-            <id>public</id>
-            <name>Public Repositories</name>
-            <url>http://nexus.qatang.com:18081/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>snapshots</id>
-            <name>Snapshots Repositories</name>
-            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>public</id>
-            <name>Public Repositories</name>
-            <url>http://nexus.qatang.com:18081/repository/maven-public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <distributionManagement>
-        <repository>
-            <id>snapshots</id>
-            <name>Snapshots Repositories</name>
-            <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -48,9 +48,13 @@
         <guava.version>21.0</guava.version>
         <common.lang3.version>3.5</common.lang3.version>
         <spring.boot.version>1.5.2.RELEASE</spring.boot.version>
-        <spring.cloud.dependencies.version>Dalston.RELEASE</spring.cloud.dependencies.version>
+        <spring.cloud.dependencies.version>Dalston.SR1</spring.cloud.dependencies.version>
 
         <junit.version>4.12</junit.version>
+
+        <!-- Log libs -->
+        <logback.version>1.2.3</logback.version>
+        <slf4j.version>1.7.21</slf4j.version>
 
         <!-- project -->
         <team.core.version>1.0.0-SNAPSHOT</team.core.version>
@@ -83,6 +87,23 @@
                 <version>${spring.cloud.dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Log libs -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
             </dependency>
 
             <!-- test -->
