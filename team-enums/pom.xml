@@ -11,6 +11,7 @@
 
     <modules>
         <module>team-enums-base</module>
+        <module>team-enums-converter</module>
     </modules>
 
     <distributionManagement>
@@ -30,6 +31,11 @@
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-enums-base</artifactId>
+                <version>${team.enums.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-enums-converter</artifactId>
                 <version>${team.enums.version}</version>
             </dependency>
         </dependencies>
