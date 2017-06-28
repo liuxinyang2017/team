@@ -15,6 +15,7 @@
         <module>team-algorithm</module>
         <module>team-api</module>
         <module>team-enums</module>
+        <module>team-register-center</module>
     </modules>
 
     <build>
