@@ -4,10 +4,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 
@@ -22,26 +21,52 @@ public class CoreSecurityUtilsTest {
 
     private ThreadLocal<String> privateKeyThreadLocal = new ThreadLocal<>();
 
+    private ThreadLocal<String> desedeKeyThreadLocal = new ThreadLocal<>();
+
+    private ThreadLocal<String> aesKeyThreadLocal = new ThreadLocal<>();
+
     @Before
     public void generateRSATest() throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(1024);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        {
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(1024);
+            KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
-        //公钥
-        PublicKey publicKey = keyPair.getPublic();
-        System.out.println(String.format("publicKey algorithm : %s", publicKey.getAlgorithm()));
-        System.out.println(String.format("publicKey format : %s", publicKey.getFormat()));
-        //私钥
-        PrivateKey privateKey = keyPair.getPrivate();
-        System.out.println(String.format("privateKey algorithm : %s", privateKey.getAlgorithm()));
-        System.out.println(String.format("privateKey format : %s", privateKey.getFormat()));
+            //公钥
+            PublicKey publicKey = keyPair.getPublic();
+            System.out.println(String.format("publicKey algorithm : %s", publicKey.getAlgorithm()));
+            System.out.println(String.format("publicKey format : %s", publicKey.getFormat()));
+            //私钥
+            PrivateKey privateKey = keyPair.getPrivate();
+            System.out.println(String.format("privateKey algorithm : %s", privateKey.getAlgorithm()));
+            System.out.println(String.format("privateKey format : %s", privateKey.getFormat()));
 
-        String publicKeyStr = CoreSecurityUtils.encodeBase64(publicKey.getEncoded());
-        publicKeyThreadLocal.set(publicKeyStr);
+            String publicKeyStr = CoreSecurityUtils.encodeBase64(publicKey.getEncoded());
+            publicKeyThreadLocal.set(publicKeyStr);
 
-        String privateKeyStr = CoreSecurityUtils.encodeBase64(privateKey.getEncoded());
-        privateKeyThreadLocal.set(privateKeyStr);
+            String privateKeyStr = CoreSecurityUtils.encodeBase64(privateKey.getEncoded());
+            privateKeyThreadLocal.set(privateKeyStr);
+        }
+
+        {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("DESede");
+            SecretKey secretKey = keyGenerator.generateKey();
+            System.out.println(String.format("DESede Key algorithm : %s", secretKey.getAlgorithm()));
+            System.out.println(String.format("DESede Key format : %s", secretKey.getFormat()));
+
+            String secretKeyStr = CoreSecurityUtils.encodeBase64(secretKey.getEncoded());
+            desedeKeyThreadLocal.set(secretKeyStr);
+        }
+
+        {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            SecretKey secretKey = keyGenerator.generateKey();
+            System.out.println(String.format("AES Key algorithm : %s", secretKey.getAlgorithm()));
+            System.out.println(String.format("AES Key format : %s", secretKey.getFormat()));
+
+            String secretKeyStr = CoreSecurityUtils.encodeBase64(secretKey.getEncoded());
+            aesKeyThreadLocal.set(secretKeyStr);
+        }
     }
 
     /**
@@ -157,5 +182,71 @@ public class CoreSecurityUtilsTest {
         // 私钥解密
         byte[] decryptResult = CoreSecurityUtils.decryptRSA(encryptResult, encodedPrivateKey);
         Assert.assertTrue(inputString.equals(new String(decryptResult)));
+    }
+
+    /**
+     * 3DES加密解密测试
+     */
+    @Test
+    public void encryptDESede() {
+        String inputString = "测试abc123";
+
+        byte[] encodedSecretKey = CoreSecurityUtils.decodeBase64(desedeKeyThreadLocal.get());
+
+        {
+            // ECB加密
+            byte[] encryptResult = CoreSecurityUtils.encryptDESede(inputString.getBytes(), encodedSecretKey);
+            System.out.println(CoreSecurityUtils.encodeBase64(encryptResult));
+
+            // ECB解密
+            byte[] decryptResult = CoreSecurityUtils.decryptDESede(encryptResult, encodedSecretKey);
+            Assert.assertTrue(inputString.equals(new String(decryptResult)));
+        }
+
+        {
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] iv = secureRandom.generateSeed(8);
+
+            // CBC加密
+            byte[] encryptResult = CoreSecurityUtils.encryptDESede(inputString.getBytes(), encodedSecretKey, iv);
+            System.out.println(CoreSecurityUtils.encodeBase64(encryptResult));
+
+            // CBC解密
+            byte[] decryptResult = CoreSecurityUtils.decryptDESede(encryptResult, encodedSecretKey, iv);
+            Assert.assertTrue(inputString.equals(new String(decryptResult)));
+        }
+    }
+
+    /**
+     * AES加密解密测试
+     */
+    @Test
+    public void encryptAES() {
+        String inputString = "测试abc123";
+
+        byte[] encodedSecretKey = CoreSecurityUtils.decodeBase64(aesKeyThreadLocal.get());
+
+        {
+            // ECB加密
+            byte[] encryptResult = CoreSecurityUtils.encryptAES(inputString.getBytes(), encodedSecretKey);
+            System.out.println(CoreSecurityUtils.encodeBase64(encryptResult));
+
+            // ECB解密
+            byte[] decryptResult = CoreSecurityUtils.decryptAES(encryptResult, encodedSecretKey);
+            Assert.assertTrue(inputString.equals(new String(decryptResult)));
+        }
+
+        {
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] iv = secureRandom.generateSeed(16);
+
+            // CBC加密
+            byte[] encryptResult = CoreSecurityUtils.encryptAES(inputString.getBytes(), encodedSecretKey, iv);
+            System.out.println(CoreSecurityUtils.encodeBase64(encryptResult));
+
+            // CBC解密
+            byte[] decryptResult = CoreSecurityUtils.decryptAES(encryptResult, encodedSecretKey, iv);
+            Assert.assertTrue(inputString.equals(new String(decryptResult)));
+        }
     }
 }

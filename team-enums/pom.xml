@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.qatang.team</groupId>
-    <artifactId>team-core</artifactId>
+    <artifactId>team-enums</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-	    <module>team-core-base</module>
+        <module>team-enums-base</module>
     </modules>
 
     <distributionManagement>
@@ -22,15 +22,15 @@
     </distributionManagement>
 
     <properties>
-        <team.core.version>1.0.0-SNAPSHOT</team.core.version>
+        <team.enums.version>1.0.0-SNAPSHOT</team.enums.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.qatang.team</groupId>
-                <artifactId>team-core-base</artifactId>
-                <version>${team.core.version}</version>
+                <artifactId>team-enums-base</artifactId>
+                <version>${team.enums.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

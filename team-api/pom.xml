@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.qatang.team</groupId>
-    <artifactId>team-core</artifactId>
+    <artifactId>team-api</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-	    <module>team-core-base</module>
+        <module>team-data-api</module>
     </modules>
 
     <distributionManagement>
@@ -20,18 +20,4 @@
             <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
-
-    <properties>
-        <team.core.version>1.0.0-SNAPSHOT</team.core.version>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.qatang.team</groupId>
-                <artifactId>team-core-base</artifactId>
-                <version>${team.core.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>
