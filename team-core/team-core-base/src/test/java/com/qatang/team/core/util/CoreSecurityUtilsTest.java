@@ -1,5 +1,6 @@
-package com.qatang.team.util;
+package com.qatang.team.core.util;
 
+import com.qatang.team.core.util.CoreSecurityUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +8,6 @@ import org.junit.Test;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.*;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 
 /**
  * 安全工具集合测试类

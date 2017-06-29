@@ -1,4 +1,4 @@
-package com.qatang.team.util;
+package com.qatang.team.core.util;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
