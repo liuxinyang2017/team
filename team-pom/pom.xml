@@ -48,6 +48,7 @@
         <guava.version>21.0</guava.version>
         <commons.lang3.version>3.5</commons.lang3.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
+
         <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
         <spring.cloud.dependencies.version>Dalston.SR1</spring.cloud.dependencies.version>
         <mysql.version>5.1.35</mysql.version>
