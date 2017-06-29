@@ -21,4 +21,18 @@
             <url>http://nexus.qatang.com:18081/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
+
+    <properties>
+        <team.api.data.version>1.0.0-SNAPSHOT</team.api.data.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-data-api</artifactId>
+                <version>${team.api.data.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
