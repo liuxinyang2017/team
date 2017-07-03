@@ -11,6 +11,7 @@
 
     <modules>
 	    <module>team-core-base</module>
+        <module>team-core-api</module>
         <module>team-core-service</module>
     </modules>
 
@@ -31,6 +32,11 @@
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-core-base</artifactId>
+                <version>${team.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-core-api</artifactId>
                 <version>${team.core.version}</version>
             </dependency>
             <dependency>
