@@ -6,15 +6,14 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.BaseApiBean;
-import com.qatang.team.core.bean.BeanMapping;
-import com.qatang.team.core.bean.request.CorePageRequest;
 import com.qatang.team.core.entity.BaseEntity;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestOrder;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
-import com.qatang.team.core.service.BaseApiService;
+import com.qatang.team.core.service.BaseInternalSerivce;
+import com.qatang.team.core.util.BeanMapping;
 import com.qatang.team.core.util.CoreReflectionUtils;
 import com.qatang.team.enums.common.OperatorType;
 import com.qatang.team.enums.common.PageOrderType;
@@ -24,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * 预留基础服务实现, 为所有服务实现的父类
  * Created by sunshow on 4/27/15.
  */
-public abstract class AbstractBaseApiServiceImpl implements BaseApiService {
+public abstract class AbstractBaseInternalServiceImpl implements BaseInternalSerivce {
 
     protected final transient Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -67,9 +67,7 @@ public abstract class AbstractBaseApiServiceImpl implements BaseApiService {
     }
 
     protected Pageable convertPageable(ApiRequestPage requestPage) {
-        CorePageRequest pageRequest = new CorePageRequest(requestPage.getPage(), requestPage.getPageSize(), this.convertSort(requestPage));
-        pageRequest.setWithoutCountQuery(requestPage.isWithoutCountQuery());
-        return pageRequest;
+        return new PageRequest(requestPage.getPage(), requestPage.getPageSize(), this.convertSort(requestPage));
     }
 
     private <T> Predicate convertPredicate(ApiRequestFilter filter, Root<T> root, CriteriaBuilder cb) {

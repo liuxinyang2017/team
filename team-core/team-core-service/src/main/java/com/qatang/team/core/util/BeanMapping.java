@@ -1,4 +1,4 @@
-package com.qatang.team.core.bean;
+package com.qatang.team.core.util;
 
 import com.google.common.collect.Lists;
 import com.qatang.team.core.exception.BeanMappingException;

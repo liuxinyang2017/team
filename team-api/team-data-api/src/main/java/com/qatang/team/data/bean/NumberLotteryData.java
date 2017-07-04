@@ -1,5 +1,6 @@
 package com.qatang.team.data.bean;
 
+import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
@@ -10,7 +11,9 @@ import java.time.LocalDateTime;
  * 数字彩彩果
  * @author qatang
  */
-public class NumberLotteryData {
+public class NumberLotteryData extends AbstractBaseApiBean {
+    private static final long serialVersionUID = 5745385863292450844L;
+
     /**
      * 主键
      */
