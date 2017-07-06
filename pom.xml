@@ -17,6 +17,7 @@
         <module>team-enums</module>
         <module>team-register-center</module>
         <module>team-web</module>
+        <module>team-fetcher</module>
     </modules>
 
     <build>
