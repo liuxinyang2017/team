@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.worker.ssq.impl;
 
+import com.google.common.base.Strings;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResult;
 import com.qatang.team.fetcher.worker.ssq.AbstractSsqFetcher;
@@ -29,7 +30,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
 
     @Override
     protected String getDetailFetchUrl() {
-        return null;
+        return "http://www.cwl.gov.cn/kjxx/ssq/hmhz/";
     }
 
     @Override
@@ -62,6 +63,47 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
 
     @Override
     protected NumberLotteryFetchResult parseDetailDoc(String phase, Document document) {
+        NumberLotteryFetchResult numberLotteryFetchResult = new NumberLotteryFetchResult();
+        numberLotteryFetchResult.setLotteryType(this.getLotteryType());
+        numberLotteryFetchResult.setFetcherType(this.getFetcherType());
+        numberLotteryFetchResult.setPhase(phase);
+
+        // 先获取详情抓取地址
+        String detailUrl = null;
+        Elements elements = document.select("table.hz tbody tr");
+        for (Element tr : elements) {
+            Elements tdList = tr.select("td");
+            if (phase.equals(tdList.first().text())) {
+                detailUrl = tdList.get(6).select("a").attr("abs:href");
+                break;
+            }
+        }
+
+        if (Strings.isNullOrEmpty(detailUrl)) {
+            String msg = String.format("未抓取到开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase);
+            logger.error(msg);
+            throw new NumberFormatException(msg);
+        }
+
+        // 再抓取详情数据
+        Document detailDocument = this.fetch(detailUrl);
+
+        boolean fetched = false;
+        Elements detailElements = detailDocument.select("table.hz tbody tr");
+        for (Element tr : detailElements) {
+            Elements tdList = tr.select("td");
+            if (phase.equals(tdList.first().text())) {
+
+                fetched = true;
+                break;
+            }
+        }
+
+        if (!fetched) {
+            String msg = String.format("未抓取到开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase);
+            logger.error(msg);
+            throw new NumberFormatException(msg);
+        }
         return null;
     }
 }

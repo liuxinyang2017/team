@@ -84,20 +84,30 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
         return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host , port));
     }
 
+    /**
+     * 抓取源数据
+     * @param url 源数据地址
+     * @return 源数据
+     * @throws IOException 异常
+     */
+    protected Document fetch(String url) throws NumberLotteryFetcherException {
+        try {
+            return Jsoup.connect(url)
+                    .proxy(this.getHttpProxy()).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36").get();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new NumberLotteryFetcherException(e.getMessage());
+        }
+    }
+
     @Override
     public NumberLotteryFetchResult fetchResult(String phase) throws NumberLotteryFetcherException {
         if (Strings.isNullOrEmpty(phase)) {
             throw new NumberLotteryFetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖号码，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
-        try {
-            Document doc = Jsoup.connect(this.getResultFetchUrl())
-                    .proxy(this.getHttpProxy()).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36").get();
-            return parseResultDoc(phase, doc);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new NumberLotteryFetcherException(e.getMessage());
-        }
+        Document doc = this.fetch(this.getResultFetchUrl());
+        return parseResultDoc(phase, doc);
     }
 
     @Override
@@ -106,13 +116,7 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
             throw new NumberLotteryFetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
-        try {
-            Document doc = Jsoup.connect(this.getDetailFetchUrl())
-                    .proxy(this.getHttpProxy()).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36").get();
-            return parseDetailDoc(phase, doc);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            throw new NumberLotteryFetcherException(e.getMessage());
-        }
+        Document doc = this.fetch(this.getDetailFetchUrl());
+        return parseDetailDoc(phase, doc);
     }
 }
