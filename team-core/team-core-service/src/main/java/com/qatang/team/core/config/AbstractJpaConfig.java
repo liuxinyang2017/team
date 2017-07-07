@@ -58,8 +58,8 @@ public abstract class AbstractJpaConfig {
     @Value("${hibernate.jdbc.batch_size}")
     private String batchSize;
 
-    @Value("${hibernate.id.new_generator_mappings}")
-    private String idNewGeneratorMappings = "true";
+    @Value("${hibernate.id.new_generator_mappings:true}")
+    private String idNewGeneratorMappings;
 
     abstract protected String entityPackagesToScan();
 
