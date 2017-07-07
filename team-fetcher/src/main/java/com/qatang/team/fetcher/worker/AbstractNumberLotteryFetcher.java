@@ -73,13 +73,12 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
         String password = "";
 
         if (!Strings.isNullOrEmpty(user)) {
-            Authenticator authenticator = new Authenticator() {
+            Authenticator.setDefault(new Authenticator() {
                 public PasswordAuthentication getPasswordAuthentication() {
                     return (new PasswordAuthentication(user,
                             password.toCharArray()));
                 }
-            };
-            Authenticator.setDefault(authenticator);
+            });
         }
         return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host , port));
     }
@@ -88,12 +87,16 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
      * 抓取源数据
      * @param url 源数据地址
      * @return 源数据
-     * @throws IOException 异常
+     * @throws NumberLotteryFetcherException 异常
      */
     protected Document fetch(String url) throws NumberLotteryFetcherException {
         try {
             return Jsoup.connect(url)
-                    .proxy(this.getHttpProxy()).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36").get();
+                    .proxy(this.getHttpProxy())
+                    .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
+                    .timeout(10000)
+                    .referrer("http://www.cwl.gov.cn/kjxx/ssq/kjgg/")
+                    .get();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new NumberLotteryFetcherException(e.getMessage());

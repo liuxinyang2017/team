@@ -104,6 +104,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
             logger.error(msg);
             throw new NumberFormatException(msg);
         }
+        logger.info(String.format("已抓到开奖详情，lotteryType=%s，fetcherType=%s, phase=%s，result=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase, numberLotteryFetchResult.getResult()));
         return null;
     }
 }
