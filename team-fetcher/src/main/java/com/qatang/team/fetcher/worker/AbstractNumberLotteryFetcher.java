@@ -4,17 +4,11 @@ import com.google.common.base.Strings;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResult;
-import com.qatang.team.fetcher.exception.NumberLotteryFetcherException;
+import com.qatang.team.fetcher.exception.FetcherException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.InetSocketAddress;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
 
 /**
  * @author qatang
@@ -63,63 +57,51 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
     protected abstract NumberLotteryFetchResult parseDetailDoc(String phase, Document document);
 
     /**
-     * 获取代理
-     * @return 代理
-     */
-    protected Proxy getHttpProxy() {
-        String host = "";
-        int port = 0;
-        String user = "";
-        String password = "";
-
-        if (!Strings.isNullOrEmpty(user)) {
-            Authenticator.setDefault(new Authenticator() {
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return (new PasswordAuthentication(user,
-                            password.toCharArray()));
-                }
-            });
-        }
-        return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host , port));
-    }
-
-    /**
      * 抓取源数据
      * @param url 源数据地址
      * @return 源数据
-     * @throws NumberLotteryFetcherException 异常
+     * @throws FetcherException 异常
      */
-    protected Document fetch(String url) throws NumberLotteryFetcherException {
+    protected Document fetch(String url) throws FetcherException {
         try {
             return Jsoup.connect(url)
-                    .proxy(this.getHttpProxy())
                     .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
                     .timeout(10000)
                     .referrer("http://www.cwl.gov.cn/kjxx/ssq/kjgg/")
                     .get();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new NumberLotteryFetcherException(e.getMessage());
+            throw new FetcherException(e.getMessage());
         }
     }
 
     @Override
-    public NumberLotteryFetchResult fetchResult(String phase) throws NumberLotteryFetcherException {
+    public NumberLotteryFetchResult fetchResult(String phase) throws FetcherException {
         if (Strings.isNullOrEmpty(phase)) {
-            throw new NumberLotteryFetcherException("彩期不能为空");
+            throw new FetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖号码，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
         Document doc = this.fetch(this.getResultFetchUrl());
-        return parseResultDoc(phase, doc);
+        try {
+            return parseResultDoc(phase, doc);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new FetcherException(e.getMessage());
+        }
     }
 
     @Override
-    public NumberLotteryFetchResult fetchDetail(String phase) throws NumberLotteryFetcherException {
+    public NumberLotteryFetchResult fetchDetail(String phase) throws FetcherException {
         if (Strings.isNullOrEmpty(phase)) {
-            throw new NumberLotteryFetcherException("彩期不能为空");
+            throw new FetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
         Document doc = this.fetch(this.getDetailFetchUrl());
-        return parseDetailDoc(phase, doc);
+        try {
+            return parseDetailDoc(phase, doc);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new FetcherException(e.getMessage());
+        }
     }
 }

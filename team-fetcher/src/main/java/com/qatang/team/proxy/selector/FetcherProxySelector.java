@@ -1,16 +1,14 @@
 package com.qatang.team.proxy.selector;
 
 import com.google.common.collect.Lists;
+import com.qatang.team.fetcher.exception.FetcherException;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.Proxy;
-import java.net.ProxySelector;
-import java.net.SocketAddress;
-import java.net.URI;
+import java.net.*;
 import java.util.List;
 
 /**
@@ -38,12 +36,16 @@ public class FetcherProxySelector extends ProxySelector {
             return Lists.newArrayList(Proxy.NO_PROXY);
         }
 
-
-        return null;
+        final List<Proxy> proxyList = Lists.newArrayList();
+        proxyInfoList.forEach(proxyInfo -> proxyList.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyInfo.getHost() , proxyInfo.getPort()))));
+        logger.info(String.format("抓取代理选择器：使用代理url=%s", uri.toString()));
+        return proxyList;
     }
 
     @Override
     public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
-
+        String msg = String.format("抓取代理选择器：代理抓取失败，url=%s，socketAddress=%s", uri.toString(), sa.toString());
+        logger.error(msg);
+        logger.error(ioe.getMessage(), ioe);
     }
 }
