@@ -19,7 +19,8 @@ public class FetcherProxySelector extends ProxySelector {
     private final static Logger logger = LoggerFactory.getLogger(FetcherProxySelector.class);
 
     private final static String[] PROXY_URL_ARRAY = new String[] {
-            "cwl.gov.cn"
+            "cwl.gov.cn",
+            "httpbin.org"
     };
 
     private List<ProxyInfo> proxyInfoList;

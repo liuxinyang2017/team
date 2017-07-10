@@ -5,10 +5,13 @@ import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResult;
 import com.qatang.team.fetcher.exception.FetcherException;
+import com.qatang.team.proxy.ProxyManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.ProxySelector;
 
 /**
  * @author qatang
@@ -67,7 +70,6 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
             return Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
                     .timeout(10000)
-                    .referrer("http://www.cwl.gov.cn/kjxx/ssq/kjgg/")
                     .get();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

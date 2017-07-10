@@ -65,6 +65,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
         Elements elements = document.select("table.hz tbody tr");
         for (Element tr : elements) {
             Elements tdList = tr.select("td");
+            System.out.println("bbbbbbbb : " + tr.toString());
             if (phase.equals(tdList.first().text())) {
                 Elements redElements = tdList.get(1).select("p.haoma span");
                 String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
