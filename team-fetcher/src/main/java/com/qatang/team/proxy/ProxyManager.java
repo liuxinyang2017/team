@@ -120,7 +120,7 @@ public class ProxyManager {
         // 随机排序
 //        Collections.shuffle(proxyInfoList);
 
-        FetcherProxySelector fetcherProxySelector = new FetcherProxySelector(proxyInfoList);
+        FetcherProxySelector fetcherProxySelector = new FetcherProxySelector(ProxySelector.getDefault(), proxyInfoList);
         ProxySelector.setDefault(fetcherProxySelector);
 
         // 设置全局代理用户和密码，如果不同代理使用不同密码，还不知道咋解决

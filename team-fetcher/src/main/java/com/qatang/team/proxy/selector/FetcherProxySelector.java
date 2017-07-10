@@ -19,28 +19,28 @@ public class FetcherProxySelector extends ProxySelector {
     private final static Logger logger = LoggerFactory.getLogger(FetcherProxySelector.class);
 
     private final static String[] PROXY_URL_ARRAY = new String[] {
-            "cwl.gov.cn",
-            "httpbin.org"
+            "cwl.gov.cn"
     };
 
+    private ProxySelector defaultProxySelector;
     private List<ProxyInfo> proxyInfoList;
 
-    public FetcherProxySelector(List<ProxyInfo> proxyInfoList) {
+    public FetcherProxySelector(ProxySelector defaultProxySelector, List<ProxyInfo> proxyInfoList) {
+        this.defaultProxySelector = defaultProxySelector;
         this.proxyInfoList = proxyInfoList;
     }
 
     @Override
     public List<Proxy> select(URI uri) {
         logger.info(String.format("抓取代理选择器：开始处理url=%s", uri.toString()));
-        if (!StringUtils.containsAny(uri.toString(), PROXY_URL_ARRAY)) {
-            logger.info(String.format("抓取代理选择器：无需代理url=%s", uri.toString()));
-            return Lists.newArrayList(Proxy.NO_PROXY);
+        if (StringUtils.containsAny(uri.toString(), (CharSequence[]) PROXY_URL_ARRAY)) {
+            final List<Proxy> proxyList = Lists.newArrayList();
+            proxyInfoList.forEach(proxyInfo -> proxyList.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyInfo.getHost() , proxyInfo.getPort()))));
+            logger.info(String.format("抓取代理选择器：使用代理url=%s", uri.toString()));
+            return proxyList;
         }
-
-        final List<Proxy> proxyList = Lists.newArrayList();
-        proxyInfoList.forEach(proxyInfo -> proxyList.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyInfo.getHost() , proxyInfo.getPort()))));
-        logger.info(String.format("抓取代理选择器：使用代理url=%s", uri.toString()));
-        return proxyList;
+        logger.info(String.format("抓取代理选择器：使用默认代理url=%s", uri.toString()));
+        return defaultProxySelector.select(uri);
     }
 
     @Override
