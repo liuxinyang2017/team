@@ -46,7 +46,7 @@ public class Cz88DailiProxyFetcher extends AbstractProxyFetcher {
 
         for (int i = 1; i < elements.size(); i++) {
             Elements divElements = elements.get(i).getElementsByTag("div");
-            String hostname = StringUtils.trim(divElements.get(0).text());
+            String hostname = StringUtils.trim(StringUtils.replace(divElements.get(0).text(), "　", ""));
             String port = StringUtils.trim(divElements.get(1).text());
 
             String type = "HTTP";
