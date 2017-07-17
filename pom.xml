@@ -18,6 +18,7 @@
         <module>team-register-center</module>
         <module>team-web</module>
         <module>team-fetcher</module>
+        <module>team-daemon</module>
     </modules>
 
     <build>
