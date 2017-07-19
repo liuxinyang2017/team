@@ -1,18 +1,13 @@
-package com.qatang.team.data.service;
+package com.qatang.team.fetcher.service;
 
+import com.qatang.team.core.service.BaseInternalSerivce;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 数字彩彩果服务
  * @author qatang
  */
-@FeignClient("team-data-service")
-@RequestMapping("/data/numberLotteryData")
-public interface NumberLotteryDataApiService {
-
+public interface ProxyDataInternalService extends BaseInternalSerivce {
     /**
      * 创建
      * @param numberLotteryData 数字彩彩果

@@ -1,5 +1,6 @@
 package com.qatang.team.data.entity;
 
+import com.qatang.team.core.entity.BaseEntity;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.converter.YesNoStatusConverter;
 import com.qatang.team.enums.converter.lottery.LotteryTypeConverter;
@@ -16,7 +17,9 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "number_lottery_data")
-public class NumberLotteryDataEntity {
+public class NumberLotteryDataEntity implements BaseEntity {
+    private static final long serialVersionUID = -942772883229708585L;
+
     /**
      * 主键
      */

@@ -2,6 +2,8 @@ package com.qatang.team.data.service;
 
 import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.exception.NumberLotteryDetailDataException;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
  * 数字彩详情服务
  * @author qatang
  */
+@FeignClient("team-data-service")
+@RequestMapping("/data/numberLotteryDetailData")
 public interface NumberLotteryDetailDataApiService {
 
     /**
