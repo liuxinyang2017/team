@@ -52,7 +52,7 @@ public enum ProxyValidateStatus {
             statusFlow = Maps.newHashMap();
             statusFlow.put(INIT, ImmutableSet.of(WAITING_TEST, OBSOLETED));
             statusFlow.put(WAITING_TEST, ImmutableSet.of(TESTING, OBSOLETED));
-            statusFlow.put(TESTING, ImmutableSet.of(PASS, FAILED, OBSOLETED));
+            statusFlow.put(TESTING, ImmutableSet.of(WAITING_TEST, PASS, FAILED, OBSOLETED));
             statusFlow.put(PASS, ImmutableSet.of(WAITING_TEST, OBSOLETED));
             statusFlow.put(FAILED, ImmutableSet.of(WAITING_TEST, OBSOLETED));
         }
