@@ -3,18 +3,23 @@ package com.qatang.team.fetcher.entity;
 import com.qatang.team.core.entity.BaseEntity;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * 代理数据
  * @author wangzhiliang
  */
+@Entity
+@Table(name = "proxy_data")
 public class ProxyDataEntity implements BaseEntity {
 
     private static final long serialVersionUID = -7251911721071264275L;
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

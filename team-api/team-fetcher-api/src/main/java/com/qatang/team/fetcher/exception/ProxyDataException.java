@@ -1,22 +1,21 @@
 package com.qatang.team.fetcher.exception;
 
-/**
- * 数字彩彩果
- * @author qatang
- */
-public class ProxyDataException extends RuntimeException {
+import com.qatang.team.core.exception.ClientException;
 
-    private static final long serialVersionUID = 3679513265724469143L;
+/**
+ * 代理数据异常
+ * @author wangzhiliang
+ */
+public class ProxyDataException extends ClientException {
+
+    private static final String errorCode = "400001001";
+    private static final long serialVersionUID = 2779799930610976576L;
 
     public ProxyDataException() {
-        this("数字彩彩果");
+        super(errorCode, "操作代理数据错误");
     }
 
     public ProxyDataException(String message) {
-        super(message);
-    }
-
-    public ProxyDataException(Throwable cause) {
-        super(cause);
+        super(errorCode, message);
     }
 }

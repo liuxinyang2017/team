@@ -1,9 +1,8 @@
 package com.qatang.team.fetcher.exception;
 
+import com.qatang.team.core.annotation.exception.ExceptionLoader;
+import com.qatang.team.core.exception.ClientException;
 import com.qatang.team.core.exception.ClientExceptionRegistry;
-import com.zhangyu.saas.core.api.annotation.exception.ExceptionLoader;
-import com.zhangyu.saas.core.api.exception.SaasClientException;
-import com.zhangyu.saas.core.api.exception.SaasClientExceptionRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,14 +36,14 @@ public class FetcherClientExceptionLoader {
         }
 
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AssignableTypeFilter(SaasClientException.class));
+        provider.addIncludeFilter(new AssignableTypeFilter(ClientException.class));
         Set<BeanDefinition> beanDefinitionSet = provider.findCandidateComponents(basePackage);
 
         try {
             for (BeanDefinition beanDefinition : beanDefinitionSet) {
                 String className = beanDefinition.getBeanClassName();
-                Class<SaasClientException> clazz = (Class<SaasClientException>) Class.forName(className);
-                saasClientExceptionRegistry.put(MODULE, clazz);
+                Class<ClientException> clazz = (Class<ClientException>) Class.forName(className);
+                clientExceptionRegistry.put(MODULE, clazz);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
