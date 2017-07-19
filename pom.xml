@@ -19,6 +19,7 @@
         <module>team-web</module>
         <module>team-fetcher</module>
         <module>team-daemon</module>
+        <module>team-scheduler</module>
     </modules>
 
     <build>

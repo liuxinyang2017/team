@@ -45,6 +45,10 @@ public class ProxyInfo {
         this.password = password;
     }
 
+    public String getUrlStr() {
+        return this.getHost() + ":" + this.getPort();
+    }
+
     public Proxy.Type getProxyType() {
         return proxyType;
     }

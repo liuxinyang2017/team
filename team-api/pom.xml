@@ -12,6 +12,7 @@
     <modules>
         <module>team-data-api</module>
         <module>team-data-service</module>
+        <module>team-fetcher-api</module>
     </modules>
 
     <distributionManagement>

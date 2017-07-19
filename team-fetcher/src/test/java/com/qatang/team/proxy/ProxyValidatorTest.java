@@ -1,6 +1,5 @@
 package com.qatang.team.proxy;
 
-import com.google.common.collect.Lists;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.proxy.bean.ProxyInfo;
@@ -12,7 +11,6 @@ import com.qatang.team.proxy.validator.ProxyValidatorFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.net.Proxy;
 import java.util.List;
 
 /**
