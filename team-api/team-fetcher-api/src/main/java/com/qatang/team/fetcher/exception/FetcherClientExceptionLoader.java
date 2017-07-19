@@ -1,5 +1,6 @@
-package com.zhangyu.saas.platform.api.exception;
+package com.qatang.team.fetcher.exception;
 
+import com.qatang.team.core.exception.ClientExceptionRegistry;
 import com.zhangyu.saas.core.api.annotation.exception.ExceptionLoader;
 import com.zhangyu.saas.core.api.exception.SaasClientException;
 import com.zhangyu.saas.core.api.exception.SaasClientExceptionRegistry;
@@ -18,14 +19,14 @@ import java.util.Set;
  * Created by wangzhiliang on 2016/12/14.
  */
 @Component
-@ExceptionLoader(value = "com.zhangyu.saas.platform.api.exception")
-public class PlatformClientExceptionLoader {
+@ExceptionLoader(value = "com.qatang.team.fetcher.exception")
+public class FetcherClientExceptionLoader {
 
     private transient final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private SaasClientExceptionRegistry saasClientExceptionRegistry = SaasClientExceptionRegistry.instance();
+    private ClientExceptionRegistry clientExceptionRegistry = ClientExceptionRegistry.instance();
 
-    public static final String MODULE = "PLATFORM_CLIENT";
+    public static final String MODULE = "FETCHER_CLIENT";
 
     @SuppressWarnings("unchecked")
     @PostConstruct
