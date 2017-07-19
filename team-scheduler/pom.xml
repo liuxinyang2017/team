@@ -21,5 +21,13 @@
             <groupId>com.qatang.team</groupId>
             <artifactId>team-fetcher</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.qatang.team</groupId>
+            <artifactId>team-data-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.qatang.team</groupId>
+            <artifactId>team-fetcher-api</artifactId>
+        </dependency>
     </dependencies>
 </project>

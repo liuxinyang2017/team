@@ -17,7 +17,7 @@ public enum ProxyValidateStatus {
     INIT(1, "待处理"),
     WAITING_TEST(2, "待测试"),
     TESTING(3, "测试中"),
-    TESTED(4, "已通过"),
+    PASS(4, "已通过"),
     FAILED(5, "测试失败"),
     OBSOLETED(6, "已作废"),
     ;
@@ -52,8 +52,8 @@ public enum ProxyValidateStatus {
             statusFlow = Maps.newHashMap();
             statusFlow.put(INIT, ImmutableSet.of(WAITING_TEST, OBSOLETED));
             statusFlow.put(WAITING_TEST, ImmutableSet.of(TESTING, OBSOLETED));
-            statusFlow.put(TESTING, ImmutableSet.of(TESTED, FAILED, OBSOLETED));
-            statusFlow.put(TESTED, ImmutableSet.of(WAITING_TEST, OBSOLETED));
+            statusFlow.put(TESTING, ImmutableSet.of(PASS, FAILED, OBSOLETED));
+            statusFlow.put(PASS, ImmutableSet.of(WAITING_TEST, OBSOLETED));
             statusFlow.put(FAILED, ImmutableSet.of(WAITING_TEST, OBSOLETED));
         }
     }
