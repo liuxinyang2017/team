@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-util</artifactId>
+            <artifactId>spring-core</artifactId>
         </dependency>
 
     </dependencies>
