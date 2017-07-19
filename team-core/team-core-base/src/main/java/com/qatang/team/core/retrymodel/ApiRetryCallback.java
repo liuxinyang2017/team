@@ -25,9 +25,9 @@ public abstract class ApiRetryCallback<V> implements Callable<V> {
 	/**
 	 * 出错重试次数
 	 */
-	private int retry = 5;
+	private int retry = 3;
 	
-	private long retryInterval = 100;
+	private long retryInterval = 1000;
 	
 	/**
 	 * 是否处于重试状态
@@ -35,11 +35,11 @@ public abstract class ApiRetryCallback<V> implements Callable<V> {
 	private boolean inRetry = false;
 
     public ApiRetryCallback(String name) {
-        this(name, 5);
+        this(name, 3);
     }
 
     public ApiRetryCallback(String name, int retry) {
-        this(name, retry, 100, TimeUnit.MILLISECONDS);
+        this(name, retry, 1000, TimeUnit.MILLISECONDS);
     }
 
     public ApiRetryCallback(String name, int retry, long retryInterval, TimeUnit retryIntervalTimeUnit) {
