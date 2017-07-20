@@ -15,10 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.qatang.team</groupId>
-            <artifactId>team-core-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.qatang.team</groupId>
             <artifactId>team-core-api</artifactId>
         </dependency>
         <dependency>
@@ -29,22 +25,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tomcat</groupId>
+                    <artifactId>tomcat-jdbc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <scope>provided</scope>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sf.dozer</groupId>

@@ -57,6 +57,7 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
             proxyData.setUsername(proxyInfo.getUsername());
             proxyData.setPassword(proxyInfo.getPassword());
             proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
+            proxyData.setFailedCount(0);
             proxyData.setScore(0);
 
             try {

@@ -29,7 +29,7 @@ public class ProxyData extends AbstractBaseApiBean {
     /**
      * 代理端口
      */
-    private int port;
+    private Integer port;
 
     /**
      * 用户名
@@ -45,6 +45,11 @@ public class ProxyData extends AbstractBaseApiBean {
      * 代理验证状态
      */
     private ProxyValidateStatus proxyValidateStatus;
+
+    /**
+     * 连续检测失败次数
+     */
+    private Integer failedCount;
 
     /**
      * 创建时间
@@ -87,11 +92,11 @@ public class ProxyData extends AbstractBaseApiBean {
         this.host = host;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -157,5 +162,13 @@ public class ProxyData extends AbstractBaseApiBean {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Integer getFailedCount() {
+        return failedCount;
+    }
+
+    public void setFailedCount(Integer failedCount) {
+        this.failedCount = failedCount;
     }
 }

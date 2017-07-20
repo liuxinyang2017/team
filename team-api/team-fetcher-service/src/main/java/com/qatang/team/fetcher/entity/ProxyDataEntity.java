@@ -1,7 +1,10 @@
 package com.qatang.team.fetcher.entity;
 
 import com.qatang.team.core.entity.BaseEntity;
+import com.qatang.team.enums.converter.fetcher.ProxyValidateStatusConverter;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "proxy_data")
+@DynamicInsert
+@DynamicUpdate
 public class ProxyDataEntity implements BaseEntity {
 
     private static final long serialVersionUID = -7251911721071264275L;
@@ -26,12 +31,14 @@ public class ProxyDataEntity implements BaseEntity {
      * 代理地址
      * host port 联合唯一
      */
+    @Column(nullable = false)
     private String host;
 
     /**
      * 代理端口
      */
-    private int port;
+    @Column(nullable = false)
+    private Integer port;
 
     /**
      * 用户名
@@ -46,32 +53,59 @@ public class ProxyDataEntity implements BaseEntity {
     /**
      * 代理验证状态
      */
+    @Column(name = "proxy_validate_status", nullable = false)
+    @Convert(converter = ProxyValidateStatusConverter.class)
     private ProxyValidateStatus proxyValidateStatus;
+
+    /**
+     * 连续检测失败次数
+     */
+    @Column(name = "failed_count")
+    private Integer failedCount;
 
     /**
      * 创建时间
      */
+    @Column(name = "created_time", nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
+    @Column(name = "updated_time", nullable = false)
     private LocalDateTime updatedTime;
 
     /**
      * 开始测试时间
      */
+    @Column(name = "begin_test_time")
     private LocalDateTime beginTestTime;
 
     /**
      * 结束测试时间
      */
+    @Column(name = "end_test_time")
     private LocalDateTime endTestTime;
 
     /**
      * 得分
      */
     private Integer score;
+
+    @PrePersist
+    public void onCreate() {
+        if (this.getCreatedTime() == null) {
+            createdTime = LocalDateTime.now();
+        }
+        if (this.getUpdatedTime() == null) {
+            updatedTime = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedTime = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -89,11 +123,11 @@ public class ProxyDataEntity implements BaseEntity {
         this.host = host;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -159,5 +193,13 @@ public class ProxyDataEntity implements BaseEntity {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public Integer getFailedCount() {
+        return failedCount;
+    }
+
+    public void setFailedCount(Integer failedCount) {
+        this.failedCount = failedCount;
     }
 }

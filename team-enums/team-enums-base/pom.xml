@@ -14,12 +14,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>com.qatang.team</groupId>
+            <artifactId>team-core-base</artifactId>
         </dependency>
     </dependencies>
 </project>

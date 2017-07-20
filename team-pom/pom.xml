@@ -62,6 +62,7 @@
         <icu.version>56.1</icu.version>
 
         <junit.version>4.12</junit.version>
+        <spring.test.version>4.3.9.RELEASE</spring.test.version>
 
         <!-- Log libs -->
         <logback.version>1.2.3</logback.version>
@@ -144,31 +145,6 @@
                 <groupId>com.ibm.icu</groupId>
                 <artifactId>icu4j</artifactId>
                 <version>${icu.version}</version>
-            </dependency>
-
-            <!-- Log libs -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-
-            <!-- test -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <!-- project -->
