@@ -16,6 +16,7 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-core-base</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
     </dependencies>
 </project>

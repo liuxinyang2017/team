@@ -16,14 +16,17 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-fetcher-api</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-enums-converter</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-core-service</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
 
         <dependency>
