@@ -93,7 +93,7 @@ public class RequestApiBeanProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> supportedAnnotationTypes = new LinkedHashSet<>();
-        supportedAnnotationTypes.add("com.zhangyu.core.api.annotation.request.RequestApiBean");
+        supportedAnnotationTypes.add("com.qatang.team.core.annotation.request.RequestApiBean");
         return supportedAnnotationTypes;
     }
 

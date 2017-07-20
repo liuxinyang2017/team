@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.bean;
 
+import com.qatang.team.core.annotation.request.RequestApiBean;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * 代理数据
  * @author qatang
  */
+@RequestApiBean
 public class ProxyData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 2771227063335205275L;
 

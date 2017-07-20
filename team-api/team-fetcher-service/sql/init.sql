@@ -3,7 +3,7 @@ CREATE DATABASE `zy_team` DEFAULT CHARACTER SET=utf8;
 use `zy_team`;
 
 CREATE TABLE `proxy_data` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `host` varchar(32) NOT NULL,
   `port` int(11) NOT NULL,
   `username` varchar(64) NOT NULL DEFAULT '',
