@@ -2,6 +2,7 @@ package com.qatang.team.fetcher.service;
 
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
+import com.qatang.team.fetcher.config.InitConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  * @author qatang
  */
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {InitConfig.class})
 public class ProxyDataInternalServiceTest {
 
     @Autowired
