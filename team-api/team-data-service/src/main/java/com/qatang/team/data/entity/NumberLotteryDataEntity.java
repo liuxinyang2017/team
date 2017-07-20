@@ -1,6 +1,7 @@
 package com.qatang.team.data.entity;
 
 import com.qatang.team.core.entity.BaseEntity;
+import com.qatang.team.core.util.LocalDateTimeAttributeConverter;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.converter.YesNoStatusConverter;
 import com.qatang.team.enums.converter.lottery.LotteryTypeConverter;
@@ -57,30 +58,35 @@ public class NumberLotteryDataEntity implements BaseEntity {
      * 创建时间
      */
     @Column(name = "created_time", nullable = false, updatable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
     @Column(name = "updated_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime updatedTime;
 
     /**
      * 开启时间
      */
     @Column(name = "open_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime openTime;
 
     /**
      * 关闭时间
      */
     @Column(name = "close_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime closeTime;
 
     /**
      * 开奖时间
      */
     @Column(name = "prize_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime prizeTime;
 
     /**
@@ -93,12 +99,14 @@ public class NumberLotteryDataEntity implements BaseEntity {
      * 号码获取时间
      */
     @Column(name = "result_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime resultTime;
 
     /**
      * 详情获取时间
      */
     @Column(name = "result_detail_time", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime resultDetailTime;
 
     /**
