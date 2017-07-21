@@ -48,7 +48,7 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!-- Disable annotation processing for ourselves.-->
+                    <!-- 禁用注解处理器，只在api项目中启用-->
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
