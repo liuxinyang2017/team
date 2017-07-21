@@ -1,9 +1,16 @@
 package com.qatang.team.data.service;
 
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
+import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * 数字彩彩果服务
@@ -20,4 +27,146 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException
      */
     NumberLotteryData save(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+
+    /***
+     * 修改数字彩彩果
+     * @param numberLotteryData 数字彩彩果对象
+     * @return 修改后的数字彩彩果对象
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData update(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+
+    /***
+     * 获取数字彩彩果信息
+     * @param numberLotteryDataId 数字彩彩果id
+     * @return 数字彩彩果对象
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData get(Long numberLotteryDataId) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种彩期获取彩期对象
+     * @param lotteryType
+     * @param phase
+     * @return
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /***
+     * 数字彩彩果信息自定义查询
+     * @param request 自定义组合查询条件
+     * @param requestPage 分页和排序条件
+     * @return 分页组织的出票系统票信息查询列表
+     * @throws NumberLotteryDataException
+     */
+    ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取当前期
+     * @param lotteryType 彩种
+     * @return 当前彩期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取当前期的上一期
+     * @param lotteryType 彩种
+     * @return 当前期的上一期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getPreviousPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取指定期的上一期
+     * @param lotteryType 彩种
+     * @return 指定期的上一期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getPreviousPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取当前期的下一期
+     * @param lotteryType 彩种
+     * @return 当前期的下一期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getNextPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取指定期的下一期
+     * @param lotteryType 彩种
+     * @return 指定期的下一期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getNextPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /**
+     * 更新彩期状态
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param toStatus 目标状态
+     * @throws NumberLotteryDataException
+     */
+    void updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
+
+    /**
+     * 切换当前期
+     * @param lotteryType 彩种
+     * @throws NumberLotteryDataException
+     */
+    void switchCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 指定当前期
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @throws NumberLotteryDataException
+     */
+    void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /**
+     * 更新彩期开奖结果
+     * @param numberLotteryData 彩期对象
+     * @throws NumberLotteryDataException
+     */
+    void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+
+    /**
+     * 更新彩期开奖结果详情
+     * @param numberLotteryData 彩期对象
+     * @throws NumberLotteryDataException
+     */
+    void updateResultDetail(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+
+    /**
+     * 获取当前彩期前后n期彩期列表
+     * @param lotteryType 彩种
+     * @param prePhases 前n期
+     * @param nextPhases 后n期
+     * @return
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
+
+    /**
+     * 获取指定彩期之前n期
+     * @param lotteryType
+     * @param phase
+     * @param n
+     * @return
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+
+    /**
+     * 获取指定彩期之后n期
+     * @param lotteryType
+     * @param phase
+     * @param n
+     * @return
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 }

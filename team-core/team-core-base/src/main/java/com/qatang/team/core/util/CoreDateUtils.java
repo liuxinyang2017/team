@@ -384,10 +384,8 @@ public class CoreDateUtils {
      * @param date 日期
      * @return 是否在春节期间
      */
-    public static boolean isDuringSpringFestival(Date date) {
-        LocalDateTime ldt = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-
-        int year = ldt.getYear();
+    public static boolean isDuringSpringFestival(LocalDateTime date) {
+        int year = date.getYear();
         String springFestivalPeriod = springFestivalPeriodMap.get(year);
         if (StringUtils.isEmpty(springFestivalPeriod)) {
             return false;
@@ -398,6 +396,6 @@ public class CoreDateUtils {
         LocalDateTime start = LocalDateTime.parse(startEnd[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime end = LocalDateTime.parse(startEnd[1], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        return ldt.isAfter(start) && ldt.isBefore(end.plusSeconds(1));
+        return date.isAfter(start) && date.isBefore(end.plusSeconds(1));
     }
 }

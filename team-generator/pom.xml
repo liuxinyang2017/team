@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>team-daemon</artifactId>
+    <artifactId>team-generator</artifactId>
 
     <dependencies>
         <dependency>
@@ -21,11 +21,6 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-enums-base</artifactId>
-            <classifier>${branch}</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.qatang.team</groupId>
-            <artifactId>team-data-api</artifactId>
             <classifier>${branch}</classifier>
         </dependency>
     </dependencies>
