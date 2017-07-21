@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.service.impl;
 
+import com.qatang.team.constants.GlobalConstants;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
@@ -111,7 +112,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         ProxyValidateStatus toStatus = ProxyValidateStatus.PASS;
         ProxyDataEntity proxyDataEntity = updateStatus(id, toStatus);
         proxyDataEntity.setFailedCount(0);
-        proxyDataEntity.setScore(10);
+        proxyDataEntity.setScore(GlobalConstants.PROXY_INIT_SCORE);
         return BeanMapping.map(proxyDataEntity, ProxyData.class);
     }
 

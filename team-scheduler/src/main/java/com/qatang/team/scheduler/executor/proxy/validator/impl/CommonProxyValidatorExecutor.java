@@ -1,5 +1,6 @@
 package com.qatang.team.scheduler.executor.proxy.validator.impl;
 
+import com.qatang.team.constants.GlobalConstants;
 import com.qatang.team.core.retrymodel.ApiRetryCallback;
 import com.qatang.team.core.retrymodel.ApiRetryTaskExecutor;
 import com.qatang.team.enums.YesNoStatus;
@@ -10,7 +11,6 @@ import com.qatang.team.fetcher.bean.ProxyValidateLog;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.proxy.validator.IProxyValidator;
 import com.qatang.team.proxy.validator.ProxyValidatorFactory;
-import com.qatang.team.scheduler.constant.Constants;
 import com.qatang.team.scheduler.executor.proxy.validator.AbstractProxyValidatorExecutor;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +34,7 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
         // 更新proxyData状态，从 待测试 更新为 测试中
 
         boolean pass = true;
-        for (ProxyValidatorType proxyValidatorType : Constants.proxyValidatorTypeList) {
+        for (ProxyValidatorType proxyValidatorType : GlobalConstants.proxyValidatorTypeList) {
             IProxyValidator proxyValidator = ProxyValidatorFactory.getValidator(proxyValidatorType);
             if (proxyValidator == null) {
                 logger.error(String.format("代理测试定时：未找到(%s)的代理检测器，跳过该代理检测器", proxyValidatorType.getName()));

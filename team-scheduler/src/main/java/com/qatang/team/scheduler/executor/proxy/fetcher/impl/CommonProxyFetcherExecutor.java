@@ -1,15 +1,14 @@
 package com.qatang.team.scheduler.executor.proxy.fetcher.impl;
 
 import com.google.common.collect.Lists;
+import com.qatang.team.constants.GlobalConstants;
 import com.qatang.team.core.util.CoreCollectionUtils;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.proxy.bean.ProxyInfo;
-import com.qatang.team.proxy.exception.ProxyException;
 import com.qatang.team.proxy.fetcher.IProxyFetcher;
 import com.qatang.team.proxy.fetcher.ProxyFetcherFactory;
-import com.qatang.team.scheduler.constant.Constants;
 import com.qatang.team.scheduler.executor.proxy.fetcher.AbstractProxyFetcherExecutor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -25,10 +24,10 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
     @Override
     public void executeFetcher() {
-        String sourceName = StringUtils.join(Constants.proxyFetcherTypeList.stream().map(ProxyFetcherType::getName).collect(Collectors.toList()), ",");
+        String sourceName = StringUtils.join(GlobalConstants.proxyFetcherTypeList.stream().map(ProxyFetcherType::getName).collect(Collectors.toList()), ",");
         logger.info(String.format("开始执行代理抓取定时，代理来源：%s", sourceName));
         List<ProxyInfo> allProxyInfoList = Lists.newArrayList();
-        for (ProxyFetcherType proxyFetcherType : Constants.proxyFetcherTypeList) {
+        for (ProxyFetcherType proxyFetcherType : GlobalConstants.proxyFetcherTypeList) {
             IProxyFetcher proxyFetcher = ProxyFetcherFactory.getFetcher(proxyFetcherType);
             if (proxyFetcher == null) {
                 logger.error(String.format("代理抓取定时：未找到(%s)的代理抓取器，跳过该来源代理抓取", proxyFetcherType.getName()));
