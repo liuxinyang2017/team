@@ -3,7 +3,6 @@ package com.qatang.team.fetcher.worker.ssq.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.qatang.team.core.util.CoreLotteryUtils;
 import com.qatang.team.core.util.CoreMathUtils;
@@ -12,13 +11,13 @@ import com.qatang.team.fetcher.bean.NumberLotteryFetchDetail;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResult;
 import com.qatang.team.fetcher.exception.FetcherException;
 import com.qatang.team.fetcher.worker.ssq.AbstractSsqFetcher;
+import com.qatang.team.proxy.bean.ProxyInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +54,12 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
     }
 
     @Override
-    protected NumberLotteryFetchResult parseResultDoc(String phase, Document document) {
+    protected String getFetchEncoding() {
+        return "UTF-8";
+    }
+
+    @Override
+    protected NumberLotteryFetchResult parseResultDoc(String phase, Document document, ProxyInfo proxyInfo) {
         NumberLotteryFetchResult numberLotteryFetchResult = new NumberLotteryFetchResult();
         numberLotteryFetchResult.setLotteryType(this.getLotteryType());
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
@@ -88,7 +92,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
     }
 
     @Override
-    protected NumberLotteryFetchResult parseDetailDoc(String phase, Document document) {
+    protected NumberLotteryFetchResult parseDetailDoc(String phase, Document document, ProxyInfo proxyInfo) {
         NumberLotteryFetchResult numberLotteryFetchResult = new NumberLotteryFetchResult();
         numberLotteryFetchResult.setLotteryType(this.getLotteryType());
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
@@ -100,7 +104,8 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
         for (Element tr : elements) {
             Elements tdList = tr.select("td");
             if (phase.equals(tdList.first().text())) {
-                detailUrl = tdList.get(6).select("a").attr("abs:href");
+                detailUrl = tdList.get(6).select("a").attr("href");
+                detailUrl = "http://www.cwl.gov.cn/kjxx/ssq/kjgg/" +  StringUtils.substringAfterLast(detailUrl, "/");
                 break;
             }
         }
@@ -112,7 +117,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
         }
 
         // 再抓取详情数据
-        Document detailDocument = this.fetch(detailUrl);
+        Document detailDocument = this.fetch(detailUrl, this.getFetchEncoding(), proxyInfo);
 
         Elements detailElements = detailDocument.select("li.caizhong span");
         String fetchedPhase = detailElements.get(0).text().substring(1, 8);
@@ -125,6 +130,7 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
             logger.error(msg);
             throw new FetcherException(msg);
         }
+
         if (!fetchedPhase.equals(phase)) {
             String msg = String.format("开奖详情抓取异常：彩期不一致，lotteryType=%s，fetcherType=%s, phase=%s，fetchedPhase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase, fetchedPhase);
             logger.error(msg);

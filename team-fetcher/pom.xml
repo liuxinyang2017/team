@@ -16,28 +16,32 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-core-base</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-enums-base</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- 禁用注解处理器，只在api项目中启用-->
+                    <compilerArgument>-proc:none</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

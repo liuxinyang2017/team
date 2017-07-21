@@ -38,6 +38,47 @@
         </repository>
     </distributionManagement>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <branch>dev</branch>
+            </properties>
+            <activation>
+                <property>
+                    <name>team.build.type</name>
+                    <value>dev</value>
+                </property>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>qa</id>
+            <properties>
+                <branch>qa</branch>
+            </properties>
+            <activation>
+                <property>
+                    <name>team.build.type</name>
+                    <value>qa</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <branch>production</branch>
+                <loggin.path></loggin.path>
+            </properties>
+            <activation>
+                <property>
+                    <name>team.build.type</name>
+                    <value>production</value>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
+
     <properties>
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
@@ -54,21 +95,20 @@
         <mysql.version>5.1.35</mysql.version>
         <druid.version>1.0.29</druid.version>
         <hibernate.core.version>5.1.0.Final</hibernate.core.version>
+        <hibernate.java8.version>5.1.0.Final</hibernate.java8.version>
         <dozer.version>5.5.1</dozer.version>
         <dozer.jdk8.support.version>1.0.2</dozer.jdk8.support.version>
         <javapoet.version>1.1.0</javapoet.version>
         <jsoup.version>1.10.3</jsoup.version>
-
-        <junit.version>4.12</junit.version>
-
-        <!-- Log libs -->
-        <logback.version>1.2.3</logback.version>
-        <slf4j.version>1.7.21</slf4j.version>
+        <okhttp.version>3.8.1</okhttp.version>
+        <icu.version>56.1</icu.version>
 
         <!-- project -->
         <team.core.version>1.0.0-SNAPSHOT</team.core.version>
         <team.enums.version>1.0.0-SNAPSHOT</team.enums.version>
-        <team.api.version>1.0.0-SNAPSHOT</team.api.version>
+        <team.api.data.version>1.0.0-SNAPSHOT</team.api.data.version>
+        <team.api.fetcher.version>1.0.0-SNAPSHOT</team.api.fetcher.version>
+        <team.fetcher.version>1.0.0-SNAPSHOT</team.fetcher.version>
     </properties>
 
     <dependencyManagement>
@@ -103,6 +143,11 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-java8</artifactId>
+                <version>${hibernate.java8.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
@@ -132,53 +177,69 @@
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
             </dependency>
-
-            <!-- Log libs -->
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-
-            <!-- test -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
+                <groupId>com.ibm.icu</groupId>
+                <artifactId>icu4j</artifactId>
+                <version>${icu.version}</version>
             </dependency>
 
             <!-- project -->
+            <!-- core -->
             <dependency>
                 <groupId>com.qatang.team</groupId>
-                <artifactId>team-core</artifactId>
+                <artifactId>team-core-base</artifactId>
                 <version>${team.core.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
-                <artifactId>team-enums</artifactId>
+                <artifactId>team-core-api</artifactId>
+                <version>${team.core.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-core-service</artifactId>
+                <version>${team.core.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <!-- enum -->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-enums-base</artifactId>
                 <version>${team.enums.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
-                <artifactId>team-api</artifactId>
-                <version>${team.api.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>team-enums-converter</artifactId>
+                <version>${team.enums.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <!-- api -->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-data-api</artifactId>
+                <version>${team.api.data.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-fetcher-api</artifactId>
+                <version>${team.api.fetcher.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <!-- fetcher -->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-fetcher</artifactId>
+                <version>${team.fetcher.version}</version>
+                <classifier>${branch}</classifier>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -193,8 +254,18 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.20</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -205,6 +276,25 @@
                 <configuration>
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <configuration>
+                            <classifier>${branch}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

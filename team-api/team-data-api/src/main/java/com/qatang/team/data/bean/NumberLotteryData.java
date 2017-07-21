@@ -1,5 +1,6 @@
 package com.qatang.team.data.bean;
 
+import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
@@ -32,6 +33,7 @@ public class NumberLotteryData extends AbstractBaseApiBean {
     /**
      * 彩期状态
      */
+    @RequestApiFieldUpdatable
     private PhaseStatus phaseStatus;
 
     /**
@@ -52,22 +54,26 @@ public class NumberLotteryData extends AbstractBaseApiBean {
     /**
      * 开启时间
      */
+    @RequestApiFieldUpdatable
     private LocalDateTime openTime;
 
     /**
      * 关闭时间
      */
+    @RequestApiFieldUpdatable
     private LocalDateTime closeTime;
 
     /**
      * 开奖时间
      */
+    @RequestApiFieldUpdatable
     private LocalDateTime prizeTime;
 
     /**
      * 彩果
      * 01,02,03,04,05,06|07
      */
+    @RequestApiFieldUpdatable
     private String result;
 
     /**
@@ -83,11 +89,13 @@ public class NumberLotteryData extends AbstractBaseApiBean {
     /**
      * 奖池金额
      */
+    @RequestApiFieldUpdatable
     private Long poolAmount;
 
     /**
      * 销售总金额
      */
+    @RequestApiFieldUpdatable
     private Long saleAmount;
 
     public Long getId() {

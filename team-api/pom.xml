@@ -12,6 +12,8 @@
     <modules>
         <module>team-data-api</module>
         <module>team-data-service</module>
+        <module>team-fetcher-api</module>
+        <module>team-fetcher-service</module>
     </modules>
 
     <distributionManagement>
@@ -24,6 +26,7 @@
 
     <properties>
         <team.api.data.version>1.0.0-SNAPSHOT</team.api.data.version>
+        <team.api.fetcher.version>1.0.0-SNAPSHOT</team.api.fetcher.version>
     </properties>
 
     <dependencyManagement>
@@ -32,6 +35,11 @@
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-data-api</artifactId>
                 <version>${team.api.data.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-fetcher-api</artifactId>
+                <version>${team.api.fetcher.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

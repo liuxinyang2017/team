@@ -25,7 +25,7 @@ public class ProxyInfo {
     /**
      * 用户名
      */
-    private String user = "";
+    private String username = "";
 
     /**
      * 密码
@@ -37,12 +37,16 @@ public class ProxyInfo {
         this.port = port;
     }
 
-    public ProxyInfo(Proxy.Type proxyType, String host, int port, String user, String password) {
+    public ProxyInfo(Proxy.Type proxyType, String host, int port, String username, String password) {
         this.proxyType = proxyType;
         this.host = host;
         this.port = port;
-        this.user = user;
+        this.username = username;
         this.password = password;
+    }
+
+    public String getUrlStr() {
+        return this.getHost() + ":" + this.getPort();
     }
 
     public Proxy.Type getProxyType() {
@@ -57,8 +61,8 @@ public class ProxyInfo {
         return port;
     }
 
-    public String getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

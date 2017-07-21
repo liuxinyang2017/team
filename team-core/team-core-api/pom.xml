@@ -15,7 +15,13 @@
     <dependencies>
         <dependency>
             <groupId>com.qatang.team</groupId>
+            <artifactId>team-core-base</artifactId>
+            <classifier>${branch}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.qatang.team</groupId>
             <artifactId>team-enums-base</artifactId>
+            <classifier>${branch}</classifier>
         </dependency>
 
         <dependency>
@@ -30,6 +36,11 @@
             <groupId>io.craftsman</groupId>
             <artifactId>dozer-jdk8-support</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -37,7 +48,7 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!-- Disable annotation processing for ourselves.-->
+                    <!-- 禁用注解处理器，只在api项目中启用-->
                     <compilerArgument>-proc:none</compilerArgument>
                 </configuration>
             </plugin>
