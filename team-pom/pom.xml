@@ -68,6 +68,7 @@
             <id>production</id>
             <properties>
                 <branch>production</branch>
+                <loggin.path></loggin.path>
             </properties>
             <activation>
                 <property>
@@ -282,10 +283,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
+                        <id>default-jar</id>
                         <configuration>
                             <classifier>${branch}</classifier>
                         </configuration>
