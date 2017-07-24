@@ -102,7 +102,31 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         ApiRequest apiRequest = ApiRequest.newInstance()
                 .filterEqual(QNumberLotteryData.lotteryType, lotteryType)
                 .filterLessThan(QNumberLotteryData.phase, phase);
-        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 1).addOrder(QNumberLotteryData.phase, PageOrderType.DESC);
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().
+                paging(0, 1).
+                addOrder(QNumberLotteryData.phase, PageOrderType.DESC);
+
+        ApiResponse<NumberLotteryData> apiResponse = this.findAll(apiRequest, apiRequestPage);
+        if (apiResponse.getPagedData() == null || apiResponse.getPagedData().isEmpty()) {
+            return null;
+        }
+        return apiResponse.getPagedData().iterator().next();
+    }
+
+    @Override
+    public NumberLotteryData getNextPhase(LotteryType lotteryType) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        return getNextPhase(lotteryType, numberLotteryDataEntity.getPhase());
+    }
+
+    @Override
+    public NumberLotteryData getNextPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        ApiRequest apiRequest = ApiRequest.newInstance()
+                .filterEqual(QNumberLotteryData.lotteryType, lotteryType)
+                .filterGreaterThan(QNumberLotteryData.phase, phase);
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().
+                paging(0, 1).
+                addOrder(QNumberLotteryData.phase, PageOrderType.ASC);
 
         ApiResponse<NumberLotteryData> apiResponse = this.findAll(apiRequest, apiRequestPage);
         if (apiResponse.getPagedData() == null || apiResponse.getPagedData().isEmpty()) {
