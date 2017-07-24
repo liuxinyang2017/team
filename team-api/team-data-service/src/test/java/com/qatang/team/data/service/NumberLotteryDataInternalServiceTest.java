@@ -111,4 +111,10 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
         PhaseStatus checkStatus = PhaseStatus.RESULT_SET;
         numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
     }
+
+    @Test
+    public void testSwitchCurrentPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        numberLotteryDataInternalService.switchCurrentPhase(lotteryType);
+    }
 }

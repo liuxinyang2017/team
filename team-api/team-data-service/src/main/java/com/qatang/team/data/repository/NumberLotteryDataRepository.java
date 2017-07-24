@@ -16,6 +16,9 @@ public interface NumberLotteryDataRepository extends BaseRepository<NumberLotter
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     NumberLotteryDataEntity getByLotteryTypeAndPhase(LotteryType lotteryType, String phase);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    NumberLotteryDataEntity getByLotteryTypeAndIsCurrent(LotteryType lotteryType, YesNoStatus isCurrent);
+
     NumberLotteryDataEntity findByLotteryTypeAndPhase(LotteryType lotteryType, String phase);
 
     NumberLotteryDataEntity findByLotteryTypeAndIsCurrent(LotteryType lotteryType, YesNoStatus isCurrent);

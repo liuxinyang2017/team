@@ -107,4 +107,11 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @throws NumberLotteryDataException
      */
     NumberLotteryData updatePhaseStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
+
+    /**
+     * 切换当前期
+     * @param lotteryType 彩种
+     * @throws NumberLotteryDataException
+     */
+    void switchCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
 }

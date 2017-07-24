@@ -32,6 +32,27 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Autowired
     private NumberLotteryDataRepository numberLotteryDataRepository;
 
+    protected NumberLotteryDataEntity getNumberLotteryDataEntityWithNullCheckForUpdate(Long id) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findOneForUpdate(id);
+        if (numberLotteryDataEntity == null) {
+            throw new NumberLotteryDataException(String.format("未获取到数字彩彩果：numberLotteryDataId=%s", id));
+        }
+        return numberLotteryDataEntity;
+    }
+
+    protected NumberLotteryDataEntity getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.getByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            throw new NumberLotteryDataException(String.format("未获取到数字彩彩果：lotteryType=%s，phase=%s", lotteryType.getName(), phase));
+        }
+        return numberLotteryDataEntity;
+    }
+
+    protected NumberLotteryDataEntity getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(LotteryType lotteryType) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.getByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        return numberLotteryDataEntity;
+    }
+
     @Override
     public NumberLotteryData save(NumberLotteryData numberLotteryData) throws NumberLotteryDataException {
         logger.info("新建数字彩数据：开始执行");
@@ -57,7 +78,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         Assert.notNull(numberLotteryData.getId(), "数字彩数据服务id不能为空");
 
         logger.info("修改数字彩数据服务：锁行查询NumberLotteryDataEntity");
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findOneForUpdate(numberLotteryData.getId());
+        NumberLotteryDataEntity numberLotteryDataEntity = getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryData.getId());
         copyUpdatableField(numberLotteryDataEntity, numberLotteryData);
 
         logger.info("修改数字彩数据服务：将NumberLotteryDataEntity转换为NumberLotteryData作为返回结果");
@@ -138,7 +159,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public NumberLotteryData updatePhaseStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.getByLotteryTypeAndPhase(lotteryType, phase);
+        NumberLotteryDataEntity numberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
         PhaseStatus phaseStatus = numberLotteryDataEntity.getPhaseStatus();
         if (checkStatus != null && checkStatus != phaseStatus) {
             String msg = String.format("更新状态不一致, id=%s, toStatus=%s, checkStatus=%s, currentStatus=%s", numberLotteryDataEntity.getId(), toStatus.getName(), checkStatus.getName(), phaseStatus.getName());
@@ -155,5 +176,19 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         numberLotteryDataEntity.setPhaseStatus(toStatus);
 
         return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
+    }
+
+    @Override
+    @Transactional
+    public void switchCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(lotteryType);
+
+        numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+
+        NumberLotteryData nextPhase = getNextPhase(lotteryType, numberLotteryDataEntity.getPhase());
+
+        NumberLotteryDataEntity nextLotteryPhaseEntity = numberLotteryDataRepository.findOneForUpdate(nextPhase.getId());
+
+        nextLotteryPhaseEntity.setIsCurrent(YesNoStatus.YES);
     }
 }
