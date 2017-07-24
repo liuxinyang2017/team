@@ -11,6 +11,8 @@ import com.qatang.team.enums.lottery.PhaseStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author jinsheng
  */
@@ -139,5 +141,17 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
         numberLotteryData.setResult(result);
 
         numberLotteryDataInternalService.updateResult(numberLotteryData);
+    }
+
+    @Test
+    public void testGetNearestPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        int prePhases = 10;
+        int nextPhases = 10;
+        logger.info("彩种：{} 当前期前{}期至后{}期", lotteryType.getName(), prePhases, nextPhases);
+        List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.getNearestPhase(lotteryType, prePhases, nextPhases);
+        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
+            logger.info("彩期：{}", numberLotteryData.getPhase());
+        }
     }
 }

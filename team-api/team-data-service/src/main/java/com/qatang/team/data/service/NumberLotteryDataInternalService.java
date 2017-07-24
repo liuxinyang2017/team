@@ -9,6 +9,8 @@ import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 
+import java.util.List;
+
 /**
  * @author qatang
  */
@@ -124,9 +126,36 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
     void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
-     * 更新彩果
+     * 更新开奖结果
      * @param numberLotteryData 数字彩彩果
      * @throws NumberLotteryDataException
      */
     void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+
+    /**
+     * 获取当前彩期前后n期数字彩彩果列表
+     * @param lotteryType 彩种
+     * @param prePhases 前n期
+     * @param nextPhases 后n期
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
+
+    /**
+     * 获取指定彩期之前n期
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param n 前n期
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+
+    /**
+     * 获取指定彩期之后n期
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param n 后n期
+     * @throws NumberLotteryDataException
+     */
+    List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 }
