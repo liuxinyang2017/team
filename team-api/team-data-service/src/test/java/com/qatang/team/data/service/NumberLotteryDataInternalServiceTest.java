@@ -117,4 +117,13 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
         LotteryType lotteryType = LotteryType.FC_SSQ;
         numberLotteryDataInternalService.switchCurrentPhase(lotteryType);
     }
+
+    @Test
+    public void testSpecifyCurrentPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "20170101";
+        numberLotteryDataInternalService.specifyCurrentPhase(lotteryType, phase);
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
+        logger.info("彩种：{}，当前期：{}", lotteryType.getName(), numberLotteryData.getPhase());
+    }
 }

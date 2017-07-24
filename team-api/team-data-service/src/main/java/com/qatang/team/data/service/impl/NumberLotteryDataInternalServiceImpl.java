@@ -191,4 +191,18 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
         nextLotteryPhaseEntity.setIsCurrent(YesNoStatus.YES);
     }
+
+    @Override
+    @Transactional
+    public void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(lotteryType);
+
+        if (numberLotteryDataEntity != null) {
+            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+        }
+
+        NumberLotteryDataEntity specifyNumberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
+
+        specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
+    }
 }
