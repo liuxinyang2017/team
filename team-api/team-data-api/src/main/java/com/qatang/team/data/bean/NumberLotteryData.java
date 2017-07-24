@@ -1,5 +1,6 @@
 package com.qatang.team.data.bean;
 
+import com.qatang.team.core.annotation.request.RequestApiBean;
 import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * 数字彩彩果
  * @author qatang
  */
+@RequestApiBean
 public class NumberLotteryData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 5745385863292450844L;
 

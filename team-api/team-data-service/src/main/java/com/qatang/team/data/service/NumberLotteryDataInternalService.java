@@ -1,5 +1,8 @@
 package com.qatang.team.data.service;
 
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseInternalSerivce;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
@@ -33,6 +36,15 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @throws NumberLotteryDataException
      */
     NumberLotteryData get(Long id) throws NumberLotteryDataException;
+
+    /**
+     * 数字彩彩果自定义查询
+     * @param request 自定义组合查询条件
+     * @param requestPage 分页和排序条件
+     * @return 分页组织的数字彩彩果查询列表
+     * @throws NumberLotteryDataException
+     */
+    ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException;
 
     /**
      * 获取数字彩彩果

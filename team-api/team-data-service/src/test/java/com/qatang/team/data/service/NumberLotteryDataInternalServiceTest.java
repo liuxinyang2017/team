@@ -47,6 +47,10 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
     }
 
     @Test
+    public void testFindAll() {
+    }
+
+    @Test
     public void testGetByLotteryTypeAndPhase() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "20170101";

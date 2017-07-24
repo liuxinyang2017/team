@@ -1,18 +1,21 @@
 package com.qatang.team.data.service.impl;
 
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.entity.NumberLotteryDataEntity;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.repository.NumberLotteryDataRepository;
-import com.qatang.team.data.service.NumberLotteryDataApiService;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import com.qatang.team.exception.StatusFlowException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -66,6 +69,12 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     public NumberLotteryData get(Long id) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findOne(id);
         return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
+    }
+
+    @Override
+    public ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException {
+        Page<NumberLotteryDataEntity> numberLotteryDataEntityPage = numberLotteryDataRepository.findAll(convertSpecification(request), convertPageable(requestPage));
+        return convertApiResponse(numberLotteryDataEntityPage, NumberLotteryData.class);
     }
 
     @Override
