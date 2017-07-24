@@ -1,73 +1,105 @@
-package com.qatang.team.fetcher.bean;
+package com.qatang.team.fetcher.entity;
 
-import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
-import com.qatang.team.core.bean.AbstractBaseApiBean;
+import com.qatang.team.core.entity.BaseEntity;
+import com.qatang.team.enums.converter.fetcher.FetcherTypeConverter;
+import com.qatang.team.enums.converter.lottery.LotteryTypeConverter;
 import com.qatang.team.enums.fetcher.FetcherType;
-import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.enums.lottery.LotteryType;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 数字彩开奖结果抓取数据对象
- * @author qatang
+ * @author wp
+ * @since 2017/7/23
  */
-public class NumberLotteryFetchResultData extends AbstractBaseApiBean {
-    private static final long serialVersionUID = 2771227063335205275L;
+@Entity
+@Table(name = "number_lottery_fetch_result_data")
+@DynamicInsert
+@DynamicUpdate
+public class NumberLotteryFetchResultDataEntity implements BaseEntity {
+    private static final long serialVersionUID = -8715008688250566739L;
 
     /**
      * 主键
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * 创建时间
      */
+    @Column(name = "created_time", nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
     /**
      * 更新时间
      */
+    @Column(name = "updated_time", nullable = false)
     private LocalDateTime updatedTime;
 
     /**
      * 彩种
      */
+    @Column(name = "lottery_type", nullable = false)
+    @Convert(converter = LotteryTypeConverter.class)
     private LotteryType lotteryType;
 
     /**
      * 彩期
      */
+    @Column(name = "phase", nullable = false)
     private String phase;
 
     /**
      * 抓取器
      */
+    @Column(name = "fetcher_type", nullable = false)
+    @Convert(converter = FetcherTypeConverter.class)
     private FetcherType fetcherType;
 
     /**
      * 抓取到数据的时间
      */
+    @Column(name = "fetched_time")
     private LocalDateTime fetchedTime;
 
     /**
      * 彩果
      * 01,02,03,04,05,06|07
      */
-    @RequestApiFieldUpdatable
+    @Column(name = "result")
     private String result;
 
     /**
      * 奖池金额
      */
-    @RequestApiFieldUpdatable
+    @Column(name = "pool_amount")
     private Long poolAmount;
 
     /**
      * 销售总金额
      */
-    @RequestApiFieldUpdatable
+    @Column(name = "sale_amount")
     private Long saleAmount;
+
+    @PrePersist
+    public void onCreate() {
+        if (this.getCreatedTime() == null) {
+            createdTime = LocalDateTime.now();
+        }
+        if (this.getUpdatedTime() == null) {
+            updatedTime = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedTime = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
