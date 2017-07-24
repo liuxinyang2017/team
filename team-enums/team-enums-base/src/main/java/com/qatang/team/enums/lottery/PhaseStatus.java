@@ -21,9 +21,9 @@ public enum PhaseStatus {
     OPEN_NOT(2, "未开启"),
     OPEN(3, "销售中"),
     CLOSED(4, "已关闭"),
-    RESULT_SET(4, "结果已公布"),
-    RESULT_DETAIL_SET(5, "详情已公布"),
-    DISABLED(6, "不可用"),
+    RESULT_SET(5, "结果已公布"),
+    RESULT_DETAIL_SET(6, "详情已公布"),
+    DISABLED(7, "不可用"),
     ;
 
     private static Logger logger = LoggerFactory.getLogger(PhaseStatus.class);

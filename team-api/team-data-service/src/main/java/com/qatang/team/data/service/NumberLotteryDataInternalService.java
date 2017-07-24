@@ -122,4 +122,11 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @throws NumberLotteryDataException
      */
     void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /**
+     * 更新彩果
+     * @param numberLotteryData 数字彩彩果
+     * @throws NumberLotteryDataException
+     */
+    void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
 }

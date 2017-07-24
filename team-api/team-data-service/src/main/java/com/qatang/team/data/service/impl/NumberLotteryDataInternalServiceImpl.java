@@ -16,12 +16,14 @@ import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import com.qatang.team.exception.StatusFlowException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 /**
  * @author qatang
@@ -204,5 +206,34 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         NumberLotteryDataEntity specifyNumberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
 
         specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
+    }
+
+    @Override
+    @Transactional
+    public void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException {
+        LotteryType lotteryType = numberLotteryData.getLotteryType();
+        Assert.notNull(lotteryType, "彩种为空, 无法更新开奖结果");
+
+        String phase = numberLotteryData.getPhase();
+        Assert.notNull(phase, "彩期编码为空, 无法更新开奖结果");
+
+        NumberLotteryDataEntity numberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(numberLotteryData.getLotteryType(), numberLotteryData.getPhase());
+        Assert.isTrue(Objects.equals(numberLotteryDataEntity.getPhaseStatus(), PhaseStatus.CLOSED), String.format("彩期[phase=%s]状态不为[%s], 无法更新开奖结果", phase, PhaseStatus.CLOSED.getName()));
+
+        PhaseStatus toStatus = PhaseStatus.RESULT_SET;
+
+        try {
+            PhaseStatus.checkStatusFlow(numberLotteryDataEntity.getPhaseStatus(), toStatus);
+        } catch (StatusFlowException e) {
+            String msg = String.format("更新状态失败, id=%s, fromStatus=%s, toStatus=%s", numberLotteryDataEntity.getId(), numberLotteryDataEntity.getPhaseStatus().getName(), toStatus.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+
+        String result = numberLotteryData.getResult();
+        Assert.isTrue(StringUtils.isNotBlank(result), "开奖结果为空, 无法更新开奖结果");
+
+        numberLotteryDataEntity.setResult(numberLotteryData.getResult());
+        numberLotteryDataEntity.setPhaseStatus(toStatus);
     }
 }

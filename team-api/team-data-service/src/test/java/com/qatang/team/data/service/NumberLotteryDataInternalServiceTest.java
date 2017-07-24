@@ -126,4 +126,18 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
         logger.info("彩种：{}，当前期：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
+
+    @Test
+    public void testUpdateResult() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "20170101";
+        String result = "01,02,03,04,05,06|07";
+
+        NumberLotteryData numberLotteryData = new NumberLotteryData();
+        numberLotteryData.setLotteryType(lotteryType);
+        numberLotteryData.setPhase(phase);
+        numberLotteryData.setResult(result);
+
+        numberLotteryDataInternalService.updateResult(numberLotteryData);
+    }
 }
