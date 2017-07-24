@@ -56,12 +56,29 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
     NumberLotteryData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
-     * 获取当前期数字彩彩果
+     * 根据彩种获取当前期
      * @param lotteryType 彩种
      * @return 数字彩彩果
      * @throws NumberLotteryDataException
      */
     NumberLotteryData getCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取当前期的上一期
+     * @param lotteryType 彩种
+     * @return 数字彩彩果
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getPreviousPhase(LotteryType lotteryType) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种获取指定期的上一期
+     * @param lotteryType 彩种
+     * @param phase 指定期
+     * @return 指定期的上一期
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData getPreviousPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期状态

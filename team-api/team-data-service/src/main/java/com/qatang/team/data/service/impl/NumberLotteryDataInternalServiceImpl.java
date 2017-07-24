@@ -6,11 +6,13 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.entity.NumberLotteryDataEntity;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.repository.NumberLotteryDataRepository;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import com.qatang.team.exception.StatusFlowException;
@@ -87,6 +89,26 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     public NumberLotteryData getCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
         return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
+    }
+
+    @Override
+    public NumberLotteryData getPreviousPhase(LotteryType lotteryType) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        return getPreviousPhase(lotteryType, numberLotteryDataEntity.getPhase());
+    }
+
+    @Override
+    public NumberLotteryData getPreviousPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        ApiRequest apiRequest = ApiRequest.newInstance()
+                .filterEqual(QNumberLotteryData.lotteryType, lotteryType)
+                .filterLessThan(QNumberLotteryData.phase, phase);
+        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance().paging(0, 1).addOrder(QNumberLotteryData.phase, PageOrderType.DESC);
+
+        ApiResponse<NumberLotteryData> apiResponse = this.findAll(apiRequest, apiRequestPage);
+        if (apiResponse.getPagedData() == null || apiResponse.getPagedData().isEmpty()) {
+            return null;
+        }
+        return apiResponse.getPagedData().iterator().next();
     }
 
     @Override

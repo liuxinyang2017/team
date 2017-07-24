@@ -1,6 +1,10 @@
 package com.qatang.team.data.service;
 
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
@@ -48,6 +52,18 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
 
     @Test
     public void testFindAll() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+
+        ApiRequest request = ApiRequest.newInstance();
+        request.filterEqual(QNumberLotteryData.lotteryType, lotteryType);
+
+        ApiRequestPage requestPage = ApiRequestPage.newInstance();
+        requestPage.paging(0, 1000);
+        requestPage.addOrder(QNumberLotteryData.createdTime);
+        requestPage.addOrder(QNumberLotteryData.id);
+        ApiResponse response = numberLotteryDataInternalService.findAll(request, requestPage);
+
+        logger.info("彩种[{}]数字彩彩果总数：{}", lotteryType.getName(), response.getTotal());
     }
 
     @Test
@@ -63,6 +79,17 @@ public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTes
         LotteryType lotteryType = LotteryType.FC_SSQ;
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
         logger.info("数字彩彩果[id={}]彩种：{}，彩期：{}", numberLotteryData.getId(), numberLotteryData.getLotteryType().getName(), numberLotteryData.getPhase());
+    }
+
+    @Test
+    public void testGetPreviousPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getPreviousPhase(lotteryType);
+        logger.info("彩种[{}]当前期的上一期：{}", lotteryType.getName(), numberLotteryData.getPhase());
+
+        String phase = "20170102";
+        numberLotteryData = numberLotteryDataInternalService.getPreviousPhase(lotteryType, phase);
+        logger.info("彩种[{}][{}]的上一期：{}", lotteryType.getName(), phase, numberLotteryData.getPhase());
     }
 
     @Test
