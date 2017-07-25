@@ -14,16 +14,17 @@ public class TestConsumeController {
     @Autowired
     private RestTemplate restTemplate;
 
-/*    @Autowired
-    private TestService testService;*/
+//    @Autowired
+//    private TestService testService;
 
     @RequestMapping("/test")
     public String test() {
         return restTemplate.getForEntity("http://TEAM-DATA-SERVICE/service/test", String.class).getBody();
     }
 
-/*    @RequestMapping("/testFeign")
+    @RequestMapping("/testFeign")
     public String testFeign() {
-        return testService.test();
-    }*/
+//        return testService.test();
+        return null;
+    }
 }
