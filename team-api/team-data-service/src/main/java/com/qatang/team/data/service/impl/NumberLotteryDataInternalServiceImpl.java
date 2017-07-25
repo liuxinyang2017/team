@@ -44,19 +44,6 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         return numberLotteryDataEntity;
     }
 
-    protected NumberLotteryDataEntity getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.getByLotteryTypeAndPhase(lotteryType, phase);
-        if (numberLotteryDataEntity == null) {
-            throw new NumberLotteryDataException(String.format("未获取到数字彩彩果：lotteryType=%s，phase=%s", lotteryType.getName(), phase));
-        }
-        return numberLotteryDataEntity;
-    }
-
-    protected NumberLotteryDataEntity getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(LotteryType lotteryType) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.getByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
-        return numberLotteryDataEntity;
-    }
-
     @Override
     public NumberLotteryData save(NumberLotteryData numberLotteryData) throws NumberLotteryDataException {
         logger.info("新建数字彩数据：开始执行");
@@ -107,18 +94,33 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     public NumberLotteryData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("根据彩种[%s]、彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
         return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
     }
 
     @Override
     public NumberLotteryData getCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("根据彩种[%s]获取当前期为空", lotteryType.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
         return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
     }
 
     @Override
     public NumberLotteryData getPreviousPhase(LotteryType lotteryType) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("根据彩种[%s]获取当前期的上一期，获取当前期为空", lotteryType.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
         return getPreviousPhase(lotteryType, numberLotteryDataEntity.getPhase());
     }
 
@@ -141,6 +143,11 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     public NumberLotteryData getNextPhase(LotteryType lotteryType) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("根据彩种[%s]获取当前期的下一期，获取当前期为空", lotteryType.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
         return getNextPhase(lotteryType, numberLotteryDataEntity.getPhase());
     }
 
@@ -163,17 +170,25 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public NumberLotteryData updatePhaseStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("更新彩期状态，根据彩种[%s]、彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+
+        Long id = numberLotteryDataEntity.getId();
+        numberLotteryDataEntity = getNumberLotteryDataEntityWithNullCheckForUpdate(id);
         PhaseStatus phaseStatus = numberLotteryDataEntity.getPhaseStatus();
         if (checkStatus != null && checkStatus != phaseStatus) {
-            String msg = String.format("更新状态不一致, id=%s, toStatus=%s, checkStatus=%s, currentStatus=%s", numberLotteryDataEntity.getId(), toStatus.getName(), checkStatus.getName(), phaseStatus.getName());
+            String msg = String.format("更新状态不一致, id=%s, toStatus=%s, checkStatus=%s, currentStatus=%s", id, toStatus.getName(), checkStatus.getName(), phaseStatus.getName());
             logger.error(msg);
             throw new NumberLotteryDataException(msg);
         }
         try {
             PhaseStatus.checkStatusFlow(phaseStatus, toStatus);
         } catch (StatusFlowException e) {
-            String msg = String.format("更新状态失败, id=%s, fromStatus=%s, toStatus=%s", numberLotteryDataEntity.getId(), phaseStatus.getName(), toStatus.getName());
+            String msg = String.format("更新状态失败, id=%s, fromStatus=%s, toStatus=%s", id, phaseStatus.getName(), toStatus.getName());
             logger.error(msg);
             throw new NumberLotteryDataException(msg);
         }
@@ -185,8 +200,15 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public void switchCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(lotteryType);
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("切换当前期，根据彩种[%s]获取当前期为空", lotteryType.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
 
+        Long id = numberLotteryDataEntity.getId();
+        numberLotteryDataEntity = getNumberLotteryDataEntityWithNullCheckForUpdate(id);
         numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
 
         NumberLotteryData nextPhase = getNextPhase(lotteryType, numberLotteryDataEntity.getPhase());
@@ -199,13 +221,23 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = getCurrentNumberLotteryDataEntityWithNullCheckForUpdate(lotteryType);
-
-        if (numberLotteryDataEntity != null) {
-            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("指定当前期，根据彩种[%s]获取当前期为空", lotteryType.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
         }
 
-        NumberLotteryDataEntity specifyNumberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
+        Long id = numberLotteryDataEntity.getId();
+        numberLotteryDataEntity = getNumberLotteryDataEntityWithNullCheckForUpdate(id);
+        numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+
+        NumberLotteryDataEntity specifyNumberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (specifyNumberLotteryDataEntity == null) {
+            String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
 
         specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
     }
@@ -219,7 +251,16 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         String phase = numberLotteryData.getPhase();
         Assert.notNull(phase, "彩期编码为空, 无法更新开奖结果");
 
-        NumberLotteryDataEntity numberLotteryDataEntity = getNumberLotteryDataEntityByLotteryTypeAndPhaseWithNullCheckForUpdate(lotteryType, phase);
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("更新彩期开奖结果，根据彩种[%s]、彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+
+        Long id = numberLotteryDataEntity.getId();
+        numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(id);
+
         Assert.isTrue(Objects.equals(numberLotteryDataEntity.getPhaseStatus(), PhaseStatus.CLOSED), String.format("彩期[phase=%s]状态不为[%s], 无法更新开奖结果", phase, PhaseStatus.CLOSED.getName()));
 
         PhaseStatus fromStatus = numberLotteryDataEntity.getPhaseStatus();
