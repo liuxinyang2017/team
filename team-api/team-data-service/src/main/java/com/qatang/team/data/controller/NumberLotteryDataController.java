@@ -3,6 +3,7 @@ package com.qatang.team.data.controller;
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDataSearchable;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

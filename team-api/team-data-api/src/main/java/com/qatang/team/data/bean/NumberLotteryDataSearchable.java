@@ -1,5 +1,6 @@
 package com.qatang.team.data.bean;
 
+import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.wrapper.AbstractBaseWrapper;
 
 /**
@@ -9,4 +10,9 @@ import com.qatang.team.core.wrapper.AbstractBaseWrapper;
 public class NumberLotteryDataSearchable extends AbstractBaseWrapper {
 
     private static final long serialVersionUID = 3962094528682751940L;
+
+    @Override
+    public ApiRequest convertRequest() {
+        return null;
+    }
 }
