@@ -1,16 +1,11 @@
 package com.qatang.team.data.service;
 
-import com.qatang.team.core.request.ApiRequest;
-import com.qatang.team.core.request.ApiRequestPage;
-import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
-import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 数字彩彩果服务
@@ -42,7 +37,8 @@ public interface NumberLotteryDataApiService {
      * @return 数字彩彩果对象
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData get(Long numberLotteryDataId) throws NumberLotteryDataException;
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    NumberLotteryData get(@RequestParam("id") Long numberLotteryDataId) throws NumberLotteryDataException;
 
     /**
      * 根据彩种彩期获取彩期对象

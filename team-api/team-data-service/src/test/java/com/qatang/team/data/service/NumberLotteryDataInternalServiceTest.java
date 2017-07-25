@@ -3,6 +3,7 @@ package com.qatang.team.data.service;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.data.BaseTest;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.enums.YesNoStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * @author jinsheng
  */
-public class NumberLotteryDataInternalServiceTest extends BaseInternalServiceTest{
+public class NumberLotteryDataInternalServiceTest extends BaseTest {
 
     @Autowired
     private NumberLotteryDataInternalService numberLotteryDataInternalService;
