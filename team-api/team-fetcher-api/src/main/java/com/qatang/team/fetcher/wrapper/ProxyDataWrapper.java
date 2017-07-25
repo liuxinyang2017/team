@@ -1,9 +1,7 @@
 package com.qatang.team.fetcher.wrapper;
 
+import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.wrapper.AbstractBaseWrapper;
-import com.qatang.team.enums.fetcher.ProxyValidateStatus;
-
-import java.time.LocalDateTime;
 
 /**
  * 代理数据
@@ -12,4 +10,25 @@ import java.time.LocalDateTime;
 public class ProxyDataWrapper extends AbstractBaseWrapper {
 
     private static final long serialVersionUID = -2604980888160497182L;
+
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public ApiRequest convertRequest() {
+        ApiRequest apiRequest = ApiRequest.newInstance();
+
+        if (id != null) {
+            apiRequest.filterEqual("id", id);
+        }
+        
+        return apiRequest;
+    }
 }

@@ -40,8 +40,8 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException {
-        ApiRequest apiRequest = ApiRequest.newInstance();
-        ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
+        ApiRequest apiRequest = proxyDataWrapper.convertRequest();
+        ApiRequestPage apiRequestPage = proxyDataWrapper.convertPageable();
         return proxyDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 

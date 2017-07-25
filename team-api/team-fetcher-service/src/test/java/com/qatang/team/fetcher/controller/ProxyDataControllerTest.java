@@ -27,7 +27,7 @@ public class ProxyDataControllerTest {
     public void testCreate() {
         ProxyData proxyData = new ProxyData();
         proxyData.setHost("test");
-        proxyData.setPort(10000);
+        proxyData.setPort(10001);
         proxyData.setPassword("test");
         proxyData.setUsername("test");
         proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
