@@ -3,7 +3,7 @@ package com.qatang.team.data.controller;
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
-import com.qatang.team.data.bean.NumberLotteryDataSearchable;
+//import com.qatang.team.data.bean.NumberLotteryDataSearchable;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +45,10 @@ public class NumberLotteryDataController extends BaseController {
         return numberLotteryData;
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataSearchable numberLotteryDataSearchable) {
-        logger.info("自定义查询数字彩开奖号码对象信息");
-        //return numberLotteryDataService.find(apiRequest, apiRequestPage);
-        return null;
-    }
+//    @RequestMapping(value = "/find", method = RequestMethod.POST)
+//    ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataSearchable numberLotteryDataSearchable) {
+//        logger.info("自定义查询数字彩开奖号码对象信息");
+//        //return numberLotteryDataService.find(apiRequest, apiRequestPage);
+//        return null;
+//    }
 }

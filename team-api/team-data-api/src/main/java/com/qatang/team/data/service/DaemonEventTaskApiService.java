@@ -9,12 +9,18 @@ import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskDuplicatedException;
 import com.qatang.team.data.exception.DaemonEventTaskException;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 守护事件任务服务
  *
  * @author sunshow
  */
+@FeignClient("team-data-service")
+@RequestMapping("/data/daemonEventTask")
 public interface DaemonEventTaskApiService extends BaseApiService {
 
     /**
@@ -25,6 +31,7 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @throws DaemonEventTaskException
      * @throws DaemonEventTaskDuplicatedException
      */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     DaemonEventTask savePendingTask(DaemonEventTask daemonEventTask) throws DaemonEventTaskException, DaemonEventTaskDuplicatedException;
 
     /**
@@ -34,6 +41,7 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return 守护事件任务
      * @throws DaemonEventTaskException
      */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     DaemonEventTask update(DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
 
     /**
@@ -44,7 +52,7 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return
      * @throws DaemonEventTaskException
      */
-    DaemonEventTask updateStatus(Long daemonEventTaskId, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException;
+//    DaemonEventTask updateStatus(Long daemonEventTaskId, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException;
 
     /**
      * 获取守护事件任务
@@ -53,7 +61,8 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return 守护事件任务, 不存在返回null
      * @throws DaemonEventTaskException
      */
-    DaemonEventTask get(Long daemonEventTaskId) throws DaemonEventTaskException;
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    DaemonEventTask get(@RequestParam("id") Long daemonEventTaskId) throws DaemonEventTaskException;
 
     /**
      * 守护事件任务信息自定义查询
@@ -63,6 +72,6 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return 分页组织的 守护事件任务信息查询列表
      * @throws DaemonEventTaskException
      */
-    ApiResponse<DaemonEventTask> findAll(ApiRequest request, ApiRequestPage requestPage) throws DaemonEventTaskException;
+//    ApiResponse<DaemonEventTask> findAll(ApiRequest request, ApiRequestPage requestPage) throws DaemonEventTaskException;
 
 }
