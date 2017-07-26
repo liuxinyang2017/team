@@ -1,13 +1,14 @@
 package com.qatang.team.data.controller;
 
 import com.qatang.team.core.controller.BaseController;
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.service.DaemonEventTaskInternalService;
+import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author jinsheng
@@ -23,5 +24,12 @@ public class DaemonEventTaskController extends BaseController {
         logger.info("获取守护事件任务对象信息");
         DaemonEventTask daemonEventTask = daemonEventTaskInternalService.get(id);
         return daemonEventTask;
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    ApiResponse<DaemonEventTask> find(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) {
+        ApiRequest apiRequest = daemonEventTaskWrapper.convertRequest();
+        ApiRequestPage apiRequestPage = daemonEventTaskWrapper.convertPageable();
+        return daemonEventTaskInternalService.findAll(apiRequest, apiRequestPage);
     }
 }
