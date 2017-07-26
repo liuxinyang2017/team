@@ -21,3 +21,16 @@ CREATE TABLE `number_lottery_data` (
   INDEX `idx_lottery_type_phase` (`lottery_type`, `phase`),
   INDEX `idx_phase_status` (`phase_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `daemon_event_task` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `lottery_type` INT NOT NULL,
+  `phase` VARCHAR(20) NOT NULL DEFAULT '',
+  `match_num` VARCHAR(64) NOT NULL DEFAULT '',
+  `type` INT NOT NULL,
+  `status` INT NOT NULL,
+  `execute_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
