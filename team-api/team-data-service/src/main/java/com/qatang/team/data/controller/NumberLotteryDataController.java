@@ -65,7 +65,7 @@ public class NumberLotteryDataController extends BaseController {
     /**
      * 数字彩彩果信息自定义查询
      * @param numberLotteryDataWrapper 自定义组合查询条件、分页和排序条件
-     * @return 分页组织的出票系统票信息查询列表
+     * @return 分页组织的数字彩彩果信息查询列表
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) {

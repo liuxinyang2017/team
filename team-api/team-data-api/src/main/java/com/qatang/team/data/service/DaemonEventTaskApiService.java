@@ -7,7 +7,6 @@ import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskDuplicatedException;
 import com.qatang.team.data.exception.DaemonEventTaskException;
 import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
-import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,13 +45,12 @@ public interface DaemonEventTaskApiService extends BaseApiService {
 
     /**
      * 修改状态
-     * @param daemonEventTaskId 守护事件任务ID
-     * @param toStatus 要更新的状态
-     * @param checkStatus 原始状态监测, 不检测传null
-     * @return
+     * @param daemonEventTaskWrapper 守护事件任务ID、要更新的状态、原始状态监测, 不检测传null
+     * @return 守护事件任务
      * @throws DaemonEventTaskException
      */
-//    DaemonEventTask updateStatus(Long daemonEventTaskId, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException;
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    DaemonEventTask updateStatus(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) throws DaemonEventTaskException;
 
     /**
      * 获取守护事件任务

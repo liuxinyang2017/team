@@ -7,6 +7,7 @@ import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskException;
 import com.qatang.team.data.service.DaemonEventTaskInternalService;
+import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,11 @@ public class DaemonEventTaskInternalServiceImpl extends AbstractBaseInternalServ
 
     @Override
     public ApiResponse<DaemonEventTask> findAll(ApiRequest request, ApiRequestPage requestPage) throws DaemonEventTaskException {
+        return null;
+    }
+
+    @Override
+    public DaemonEventTask updateStatus(Long id, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException {
         return null;
     }
 }
