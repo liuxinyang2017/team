@@ -9,6 +9,8 @@ import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public interface NumberLotteryDataApiService {
      * @return 数字彩彩果
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     NumberLotteryData save(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
 
     /***
@@ -34,6 +37,7 @@ public interface NumberLotteryDataApiService {
      * @return 修改后的数字彩彩果对象
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     NumberLotteryData update(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
 
     /***
@@ -42,7 +46,8 @@ public interface NumberLotteryDataApiService {
      * @return 数字彩彩果对象
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData get(Long numberLotteryDataId) throws NumberLotteryDataException;
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    NumberLotteryData get(@RequestParam("id") Long numberLotteryDataId) throws NumberLotteryDataException;
 
     /**
      * 根据彩种彩期获取彩期对象
@@ -51,7 +56,7 @@ public interface NumberLotteryDataApiService {
      * @return
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+//    NumberLotteryData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /***
      * 数字彩彩果信息自定义查询
@@ -60,7 +65,7 @@ public interface NumberLotteryDataApiService {
      * @return 分页组织的出票系统票信息查询列表
      * @throws NumberLotteryDataException
      */
-    ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException;
+//    ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException;
 
     /**
      * 根据彩种获取当前期
@@ -68,6 +73,7 @@ public interface NumberLotteryDataApiService {
      * @return 当前彩期
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/getCurrentPhase", method = RequestMethod.GET)
     NumberLotteryData getCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
 
     /**
@@ -76,6 +82,7 @@ public interface NumberLotteryDataApiService {
      * @return 当前期的上一期
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/getPreviousPhaseByLotteryType", method = RequestMethod.GET)
     NumberLotteryData getPreviousPhase(LotteryType lotteryType) throws NumberLotteryDataException;
 
     /**
@@ -84,7 +91,7 @@ public interface NumberLotteryDataApiService {
      * @return 指定期的上一期
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData getPreviousPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+//    NumberLotteryData getPreviousPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
      * 根据彩种获取当前期的下一期
@@ -92,6 +99,7 @@ public interface NumberLotteryDataApiService {
      * @return 当前期的下一期
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/getNextPhaseByLotteryType", method = RequestMethod.GET)
     NumberLotteryData getNextPhase(LotteryType lotteryType) throws NumberLotteryDataException;
 
     /**
@@ -100,7 +108,7 @@ public interface NumberLotteryDataApiService {
      * @return 指定期的下一期
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData getNextPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+//    NumberLotteryData getNextPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期状态
@@ -109,13 +117,14 @@ public interface NumberLotteryDataApiService {
      * @param toStatus 目标状态
      * @throws NumberLotteryDataException
      */
-    void updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
+//    void updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
 
     /**
      * 切换当前期
      * @param lotteryType 彩种
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/switchCurrentPhase", method = RequestMethod.POST)
     void switchCurrentPhase(LotteryType lotteryType) throws NumberLotteryDataException;
 
     /**
@@ -124,13 +133,14 @@ public interface NumberLotteryDataApiService {
      * @param phase 彩期
      * @throws NumberLotteryDataException
      */
-    void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+//    void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期开奖结果
      * @param numberLotteryData 彩期对象
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/updateResult", method = RequestMethod.POST)
     void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
 
     /**
@@ -138,6 +148,7 @@ public interface NumberLotteryDataApiService {
      * @param numberLotteryData 彩期对象
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/updateResultDetail", method = RequestMethod.POST)
     void updateResultDetail(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
 
     /**
@@ -148,7 +159,7 @@ public interface NumberLotteryDataApiService {
      * @return
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
+//    List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
 
     /**
      * 获取指定彩期之前n期
@@ -158,7 +169,7 @@ public interface NumberLotteryDataApiService {
      * @return
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+//    List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 
     /**
      * 获取指定彩期之后n期
@@ -168,5 +179,5 @@ public interface NumberLotteryDataApiService {
      * @return
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+//    List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 }

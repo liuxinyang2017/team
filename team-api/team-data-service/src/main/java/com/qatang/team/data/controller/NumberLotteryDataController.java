@@ -1,7 +1,6 @@
 package com.qatang.team.data.controller;
 
 import com.qatang.team.core.controller.BaseController;
-import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.NumberLotteryDataSearchable;
@@ -39,11 +38,11 @@ public class NumberLotteryDataController extends BaseController {
         return new NumberLotteryData();
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
-    NumberLotteryData get(@RequestParam(name = "id") Long id) {
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    NumberLotteryData get(@RequestParam Long id) {
         logger.info("获取数字彩开奖号码对象信息");
-        //NumberLotteryData numberLotteryData = numberLotteryDataInternalService.get(id);
-        return new NumberLotteryData();
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.get(id);
+        return numberLotteryData;
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
