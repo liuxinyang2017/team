@@ -16,5 +16,6 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
     public void testGet() {
         Long id = 1L;
         NumberLotteryData numberLotteryData = numberLotteryDataApiService.get(id);
+        logger.info("数字彩彩果[id={}]彩期为：{}", id, numberLotteryData.getPhase());
     }
 }
