@@ -54,7 +54,7 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
         taskList.forEach(task -> {
             // 派发任务前先将task状态更新为 已派发未执行
             // 由于派发之后是异步执行, 会导致异步任务还没执行(task状态还没设置成 执行中),守护循环又去拿下一个任务(还是相同的任务), 造成重复派发
-            daemonEventTaskApiService.updateStatus(task.getId(), DaemonEventStatus.SENDING, DaemonEventStatus.PENDING);
+//            daemonEventTaskApiService.updateStatus(task.getId(), DaemonEventStatus.SENDING, DaemonEventStatus.PENDING);
 
         });
     }
@@ -68,7 +68,8 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
                 .paging(0, 100)
                 .addOrder(QDaemonEventTask.executeTime, PageOrderType.ASC)
                 .addOrder(QDaemonEventTask.id, PageOrderType.ASC);
-        return ApiPageRequestHelper.request(apiRequest, apiRequestPage, daemonEventTaskApiService::findAll);
+//        return ApiPageRequestHelper.request(apiRequest, apiRequestPage, daemonEventTaskApiService::findAll);
+        return null;
     }
 
     @Override
@@ -165,8 +166,9 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
                 .addOrder(QDaemonEventTask.id, PageOrderType.ASC);
 
         try {
-            ApiResponse<DaemonEventTask> apiResponse = daemonEventTaskApiService.findAll(apiRequest, apiRequestPage);
-            return apiResponse.getPagedData();
+//            ApiResponse<DaemonEventTask> apiResponse = daemonEventTaskApiService.findAll(apiRequest, apiRequestPage);
+//            return apiResponse.getPagedData();
+            return null;
         } catch (Exception e) {
             logger.error("查找下一个执行的任务时间点出错, lotteryType=" + lotteryType, e);
             return null;

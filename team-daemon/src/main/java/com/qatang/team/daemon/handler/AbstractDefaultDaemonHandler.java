@@ -60,7 +60,7 @@ public abstract class AbstractDefaultDaemonHandler extends AbstractDaemonHandler
             }
             try {
                 // 默认直接作废
-                daemonEventTaskApiService.updateStatus(daemonEventTask.getId(), DaemonEventStatus.OBSOLETED, DaemonEventStatus.PENDING);
+//                daemonEventTaskApiService.updateStatus(daemonEventTask.getId(), DaemonEventStatus.OBSOLETED, DaemonEventStatus.PENDING);
             } catch (DaemonEventTaskException e) {
                 logger.error("更新守护事件任务失败", e);
             }

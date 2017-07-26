@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/data/numberLotteryData")
 public class NumberLotteryDataController extends BaseController {
+
     @Autowired
     private NumberLotteryDataInternalService numberLotteryDataInternalService;
 
@@ -28,8 +29,7 @@ public class NumberLotteryDataController extends BaseController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     NumberLotteryData save(@RequestBody NumberLotteryData numberLotteryData) {
         logger.info("开始创建数字彩开奖号码对象");
-        NumberLotteryData numberLotteryDataResult = numberLotteryDataInternalService.save(numberLotteryData);
-        return numberLotteryDataResult;
+        return numberLotteryDataInternalService.save(numberLotteryData);
     }
     
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

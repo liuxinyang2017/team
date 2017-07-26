@@ -11,19 +11,20 @@ public class PageableWrapper implements BaseWrapper {
     private ApiRequest request;
     private ApiRequestPage requestPage;
 
+    private PageableWrapper() {
+        
+    }
+
+    public PageableWrapper(ApiRequest request, ApiRequestPage apiRequestPage) {
+        this.request = request;
+        this.requestPage = apiRequestPage;
+    }
+
     public ApiRequest getRequest() {
         return request;
     }
 
-    public void setRequest(ApiRequest request) {
-        this.request = request;
-    }
-
     public ApiRequestPage getRequestPage() {
         return requestPage;
-    }
-
-    public void setRequestPage(ApiRequestPage requestPage) {
-        this.requestPage = requestPage;
     }
 }

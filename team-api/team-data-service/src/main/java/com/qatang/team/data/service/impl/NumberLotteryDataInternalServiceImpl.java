@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -237,49 +239,44 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
-        if (numberLotteryDataEntity == null) {
-            String msg = String.format("指定当前期，根据彩种[%s]获取当前期为空", lotteryType.getName());
-            logger.error(msg);
-            throw new NumberLotteryDataException(msg);
-        }
-
-        numberLotteryDataRepository.detach(numberLotteryDataEntity);
-
-        numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
-        numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
-
         NumberLotteryDataEntity specifyNumberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (specifyNumberLotteryDataEntity == null) {
             String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
             logger.error(msg);
             throw new NumberLotteryDataException(msg);
         }
+        numberLotteryDataRepository.detach(specifyNumberLotteryDataEntity);
 
+        specifyNumberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(specifyNumberLotteryDataEntity.getId());
         specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
+
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity != null) {
+            numberLotteryDataRepository.detach(numberLotteryDataEntity);
+
+            numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
+            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+        }
     }
 
     @Override
     @Transactional
-    public void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException {
-        LotteryType lotteryType = numberLotteryData.getLotteryType();
-        Assert.notNull(lotteryType, "彩种为空, 无法更新开奖结果");
-
-        String phase = numberLotteryData.getPhase();
-        Assert.notNull(phase, "彩期编码为空, 无法更新开奖结果");
-
+    public void updateResult(LotteryType lotteryType, String phase, String result) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (numberLotteryDataEntity == null) {
-            String msg = String.format("更新彩期开奖结果，根据彩种[%s]、彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
+            String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
             logger.error(msg);
             throw new NumberLotteryDataException(msg);
         }
-
         numberLotteryDataRepository.detach(numberLotteryDataEntity);
-
         numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
 
-        Assert.isTrue(Objects.equals(numberLotteryDataEntity.getPhaseStatus(), PhaseStatus.CLOSED), String.format("彩期[phase=%s]状态不为[%s], 无法更新开奖结果", phase, PhaseStatus.CLOSED.getName()));
+        try {
+            Assert.isTrue(StringUtils.isNotBlank(result), "开奖结果为空, 无法更新开奖结果");
+            Assert.isTrue(Objects.equals(numberLotteryDataEntity.getPhaseStatus(), PhaseStatus.CLOSED), String.format("彩期[phase=%s]状态不为[%s], 无法更新开奖结果", phase, PhaseStatus.CLOSED.getName()));
+        } catch (Exception e) {
+            throw new NumberLotteryDataException(e.getMessage());
+        }
 
         PhaseStatus fromStatus = numberLotteryDataEntity.getPhaseStatus();
         PhaseStatus toStatus = PhaseStatus.RESULT_SET;
@@ -292,37 +289,31 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
             throw new NumberLotteryDataException(msg);
         }
 
-        String result = numberLotteryData.getResult();
-        Assert.isTrue(StringUtils.isNotBlank(result), "开奖结果为空, 无法更新开奖结果");
-
         numberLotteryDataEntity.setResult(result);
         numberLotteryDataEntity.setPhaseStatus(toStatus);
+        numberLotteryDataEntity.setResultTime(LocalDateTime.now());
     }
 
     @Override
-    public List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException {
+    public List<NumberLotteryData> findNearestPhaseList(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException {
         List<NumberLotteryData> numberLotteryDataList = Lists.newArrayList();
 
         NumberLotteryData currentPhase = this.getCurrentPhase(lotteryType);
 
-        List<NumberLotteryData> prePhaseList = this.getPreviousNPhase(lotteryType, currentPhase.getPhase(), prePhases);
+        List<NumberLotteryData> prePhaseList = this.findPreviousPhaseList(lotteryType, currentPhase.getPhase(), prePhases);
         numberLotteryDataList.addAll(prePhaseList);
 
         numberLotteryDataList.add(currentPhase);
 
-        List<NumberLotteryData> nextPhaseList = this.getNextNPhase(lotteryType, currentPhase.getPhase(), nextPhases);
+        List<NumberLotteryData> nextPhaseList = this.findNextPhaseList(lotteryType, currentPhase.getPhase(), nextPhases);
         numberLotteryDataList.addAll(nextPhaseList);
 
-        numberLotteryDataList.sort((phase1, phase2) -> {
-            String phaseNo1 = phase1.getPhase();
-            String phaseNo2 = phase2.getPhase();
-            return phaseNo1.compareTo(phaseNo2);
-        });
+        numberLotteryDataList.sort(Comparator.comparing(NumberLotteryData::getPhase));
         return numberLotteryDataList;
     }
 
     @Override
-    public List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException {
+    public List<NumberLotteryData> findPreviousPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException {
         Assert.isTrue(lotteryType != null, "获取前n期，彩种不能为空");
         Assert.isTrue(StringUtils.isNotBlank(phase), "获取前n期，彩期不能为空");
         Assert.isTrue(!Objects.equals(n, 0), "获取前n期，期数不能为0");
@@ -344,7 +335,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     }
 
     @Override
-    public List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException {
+    public List<NumberLotteryData> findNextPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException {
         Assert.isTrue(lotteryType != null, "获取后n期，彩种不能为空");
         Assert.isTrue(StringUtils.isNotBlank(phase), "获取后n期，彩期不能为空");
         Assert.isTrue(!Objects.equals(n, 0), "获取后n期，期数不能为0");

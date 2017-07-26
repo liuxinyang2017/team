@@ -23,7 +23,7 @@ public interface NumberLotteryDataApiService {
      * 创建
      * @param numberLotteryData 数字彩彩果
      * @return 数字彩彩果
-     * @throws NumberLotteryDataException
+     * @throws NumberLotteryDataException 异常
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     NumberLotteryData create(@RequestBody NumberLotteryData numberLotteryData) throws NumberLotteryDataException;

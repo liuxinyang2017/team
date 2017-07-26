@@ -127,10 +127,12 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
 
     /**
      * 更新开奖结果
-     * @param numberLotteryData 数字彩彩果
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param result 开奖号码
      * @throws NumberLotteryDataException
      */
-    void updateResult(NumberLotteryData numberLotteryData) throws NumberLotteryDataException;
+    void updateResult(LotteryType lotteryType, String phase, String result) throws NumberLotteryDataException;
 
     /**
      * 获取当前彩期前后n期数字彩彩果列表
@@ -139,7 +141,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param nextPhases 后n期
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getNearestPhase(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
+    List<NumberLotteryData> findNearestPhaseList(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
 
     /**
      * 获取指定彩期之前n期
@@ -148,7 +150,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param n 前n期
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getPreviousNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+    List<NumberLotteryData> findPreviousPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 
     /**
      * 获取指定彩期之后n期
@@ -157,5 +159,5 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param n 后n期
      * @throws NumberLotteryDataException
      */
-    List<NumberLotteryData> getNextNPhase(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+    List<NumberLotteryData> findNextPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
 }
