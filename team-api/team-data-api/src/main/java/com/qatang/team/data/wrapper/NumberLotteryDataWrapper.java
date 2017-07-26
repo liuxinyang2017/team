@@ -1,19 +1,14 @@
 package com.qatang.team.data.wrapper;
 
-import com.qatang.team.core.request.ApiRequest;
-import com.qatang.team.core.wrapper.AbstractBaseWrapper;
-import com.qatang.team.data.bean.QDaemonEventTask;
+import com.qatang.team.core.wrapper.BaseWrapper;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Objects;
 
 /**
  * 数字彩彩果对象数据
  * @author jinsheng
  */
-public class NumberLotteryDataWrapper extends AbstractBaseWrapper {
+public class NumberLotteryDataWrapper implements BaseWrapper {
     private static final long serialVersionUID = -3776988026790708292L;
     private Long id;
     private LotteryType lotteryType;
@@ -59,24 +54,5 @@ public class NumberLotteryDataWrapper extends AbstractBaseWrapper {
 
     public void setCheckStatus(PhaseStatus checkStatus) {
         this.checkStatus = checkStatus;
-    }
-
-    @Override
-    public ApiRequest convertRequest() {
-        ApiRequest apiRequest = ApiRequest.newInstance();
-
-        if (id != null) {
-            apiRequest.filterEqual(QDaemonEventTask.id, id);
-        }
-
-        if (lotteryType != null && !Objects.equals(lotteryType, LotteryType.ALL)) {
-            apiRequest.filterEqual(QDaemonEventTask.lotteryType, lotteryType);
-        }
-
-        if (StringUtils.isNotBlank(phase)) {
-            apiRequest.filterEqual(QDaemonEventTask.phase, phase);
-        }
-        
-        return apiRequest;
     }
 }

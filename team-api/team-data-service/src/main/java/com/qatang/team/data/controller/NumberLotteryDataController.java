@@ -4,6 +4,7 @@ import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import com.qatang.team.data.wrapper.NumberLotteryDataWrapper;
@@ -64,14 +65,14 @@ public class NumberLotteryDataController extends BaseController {
 
     /**
      * 数字彩彩果信息自定义查询
-     * @param numberLotteryDataWrapper 自定义组合查询条件、分页和排序条件
+     * @param pageableWrapper 自定义组合查询条件、分页和排序条件
      * @return 分页组织的数字彩彩果信息查询列表
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) {
+    ApiResponse<NumberLotteryData> find(@RequestBody PageableWrapper pageableWrapper) {
         logger.info("自定义查询数字彩开奖号码对象信息");
-        ApiRequest request = numberLotteryDataWrapper.convertRequest();
-        ApiRequestPage requestPage = numberLotteryDataWrapper.convertPageable();
+        ApiRequest request = pageableWrapper.getRequest();
+        ApiRequestPage requestPage = pageableWrapper.getRequestPage();
         return numberLotteryDataInternalService.findAll(request, requestPage);
     }
 
