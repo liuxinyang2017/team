@@ -4,6 +4,7 @@ import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.config.InitConfig;
 import com.qatang.team.fetcher.service.ProxyDataApiService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,16 @@ public class ProxyDataControllerTest {
     public void testCreate() {
         ProxyData proxyData = new ProxyData();
         proxyData.setHost("test");
-        proxyData.setPort(10001);
+        proxyData.setPort(10002);
         proxyData.setPassword("test");
         proxyData.setUsername("test");
         proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
         proxyDataApiService.create(proxyData);
+    }
+
+    @Test
+    public void testGet() {
+        ProxyData p = proxyDataApiService.get(1L);
+        Assert.assertEquals(80, p.getPort().longValue());
     }
 }
