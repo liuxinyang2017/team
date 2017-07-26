@@ -4,8 +4,8 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
-import com.qatang.team.data.wrapper.NumberLotteryDataWrapper;
 import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,11 +110,13 @@ public interface NumberLotteryDataApiService {
 
     /**
      * 更新彩期状态
-     * @param numberLotteryDataWrapper 彩种、彩期、目标状态
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param toStatus 目标状态
+     * @param checkStatus 检查状态
      * @throws NumberLotteryDataException
      */
-    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    void updateStatus(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
+    void updateStatus(@RequestParam LotteryType lotteryType, @RequestParam String phase, @RequestParam PhaseStatus toStatus, @RequestParam PhaseStatus checkStatus) throws NumberLotteryDataException;
 
     /**
      * 切换当前期
