@@ -1,19 +1,16 @@
 package com.qatang.team.data.controller;
 
-import com.qatang.team.core.request.ApiRequestOrder;
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.bean.QDaemonEventTask;
 import com.qatang.team.data.service.DaemonEventTaskApiService;
-import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
-import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
 import com.qatang.team.enums.lottery.LotteryType;
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * @author jinsheng
@@ -34,18 +31,20 @@ public class DaemonEventTaskControllerTest extends AbstractControllerTest {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         DaemonEventStatus status = DaemonEventStatus.PENDING;
 
-        ApiRequestOrder executeTimeOrder = new ApiRequestOrder(QDaemonEventTask.executeTime, PageOrderType.ASC);
-        ApiRequestOrder idOrder = new ApiRequestOrder(QDaemonEventTask.id, PageOrderType.ASC);
-        List<ApiRequestOrder> orderList = Lists.newArrayList(executeTimeOrder, idOrder);
+        ApiRequest request = ApiRequest.newInstance();
+        request.filterEqual(QDaemonEventTask.lotteryType, lotteryType);
+        request.filterEqual(QDaemonEventTask.status, status);
 
-        DaemonEventTaskWrapper daemonEventTaskWrapper = new DaemonEventTaskWrapper();
-        daemonEventTaskWrapper.setPage(0);
-        daemonEventTaskWrapper.setPageSize(100);
-        daemonEventTaskWrapper.setLotteryType(lotteryType);
-        daemonEventTaskWrapper.setStatus(status);
-        daemonEventTaskWrapper.setOrderList(orderList);
+        ApiRequestPage requestPage = ApiRequestPage.newInstance();
+        requestPage.paging(0, 100);
+        requestPage.addOrder(QDaemonEventTask.executeTime);
+        requestPage.addOrder(QDaemonEventTask.id);
 
-        ApiResponse<DaemonEventTask> response = daemonEventTaskApiService.find(daemonEventTaskWrapper);
+        PageableWrapper pageableWrapper = new PageableWrapper();
+        pageableWrapper.setRequest(request);
+        pageableWrapper.setRequestPage(requestPage);
+
+        ApiResponse<DaemonEventTask> response = daemonEventTaskApiService.find(pageableWrapper);
         logger.info("守护事件任务对象查询总数：{}", response.getTotal());
     }
 }
