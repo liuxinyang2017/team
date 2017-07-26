@@ -7,7 +7,6 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
-import com.qatang.team.data.wrapper.NumberLotteryDataWrapper;
 import com.qatang.team.enums.lottery.LotteryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

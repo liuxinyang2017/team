@@ -7,7 +7,6 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.service.DaemonEventTaskInternalService;
 import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
-import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,9 +50,10 @@ public class DaemonEventTaskController extends BaseController {
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     DaemonEventTask updateStatus(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) {
-        Long id = daemonEventTaskWrapper.getId();
+/*        Long id = daemonEventTaskWrapper.getId();
         DaemonEventStatus toStatus = daemonEventTaskWrapper.getToStatus();
         DaemonEventStatus checkStatus = daemonEventTaskWrapper.getCheckStatus();
-        return daemonEventTaskInternalService.updateStatus(id, toStatus, checkStatus);
+        return daemonEventTaskInternalService.updateStatus(id, toStatus, checkStatus);*/
+        return null;
     }
 }
