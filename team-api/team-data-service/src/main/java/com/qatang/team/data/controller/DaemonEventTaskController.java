@@ -4,9 +4,12 @@ import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.DaemonEventTask;
+import com.qatang.team.data.exception.DaemonEventTaskDuplicatedException;
+import com.qatang.team.data.exception.DaemonEventTaskException;
 import com.qatang.team.data.service.DaemonEventTaskInternalService;
-import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
+import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +23,37 @@ public class DaemonEventTaskController extends BaseController {
     private DaemonEventTaskInternalService daemonEventTaskInternalService;
 
     /**
+     * 新建待执行的守护事件任务
+     * @param daemonEventTask 守护事件任务对象
+     * @return 保存后的 守护事件任务对象
+     * @throws DaemonEventTaskException
+     * @throws DaemonEventTaskDuplicatedException
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    DaemonEventTask savePendingTask(@RequestBody DaemonEventTask daemonEventTask) {
+        DaemonEventTask daemonEventTaskResult = daemonEventTaskInternalService.save(daemonEventTask);
+        return daemonEventTaskResult;
+    }
+
+    /**
+     * 修改守护事件任务
+     * @param daemonEventTask 守护事件任务对象
+     * @return 守护事件任务
+     * @throws DaemonEventTaskException
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    DaemonEventTask update(@RequestBody DaemonEventTask daemonEventTask) {
+        DaemonEventTask daemonEventTaskResult = daemonEventTaskInternalService.update(daemonEventTask);
+        return daemonEventTaskResult;
+    }
+
+    /**
      * 获取守护事件任务对象
      * @param id 守护事件任务对象id
      * @return 守护事件任务对象
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    DaemonEventTask get(@RequestParam Long id) {
+    DaemonEventTask get(@RequestParam("id") Long id) {
         logger.info("获取守护事件任务对象信息");
         DaemonEventTask daemonEventTask = daemonEventTaskInternalService.get(id);
         return daemonEventTask;
@@ -33,27 +61,25 @@ public class DaemonEventTaskController extends BaseController {
 
     /**
      * 守护事件任务对象自定义查询
-     * @param daemonEventTaskWrapper 自定义组合查询条件、分页和排序条件
+     * @param pageableWrapper 自定义组合查询条件、分页和排序条件
      * @return 分页组织的守护事件任务对象信息查询列表
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<DaemonEventTask> find(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) {
-        ApiRequest apiRequest = daemonEventTaskWrapper.convertRequest();
-        ApiRequestPage apiRequestPage = daemonEventTaskWrapper.convertPageable();
+    ApiResponse<DaemonEventTask> find(@RequestBody PageableWrapper pageableWrapper) {
+        ApiRequest apiRequest = pageableWrapper.getRequest();
+        ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         return daemonEventTaskInternalService.findAll(apiRequest, apiRequestPage);
     }
 
     /**
      * 更新守护事件状态
-     * @param daemonEventTaskWrapper 守护事件任务对象id、目标状态、检查状态
+     * @param daemonEventTaskId 守护事件任务ID
+     * @param toStatus 要更新的状态
+     * @param checkStatus 原始状态监测, 不检测传null
      * @return 守护事件任务对象
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    DaemonEventTask updateStatus(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) {
-/*        Long id = daemonEventTaskWrapper.getId();
-        DaemonEventStatus toStatus = daemonEventTaskWrapper.getToStatus();
-        DaemonEventStatus checkStatus = daemonEventTaskWrapper.getCheckStatus();
-        return daemonEventTaskInternalService.updateStatus(id, toStatus, checkStatus);*/
-        return null;
+    DaemonEventTask updateStatus(@RequestParam("id") Long daemonEventTaskId, @RequestParam("toStatus") DaemonEventStatus toStatus, @RequestParam("checkStatus") DaemonEventStatus checkStatus) {
+        return daemonEventTaskInternalService.updateStatus(daemonEventTaskId, toStatus, checkStatus);
     }
 }

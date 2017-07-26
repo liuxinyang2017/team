@@ -40,9 +40,7 @@ public class DaemonEventTaskControllerTest extends AbstractControllerTest {
         requestPage.addOrder(QDaemonEventTask.executeTime);
         requestPage.addOrder(QDaemonEventTask.id);
 
-        PageableWrapper pageableWrapper = new PageableWrapper();
-        pageableWrapper.setRequest(request);
-        pageableWrapper.setRequestPage(requestPage);
+        PageableWrapper pageableWrapper = new PageableWrapper(request, requestPage);
 
         ApiResponse<DaemonEventTask> response = daemonEventTaskApiService.find(pageableWrapper);
         logger.info("守护事件任务对象查询总数：{}", response.getTotal());

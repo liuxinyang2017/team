@@ -3,10 +3,11 @@ package com.qatang.team.data.service;
 
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseApiService;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskDuplicatedException;
 import com.qatang.team.data.exception.DaemonEventTaskException;
-import com.qatang.team.data.wrapper.DaemonEventTaskWrapper;
+import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,13 +45,15 @@ public interface DaemonEventTaskApiService extends BaseApiService {
     DaemonEventTask update(@RequestBody DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
 
     /**
-     * 修改状态
-     * @param daemonEventTaskWrapper 守护事件任务ID、要更新的状态、原始状态监测, 不检测传null
-     * @return 守护事件任务
+     * 更新守护事件状态
+     * @param daemonEventTaskId 守护事件任务ID
+     * @param toStatus 要更新的状态
+     * @param checkStatus 原始状态监测, 不检测传null
+     * @return 守护事件任务对象
      * @throws DaemonEventTaskException
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    DaemonEventTask updateStatus(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) throws DaemonEventTaskException;
+    DaemonEventTask updateStatus(@RequestParam("id") Long daemonEventTaskId, @RequestParam("toStatus") DaemonEventStatus toStatus, @RequestParam("checkStatus") DaemonEventStatus checkStatus) throws DaemonEventTaskException;
 
     /**
      * 获取守护事件任务
@@ -64,10 +67,10 @@ public interface DaemonEventTaskApiService extends BaseApiService {
 
     /**
      * 守护事件任务信息自定义查询
-     * @param daemonEventTaskWrapper 守护事件任务对象数据
-     * @return 分页组织的 守护事件任务信息查询列表
+     * @param pageableWrapper 守护事件任务对象数据
+     * @return 分页组织的守护事件任务信息查询列表
      * @throws DaemonEventTaskException
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<DaemonEventTask> find(@RequestBody DaemonEventTaskWrapper daemonEventTaskWrapper) throws DaemonEventTaskException;
+    ApiResponse<DaemonEventTask> find(@RequestBody PageableWrapper pageableWrapper) throws DaemonEventTaskException;
 }
