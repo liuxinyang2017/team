@@ -126,11 +126,12 @@ public interface NumberLotteryDataApiService {
 
     /**
      * 指定当前期
-     * @param numberLotteryDataWrapper 彩种、彩期
+     * @param lotteryType 彩种
+     * @param phase 彩期
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/specifyCurrentPhase", method = RequestMethod.POST)
-    void specifyCurrentPhase(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
+    void specifyCurrentPhase(@RequestParam LotteryType lotteryType, @RequestParam String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期开奖结果

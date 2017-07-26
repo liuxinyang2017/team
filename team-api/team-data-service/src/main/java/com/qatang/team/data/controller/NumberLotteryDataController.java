@@ -78,12 +78,11 @@ public class NumberLotteryDataController extends BaseController {
 
     /**
      * 指定当前期
-     * @param numberLotteryDataWrapper 彩种、彩期
+     * @param lotteryType 彩种
+     * @param phase 彩期
      */
     @RequestMapping(value = "/specifyCurrentPhase", method = RequestMethod.POST)
-    void specifyCurrentPhase(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) {
-        LotteryType lotteryType = numberLotteryDataWrapper.getLotteryType();
-        String phase = numberLotteryDataWrapper.getPhase();
+    void specifyCurrentPhase(@RequestParam LotteryType lotteryType, @RequestParam String phase) {
         numberLotteryDataInternalService.specifyCurrentPhase(lotteryType, phase);
     }
 }
