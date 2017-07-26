@@ -139,6 +139,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param lotteryType 彩种
      * @param prePhases 前n期
      * @param nextPhases 后n期
+     * @return 当前彩期前后n期数字彩彩果列表
      * @throws NumberLotteryDataException
      */
     List<NumberLotteryData> findNearestPhaseList(LotteryType lotteryType, int prePhases, int nextPhases) throws NumberLotteryDataException;
@@ -148,6 +149,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param lotteryType 彩种
      * @param phase 彩期
      * @param n 前n期
+     * @return 指定彩期之前n期数字彩彩果列表
      * @throws NumberLotteryDataException
      */
     List<NumberLotteryData> findPreviousPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
@@ -157,6 +159,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @param lotteryType 彩种
      * @param phase 彩期
      * @param n 后n期
+     * @return 指定彩期之后n期数字彩彩果列表
      * @throws NumberLotteryDataException
      */
     List<NumberLotteryData> findNextPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;

@@ -30,7 +30,7 @@ CREATE TABLE `daemon_event_task` (
   `match_num` VARCHAR(64) NOT NULL DEFAULT '',
   `type` INT NOT NULL,
   `status` INT NOT NULL,
-  `execute_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `execute_time` timestamp NOT NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
