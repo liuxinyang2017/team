@@ -17,6 +17,8 @@ public class DaemonEventTaskWrapper extends AbstractBaseWrapper {
     private Long id;
     private LotteryType lotteryType;
     private DaemonEventStatus status;
+    private DaemonEventStatus toStatus;
+    private DaemonEventStatus checkStatus;
 
     public Long getId() {
         return id;
@@ -40,6 +42,22 @@ public class DaemonEventTaskWrapper extends AbstractBaseWrapper {
 
     public void setStatus(DaemonEventStatus status) {
         this.status = status;
+    }
+
+    public DaemonEventStatus getToStatus() {
+        return toStatus;
+    }
+
+    public void setToStatus(DaemonEventStatus toStatus) {
+        this.toStatus = toStatus;
+    }
+
+    public DaemonEventStatus getCheckStatus() {
+        return checkStatus;
+    }
+
+    public void setCheckStatus(DaemonEventStatus checkStatus) {
+        this.checkStatus = checkStatus;
     }
 
     @Override

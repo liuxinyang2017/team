@@ -1,6 +1,7 @@
 package com.qatang.team.data.service;
 
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.wrapper.NumberLotteryDataWrapper;
@@ -57,12 +58,12 @@ public interface NumberLotteryDataApiService {
 
     /***
      * 数字彩彩果信息自定义查询
-     * @param numberLotteryDataWrapper 自定义组合查询条件、分页和排序条件
-     * @return 分页组织的出票系统票信息查询列表
+     * @param pageableWrapper 自定义组合查询条件、分页和排序条件
+     * @return 分页组织的数字彩彩果信息查询列表
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
+    ApiResponse<NumberLotteryData> find(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryDataException;
 
     /**
      * 根据彩种获取当前期

@@ -6,6 +6,7 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseInternalSerivce;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskException;
+import com.qatang.team.enums.daemon.DaemonEventStatus;
 
 /**
  * @author jinsheng
@@ -28,4 +29,14 @@ public interface DaemonEventTaskInternalService extends BaseInternalSerivce {
      * @throws DaemonEventTaskException
      */
     ApiResponse<DaemonEventTask> findAll(ApiRequest request, ApiRequestPage requestPage) throws DaemonEventTaskException;
+
+    /**
+     * 更新赛程事件状态
+     * @param id 主键
+     * @param toStatus 目标状态
+     * @param checkStatus 检查状态
+     * @return 守护事件任务对象
+     * @throws DaemonEventTaskException
+     */
+    DaemonEventTask updateStatus(Long id, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException;
 }
