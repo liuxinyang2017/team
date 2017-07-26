@@ -110,6 +110,7 @@
         <team.api.data.version>1.0.0-SNAPSHOT</team.api.data.version>
         <team.api.fetcher.version>1.0.0-SNAPSHOT</team.api.fetcher.version>
         <team.fetcher.version>1.0.0-SNAPSHOT</team.fetcher.version>
+        <team.generator.version>1.0.0-SNAPSHOT</team.generator.version>
     </properties>
 
     <dependencyManagement>
@@ -280,6 +281,13 @@
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-fetcher</artifactId>
                 <version>${team.fetcher.version}</version>
+                <classifier>${branch}</classifier>
+            </dependency>
+            <!-- generator -->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-generator</artifactId>
+                <version>${team.generator.version}</version>
                 <classifier>${branch}</classifier>
             </dependency>
         </dependencies>

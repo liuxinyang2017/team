@@ -3,6 +3,7 @@ package com.qatang.team.constants;
 import com.google.common.collect.Lists;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
+import com.qatang.team.enums.lottery.LotteryType;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class GlobalConstants {
     /**
      * 正在使用的代理抓取器类型
      */
-    public final static List<ProxyFetcherType> proxyFetcherTypeList = Lists.newArrayList(
+    public final static List<ProxyFetcherType> PROXY_FETCHER_TYPE_LIST = Lists.newArrayList(
             ProxyFetcherType.P_XICI,
             ProxyFetcherType.P_KUAI,
             ProxyFetcherType.P_CZ88
@@ -34,8 +35,15 @@ public class GlobalConstants {
     /**
      * 正在使用的代理检测器类型
      */
-    public final static List<ProxyValidatorType> proxyValidatorTypeList = Lists.newArrayList(
+    public final static List<ProxyValidatorType> PROXY_VALIDATOR_TYPE_LIST = Lists.newArrayList(
             ProxyValidatorType.V_BAIDU,
             ProxyValidatorType.V_FUCAI
+    );
+
+    /**
+     * 目前支持的数字彩彩种列表
+     */
+    public final static List<LotteryType> NUMBER_LOTTERY_LIST = Lists.newArrayList(
+            LotteryType.FC_SSQ
     );
 }

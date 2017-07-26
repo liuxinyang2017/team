@@ -24,10 +24,10 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
     @Override
     public void executeFetcher() {
-        String sourceName = StringUtils.join(GlobalConstants.proxyFetcherTypeList.stream().map(ProxyFetcherType::getName).collect(Collectors.toList()), ",");
+        String sourceName = StringUtils.join(GlobalConstants.PROXY_FETCHER_TYPE_LIST.stream().map(ProxyFetcherType::getName).collect(Collectors.toList()), ",");
         logger.info(String.format("开始执行代理抓取定时，代理来源：%s", sourceName));
         List<ProxyInfo> allProxyInfoList = Lists.newArrayList();
-        for (ProxyFetcherType proxyFetcherType : GlobalConstants.proxyFetcherTypeList) {
+        for (ProxyFetcherType proxyFetcherType : GlobalConstants.PROXY_FETCHER_TYPE_LIST) {
             IProxyFetcher proxyFetcher = ProxyFetcherFactory.getFetcher(proxyFetcherType);
             if (proxyFetcher == null) {
                 logger.error(String.format("代理抓取定时：未找到(%s)的代理抓取器，跳过该来源代理抓取", proxyFetcherType.getName()));

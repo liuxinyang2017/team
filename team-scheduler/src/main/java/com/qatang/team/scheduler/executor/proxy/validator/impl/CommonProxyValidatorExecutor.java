@@ -34,7 +34,7 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
         // 更新proxyData状态，从 待测试 更新为 测试中
 
         boolean pass = true;
-        for (ProxyValidatorType proxyValidatorType : GlobalConstants.proxyValidatorTypeList) {
+        for (ProxyValidatorType proxyValidatorType : GlobalConstants.PROXY_VALIDATOR_TYPE_LIST) {
             IProxyValidator proxyValidator = ProxyValidatorFactory.getValidator(proxyValidatorType);
             if (proxyValidator == null) {
                 logger.error(String.format("代理测试定时：未找到(%s)的代理检测器，跳过该代理检测器", proxyValidatorType.getName()));
