@@ -32,7 +32,7 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @throws DaemonEventTaskDuplicatedException
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    DaemonEventTask savePendingTask(DaemonEventTask daemonEventTask) throws DaemonEventTaskException, DaemonEventTaskDuplicatedException;
+    DaemonEventTask savePendingTask(@RequestBody DaemonEventTask daemonEventTask) throws DaemonEventTaskException, DaemonEventTaskDuplicatedException;
 
     /**
      * 修改守护事件任务
@@ -42,7 +42,7 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @throws DaemonEventTaskException
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    DaemonEventTask update(DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
+    DaemonEventTask update(@RequestBody DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
 
     /**
      * 修改状态
