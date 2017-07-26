@@ -14,6 +14,22 @@ import com.qatang.team.enums.daemon.DaemonEventStatus;
 public interface DaemonEventTaskInternalService extends BaseInternalSerivce {
 
     /**
+     * 新建守护事件任务对象
+     * @param daemonEventTask 守护事件任务对象
+     * @return 守护事件任务对象
+     * @throws DaemonEventTaskException
+     */
+    DaemonEventTask save(DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
+
+    /**
+     * 更新守护事件任务对象
+     * @param daemonEventTask 守护事件任务对象
+     * @return 守护事件任务对象
+     * @throws DaemonEventTaskException
+     */
+    DaemonEventTask update(DaemonEventTask daemonEventTask) throws DaemonEventTaskException;
+
+    /**
      * 守护事件任务对象
      * @param id 编码
      * @return 守护事件任务对象

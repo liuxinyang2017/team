@@ -25,8 +25,8 @@ public class NumberLotteryDataController extends BaseController {
      * @param numberLotteryData 数字彩彩果
      * @return 数字彩彩果
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    NumberLotteryData create(@RequestBody NumberLotteryData numberLotteryData) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    NumberLotteryData save(@RequestBody NumberLotteryData numberLotteryData) {
         logger.info("开始创建数字彩开奖号码对象");
         NumberLotteryData numberLotteryDataResult = numberLotteryDataInternalService.save(numberLotteryData);
         return numberLotteryDataResult;

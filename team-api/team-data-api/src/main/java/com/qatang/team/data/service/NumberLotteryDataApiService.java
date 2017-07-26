@@ -121,7 +121,10 @@ public interface NumberLotteryDataApiService {
     @RequestMapping(value = "/updateStatus", method = RequestMethod.GET)
     void updateStatus(@RequestParam LotteryType lotteryType, @RequestParam String phase, @RequestParam PhaseStatus toStatus, @RequestParam PhaseStatus checkStatus) throws NumberLotteryDataException;
 
-    *//**
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    void updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) throws NumberLotteryDataException;
+
+    /**
      * 切换当前期
      * @param lotteryType 彩种
      * @throws NumberLotteryDataException
@@ -136,7 +139,7 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/specifyCurrentPhase", method = RequestMethod.POST)
-    void specifyCurrentPhase(@RequestParam(value = "lotteryType")  LotteryType lotteryType, @RequestParam(value = "phase") String phase) throws NumberLotteryDataException;
+    void specifyCurrentPhase(@RequestParam(value = "lotteryType") LotteryType lotteryType, @RequestParam(value = "phase") String phase) throws NumberLotteryDataException;
 
     /*
     /**

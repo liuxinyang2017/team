@@ -18,6 +18,16 @@ import org.springframework.stereotype.Service;
 public class DaemonEventTaskInternalServiceImpl extends AbstractBaseInternalServiceImpl implements DaemonEventTaskInternalService {
 
     @Override
+    public DaemonEventTask save(DaemonEventTask daemonEventTask) throws DaemonEventTaskException {
+        return null;
+    }
+
+    @Override
+    public DaemonEventTask update(DaemonEventTask daemonEventTask) throws DaemonEventTaskException {
+        return null;
+    }
+
+    @Override
     public DaemonEventTask get(Long id) throws DaemonEventTaskException {
         return null;
     }
