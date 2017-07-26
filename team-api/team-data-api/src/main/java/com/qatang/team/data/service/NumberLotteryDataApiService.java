@@ -116,6 +116,7 @@ public interface NumberLotteryDataApiService {
      * @param checkStatus 检查状态
      * @throws NumberLotteryDataException
      */
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     void updateStatus(@RequestParam LotteryType lotteryType, @RequestParam String phase, @RequestParam PhaseStatus toStatus, @RequestParam PhaseStatus checkStatus) throws NumberLotteryDataException;
 
     /**
