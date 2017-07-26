@@ -1,18 +1,15 @@
 package com.qatang.team.data.service;
 
-import com.qatang.team.core.request.ApiRequest;
-import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
+import com.qatang.team.data.wrapper.NumberLotteryDataWrapper;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
  * 数字彩彩果服务
@@ -60,12 +57,12 @@ public interface NumberLotteryDataApiService {
 
     /***
      * 数字彩彩果信息自定义查询
-     * @param request 自定义组合查询条件
-     * @param requestPage 分页和排序条件
+     * @param numberLotteryDataWrapper 自定义组合查询条件、分页和排序条件
      * @return 分页组织的出票系统票信息查询列表
      * @throws NumberLotteryDataException
      */
-//    ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException;
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    ApiResponse<NumberLotteryData> find(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
 
     /**
      * 根据彩种获取当前期
@@ -112,12 +109,11 @@ public interface NumberLotteryDataApiService {
 
     /**
      * 更新彩期状态
-     * @param lotteryType 彩种
-     * @param phase 彩期
-     * @param toStatus 目标状态
+     * @param numberLotteryDataWrapper 彩种、彩期、目标状态
      * @throws NumberLotteryDataException
      */
-//    void updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    void updateStatus(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
 
     /**
      * 切换当前期
@@ -129,11 +125,11 @@ public interface NumberLotteryDataApiService {
 
     /**
      * 指定当前期
-     * @param lotteryType 彩种
-     * @param phase 彩期
+     * @param numberLotteryDataWrapper 彩种、彩期
      * @throws NumberLotteryDataException
      */
-//    void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+    @RequestMapping(value = "/specifyCurrentPhase", method = RequestMethod.POST)
+    void specifyCurrentPhase(@RequestBody NumberLotteryDataWrapper numberLotteryDataWrapper) throws NumberLotteryDataException;
 
     /**
      * 更新彩期开奖结果
