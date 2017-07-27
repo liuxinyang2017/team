@@ -101,40 +101,56 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
     }
 
     @Test
-    public void testGetPreviousPhase() {
+    public void testGetPreviousPhaseByLotteryType() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getPreviousPhase(lotteryType);
-        logger.info("彩种[{}]当前期的上一期：{}", lotteryType.getName(), numberLotteryData.getPhase());
-
-        String phase = "20170102";
-        numberLotteryData = numberLotteryDataInternalService.getPreviousPhase(lotteryType, phase);
-        logger.info("彩种[{}][{}]的上一期：{}", lotteryType.getName(), phase, numberLotteryData.getPhase());
+        logger.info("彩种[{}]当前期的上一期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
 
     @Test
-    public void testGetNextPhase() {
+    public void testGetPreviousPhaseByLotteryTypeAndPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "20170102";
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getPreviousPhase(lotteryType, phase);
+        logger.info("彩种[{}]彩期[{}]的上一期为：{}", lotteryType.getName(), phase, numberLotteryData.getPhase());
+    }
+
+    @Test
+    public void testGetNextPhaseByLotteryType() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getNextPhase(lotteryType);
-        logger.info("彩种[{}]当前期的下一期：{}", lotteryType.getName(), numberLotteryData.getPhase());
+        logger.info("彩种[{}]当前期的下一期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
+    }
 
+    @Test
+    public void testGetNextPhaseByLotteryTypeAndPhase() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "20170101";
-        numberLotteryData = numberLotteryDataInternalService.getNextPhase(lotteryType, phase);
-        logger.info("彩种[{}][{}]的下一期：{}", lotteryType.getName(), phase, numberLotteryData.getPhase());
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getNextPhase(lotteryType, phase);
+        logger.info("彩种[{}]彩期[{}]的下一期为：{}", lotteryType.getName(), phase, numberLotteryData.getPhase());
     }
 
     @Test
     public void testUpdatePhaseStatus() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
-        String phase = "";
+        String phase = "20170101";
         PhaseStatus toStatus = PhaseStatus.RESULT_DETAIL_SET;
         PhaseStatus checkStatus = PhaseStatus.RESULT_SET;
-        numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
+        logger.info("[{}][{}]的彩期状态为：{}", lotteryType.getName(), phase, numberLotteryData.getPhaseStatus().getName());
     }
 
     @Test
     public void testSwitchCurrentPhase() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
+
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
+        logger.info("切换当前期前，彩种[{}]当前期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
+
         numberLotteryDataInternalService.switchCurrentPhase(lotteryType);
+
+        numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
+        logger.info("切换当前期后，彩种[{}]当前期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
 
     @Test
@@ -143,7 +159,7 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         String phase = "20170101";
         numberLotteryDataInternalService.specifyCurrentPhase(lotteryType, phase);
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
-        logger.info("彩种：{}，当前期：{}", lotteryType.getName(), numberLotteryData.getPhase());
+        logger.info("彩种[{}]当前期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
 
     @Test
@@ -151,8 +167,9 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "20170101";
         String result = "01,02,03,04,05,06|07";
-
         numberLotteryDataInternalService.updateResult(lotteryType, phase, result);
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
+        logger.info("[{}][{}]开奖结果为：{}", lotteryType.getName(), phase, numberLotteryData.getResult());
     }
 
     @Test
