@@ -58,7 +58,7 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
         ApiRequest apiRequest = ApiRequest.newInstance();
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
-        ApiResponse<NumberLotteryData> numberLotteryDataApiResponse = numberLotteryDataApiService.find(pageableWrapper);
+        ApiResponse<NumberLotteryData> numberLotteryDataApiResponse = numberLotteryDataApiService.findAll(pageableWrapper);
         List<NumberLotteryData> numberLotteryDataList = Lists.newArrayList(numberLotteryDataApiResponse.getPagedData());
         numberLotteryDataList.forEach(numberLotteryData -> {
             System.out.println(numberLotteryData.getPhase());
