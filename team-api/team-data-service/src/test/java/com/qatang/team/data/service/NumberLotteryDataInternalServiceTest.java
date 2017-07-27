@@ -134,12 +134,12 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
     }
 
     @Test
-    public void testUpdatePhaseStatus() {
+    public void testUpdateStatus() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "20170101";
         PhaseStatus toStatus = PhaseStatus.RESULT_DETAIL_SET;
         PhaseStatus checkStatus = PhaseStatus.RESULT_SET;
-        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
+        NumberLotteryData numberLotteryData = numberLotteryDataInternalService.updateStatus(lotteryType, phase, toStatus, checkStatus);
         logger.info("[{}][{}]的彩期状态为：{}", lotteryType.getName(), phase, numberLotteryData.getPhaseStatus().getName());
     }
 

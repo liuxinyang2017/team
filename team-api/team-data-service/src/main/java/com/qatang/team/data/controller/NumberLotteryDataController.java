@@ -148,9 +148,9 @@ public class NumberLotteryDataController extends BaseController {
      * @param checkStatus 检查状态
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    public void updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) {
+    public NumberLotteryData updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) {
         logger.info("开始更新彩期状态");
-        numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
+        return numberLotteryDataInternalService.updateStatus(lotteryType, phase, toStatus, checkStatus);
     }
 
     /**

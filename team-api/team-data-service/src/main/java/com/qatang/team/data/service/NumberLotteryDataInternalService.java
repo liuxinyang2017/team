@@ -108,7 +108,7 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @return 数字彩彩果
      * @throws NumberLotteryDataException
      */
-    NumberLotteryData updatePhaseStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
+    NumberLotteryData updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException;
 
     /**
      * 切换当前期

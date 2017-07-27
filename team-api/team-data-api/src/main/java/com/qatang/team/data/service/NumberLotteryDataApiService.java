@@ -124,7 +124,7 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    void updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) throws NumberLotteryDataException;
+    NumberLotteryData updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) throws NumberLotteryDataException;
 
     /**
      * 切换当前期
