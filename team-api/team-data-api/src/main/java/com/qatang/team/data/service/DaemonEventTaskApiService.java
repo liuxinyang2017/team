@@ -71,6 +71,6 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return 分页组织的守护事件任务信息查询列表
      * @throws DaemonEventTaskException
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<DaemonEventTask> find(@RequestBody PageableWrapper pageableWrapper) throws DaemonEventTaskException;
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    ApiResponse<DaemonEventTask> findAll(@RequestBody PageableWrapper pageableWrapper) throws DaemonEventTaskException;
 }
