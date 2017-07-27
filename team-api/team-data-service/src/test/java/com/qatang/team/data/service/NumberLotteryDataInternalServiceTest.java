@@ -1,5 +1,6 @@
 package com.qatang.team.data.service;
 
+import com.google.common.collect.Lists;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
@@ -80,9 +81,11 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         requestPage.paging(0, 10);
         requestPage.addOrder(QNumberLotteryData.createdTime);
         requestPage.addOrder(QNumberLotteryData.id);
-        ApiResponse response = numberLotteryDataInternalService.findAll(request, requestPage);
-
+        ApiResponse<NumberLotteryData> response = numberLotteryDataInternalService.findAll(request, requestPage);
         logger.info("彩种[{}]数字彩彩果总数：{}", lotteryType.getName(), response.getTotal());
+
+        List<NumberLotteryData> numberLotteryDataList = Lists.newArrayList(response.getPagedData());
+        numberLotteryDataList.forEach(numberLotteryData -> logger.info("彩期：{}", numberLotteryData.getPhase()));
     }
 
     @Test
@@ -179,9 +182,7 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         int nextPhases = 10;
         logger.info("彩种：{} 当前期前{}期至后{}期", lotteryType.getName(), prePhases, nextPhases);
         List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findNearestPhaseList(lotteryType, prePhases, nextPhases);
-        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
-            logger.info("彩期：{}", numberLotteryData.getPhase());
-        }
+        numberLotteryDataList.forEach(numberLotteryData -> logger.info("彩期：{}", numberLotteryData.getPhase()));
     }
 
     @Test
@@ -191,9 +192,7 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         int n = 10;
         logger.info("[{}][{}]前{}期：", lotteryType.getName(), phase, n);
         List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findPreviousPhaseList(lotteryType, phase, n);
-        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
-            logger.info("彩期：{}", numberLotteryData.getPhase());
-        }
+        numberLotteryDataList.forEach(numberLotteryData -> logger.info("彩期：{}", numberLotteryData.getPhase()));
     }
 
     @Test
@@ -203,8 +202,6 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         int n = 10;
         logger.info("[{}][{}]后{}期：", lotteryType.getName(), phase, n);
         List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findNextPhaseList(lotteryType, phase, n);
-        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
-            logger.info("彩期：{}", numberLotteryData.getPhase());
-        }
+        numberLotteryDataList.forEach(numberLotteryData -> logger.info("彩期：{}", numberLotteryData.getPhase()));
     }
 }
