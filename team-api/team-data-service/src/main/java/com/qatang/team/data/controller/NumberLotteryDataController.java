@@ -75,8 +75,8 @@ public class NumberLotteryDataController extends BaseController {
      * @param pageableWrapper 自定义组合查询条件、分页和排序条件
      * @return 分页组织的数字彩彩果信息查询列表
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> find(@RequestBody PageableWrapper pageableWrapper) {
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    ApiResponse<NumberLotteryData> findAll(@RequestBody PageableWrapper pageableWrapper) {
         logger.info("自定义查询数字彩开奖号码对象信息");
         ApiRequest request = pageableWrapper.getRequest();
         ApiRequestPage requestPage = pageableWrapper.getRequestPage();

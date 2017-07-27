@@ -66,8 +66,8 @@ public interface NumberLotteryDataApiService {
      * @return 分页组织的数字彩彩果信息查询列表
      * @throws NumberLotteryDataException
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> find(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryDataException;
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    ApiResponse<NumberLotteryData> findAll(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryDataException;
 
     /**
      * 根据彩种获取当前期

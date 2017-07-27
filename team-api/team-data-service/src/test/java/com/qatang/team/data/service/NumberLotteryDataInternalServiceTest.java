@@ -45,7 +45,7 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
 
     @Test
     public void testUpdate() {
-        NumberLotteryData data = numberLotteryDataInternalService.get(1L);;
+        NumberLotteryData data = numberLotteryDataInternalService.get(1L);
         data.setLotteryType(LotteryType.FC_SSQ);
         data.setPhase("2017002");
         data.setPhaseStatus(PhaseStatus.OPEN_NOT);
@@ -66,7 +66,7 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
     public void testGet() {
         Long id = 1L;
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.get(id);
-        logger.info("数字彩彩果[id={}]彩种：{}，彩期：{}", numberLotteryData.getId(), numberLotteryData.getLotteryType().getName(), numberLotteryData.getPhase());
+        logger.info("根据id[{}]获取数字彩彩果，彩种为：{}，彩期为：{}", id, numberLotteryData.getLotteryType().getName(), numberLotteryData.getPhase());
     }
 
     @Test
@@ -90,14 +90,14 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "2017001";
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
-        logger.info("数字彩彩果[id={}]彩种：{}，彩期：{}", numberLotteryData.getId(), numberLotteryData.getLotteryType().getName(), numberLotteryData.getPhase());
+        logger.info("根据彩种[{}]、彩期[{}]获取数字彩彩果id为：{}", lotteryType.getName(), phase, numberLotteryData.getId());
     }
 
     @Test
     public void testGetCurrentPhase() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         NumberLotteryData numberLotteryData = numberLotteryDataInternalService.getCurrentPhase(lotteryType);
-        logger.info("数字彩彩果[id={}]彩种：{}，彩期：{}", numberLotteryData.getId(), numberLotteryData.getLotteryType().getName(), numberLotteryData.getPhase());
+        logger.info("彩种[{}]当前期：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
 
     @Test
