@@ -173,12 +173,36 @@ public class NumberLotteryDataInternalServiceTest extends BaseTest {
     }
 
     @Test
-    public void testGetNearestPhase() {
+    public void testFindNearestPhaseList() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         int prePhases = 10;
         int nextPhases = 10;
         logger.info("彩种：{} 当前期前{}期至后{}期", lotteryType.getName(), prePhases, nextPhases);
         List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findNearestPhaseList(lotteryType, prePhases, nextPhases);
+        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
+            logger.info("彩期：{}", numberLotteryData.getPhase());
+        }
+    }
+
+    @Test
+    public void testFindPreviousPhaseList() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "20170102";
+        int n = 10;
+        logger.info("[{}][{}]前{}期：", lotteryType.getName(), phase, n);
+        List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findPreviousPhaseList(lotteryType, phase, n);
+        for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
+            logger.info("彩期：{}", numberLotteryData.getPhase());
+        }
+    }
+
+    @Test
+    public void testFindNextPhaseList() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "20170101";
+        int n = 10;
+        logger.info("[{}][{}]后{}期：", lotteryType.getName(), phase, n);
+        List<NumberLotteryData> numberLotteryDataList = numberLotteryDataInternalService.findNextPhaseList(lotteryType, phase, n);
         for (NumberLotteryData numberLotteryData : numberLotteryDataList) {
             logger.info("彩期：{}", numberLotteryData.getPhase());
         }
