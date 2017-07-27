@@ -9,6 +9,7 @@ import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.QNumberLotteryData;
+import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.service.NumberLotteryDataApiService;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
@@ -52,7 +53,12 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
 
     private void generate(LotteryType lotteryType) {
         // 初始化
-        NumberLotteryData numberLotteryData = numberLotteryDataApiService.get(1L);
+        NumberLotteryData numberLotteryData = null;
+        try {
+            numberLotteryData = numberLotteryDataApiService.get(1L);
+        } catch (NumberLotteryDataException e) {
+            logger.error(e.getMessage(), e);
+        }
         if (numberLotteryData == null) {
             logger.info(String.format("数字彩彩期生成定时：未查询到(%s)的彩期数据，从当前年份的第1期开始，生成200期数据", lotteryType.getName()));
             PhaseInfo startPhaseInfo = StartPhaseInfoBuilder.build(lotteryType);

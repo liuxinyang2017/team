@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 
 import javax.annotation.PreDestroy;
 
@@ -14,6 +15,7 @@ import javax.annotation.PreDestroy;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableFeignClients({"com.qatang.team"})
 public class SchedulerApplication implements CommandLineRunner {
     protected static final transient Logger logger = LoggerFactory.getLogger(SchedulerApplication.class);
 

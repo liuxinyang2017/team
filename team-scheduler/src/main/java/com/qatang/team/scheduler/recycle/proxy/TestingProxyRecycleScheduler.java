@@ -24,7 +24,7 @@ public class TestingProxyRecycleScheduler {
         this.proxyValidatorExecutor = proxyValidatorExecutor;
     }
 
-    @Scheduled(fixedDelay = 6000)
+//    @Scheduled(fixedDelay = 6000)
     public void run() {
         try {
             // 查询所有状态为 测试中 且 创建时间小于一天前 的代理数据对象

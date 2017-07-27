@@ -23,7 +23,7 @@ public class ProxyFetcherScheduler {
         this.proxyFetcherExecutor = proxyFetcherExecutor;
     }
 
-    @Scheduled(fixedDelay = 6000)
+//    @Scheduled(fixedDelay = 6000)
     public void run() {
         try {
             proxyFetcherExecutor.executeFetcher();

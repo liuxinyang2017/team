@@ -24,7 +24,7 @@ public class ProxyValidatorScheduler {
         this.proxyValidatorExecutor = proxyValidatorExecutor;
     }
 
-    @Scheduled(fixedDelay = 6000)
+//    @Scheduled(fixedDelay = 6000)
     public void run() {
         try {
             // 查询所有状态为 待处理 的代理数据对象
