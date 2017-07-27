@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+
 /**
  * @author jinsheng
  */
@@ -52,6 +54,7 @@ public class DaemonEventTaskInternalServiceImpl extends AbstractBaseInternalServ
     }
 
     @Override
+    @Transactional
     public DaemonEventTask update(DaemonEventTask daemonEventTask) throws DaemonEventTaskException {
         logger.info("修改守护事件任务对象服务：开始执行");
 
@@ -91,6 +94,7 @@ public class DaemonEventTaskInternalServiceImpl extends AbstractBaseInternalServ
     }
 
     @Override
+    @Transactional
     public DaemonEventTask updateStatus(Long id, DaemonEventStatus toStatus, DaemonEventStatus checkStatus) throws DaemonEventTaskException {
         DaemonEventTaskEntity daemonEventTaskEntity = daemonEventTaskRepository.findOne(id);
         if (daemonEventTaskEntity == null) {

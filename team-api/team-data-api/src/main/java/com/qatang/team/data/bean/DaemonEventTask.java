@@ -8,7 +8,7 @@ import com.qatang.team.enums.daemon.DaemonEventStatus;
 import com.qatang.team.enums.daemon.DaemonEventType;
 import com.qatang.team.enums.lottery.LotteryType;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 守护事件任务对象
@@ -54,17 +54,17 @@ public class DaemonEventTask extends AbstractBaseApiBean {
      * 任务的预期执行时间
      */
     @RequestApiFieldUpdatable
-    private Date executeTime;
+    private LocalDateTime executeTime;
 
     /**
      * 创建时间
      */
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
     /**
      * 修改时间
      */
-    private Date updatedTime;
+    private LocalDateTime updatedTime;
 
     public Long getId() {
         return id;
@@ -114,27 +114,27 @@ public class DaemonEventTask extends AbstractBaseApiBean {
         this.status = status;
     }
 
-    public Date getExecuteTime() {
+    public LocalDateTime getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(Date executeTime) {
+    public void setExecuteTime(LocalDateTime executeTime) {
         this.executeTime = executeTime;
     }
 
-    public Date getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
-    public Date getUpdatedTime() {
+    public LocalDateTime getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(Date updatedTime) {
+    public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
     }
 }
