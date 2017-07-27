@@ -20,7 +20,8 @@ CREATE TABLE `number_lottery_data` (
   `sale_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_type_phase` (`lottery_type`, `phase`),
-  INDEX `idx_status_type` (`phase_status`, `lottery_type`)
+  INDEX `idx_status_type` (`phase_status`, `lottery_type`),
+  INDEX `idx_open_close_type` (`open_time`, `close_time`, `lottery_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `daemon_event_task` (

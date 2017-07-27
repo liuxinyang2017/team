@@ -121,9 +121,10 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * 指定当前期
      * @param lotteryType 彩种
      * @param phase 彩期
+     * @return 当前期数字彩彩果
      * @throws NumberLotteryDataException
      */
-    void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+    NumberLotteryData specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
 
     /**
      * 更新开奖结果

@@ -88,6 +88,9 @@ public class CoreDateUtils {
             return null;
         }
     }
+    public static String formatLocalDateTime(LocalDateTime datetime) {
+        return CoreDateUtils.formatLocalDateTime(datetime, "yyyy-MM-dd HH:mm:ss");
+    }
 
     public static String formatLocalDateTime(LocalDateTime datetime, String pattern) {
         if (datetime == null) {
@@ -101,6 +104,10 @@ public class CoreDateUtils {
             logger.error(e.getMessage(), e);
             return null;
         }
+    }
+
+    public static LocalDate parseLocalDate(String dateStr) {
+        return CoreDateUtils.parseLocalDate(dateStr, "yyyy-MM-dd HH:mm:ss");
     }
 
     public static LocalDate parseLocalDate(String dateStr, String pattern) {

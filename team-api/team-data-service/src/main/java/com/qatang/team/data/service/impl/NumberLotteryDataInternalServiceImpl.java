@@ -238,7 +238,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
     @Override
     @Transactional
-    public void specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+    public NumberLotteryData specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
         NumberLotteryDataEntity specifyNumberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (specifyNumberLotteryDataEntity == null) {
             String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
@@ -257,6 +257,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
             numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
             numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
         }
+        return BeanMapping.map(specifyNumberLotteryDataEntity, NumberLotteryData.class);
     }
 
     @Override

@@ -141,7 +141,7 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/specifyCurrentPhase", method = RequestMethod.POST)
-    void specifyCurrentPhase(@RequestParam(value = "lotteryType") LotteryType lotteryType, @RequestParam(value = "phase") String phase) throws NumberLotteryDataException;
+    NumberLotteryData specifyCurrentPhase(@RequestParam(value = "lotteryType") LotteryType lotteryType, @RequestParam(value = "phase") String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期开奖结果
