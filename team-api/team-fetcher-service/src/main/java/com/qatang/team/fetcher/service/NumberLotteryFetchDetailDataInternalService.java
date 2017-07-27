@@ -4,6 +4,7 @@ import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseInternalSerivce;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchDetailDataException;
 
@@ -46,4 +47,12 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
      * @throws NumberLotteryFetchDetailDataException
      */
     NumberLotteryFetchDetailData update(NumberLotteryFetchDetailData NumberLotteryFetchDetailDataException) throws NumberLotteryFetchDetailDataException;
+
+    /***
+     * 根据彩种彩期获取开奖详情抓取数据
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @return 查询结果
+     */
+    NumberLotteryFetchDetailData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase);
 }

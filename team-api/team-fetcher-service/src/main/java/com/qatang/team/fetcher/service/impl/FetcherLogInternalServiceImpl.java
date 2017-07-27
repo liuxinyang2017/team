@@ -28,7 +28,11 @@ public class FetcherLogInternalServiceImpl extends AbstractBaseInternalServiceIm
     private FetcherLogRepository fetcherLogRepository;
 
     protected FetcherLogEntity getFetcherLogEntityWithNullCheckForUpdate(Long fetcherLogId) throws FetcherLogException {
-        return fetcherLogRepository.findOneForUpdate(fetcherLogId);
+        FetcherLogEntity fetcherLogEntity = fetcherLogRepository.findOneForUpdate(fetcherLogId);
+        if (fetcherLogEntity == null) {
+            throw new FetcherLogException(String.format("未获取到抓取日志信息，fetcherLogId=%s", fetcherLogId));
+        }
+        return fetcherLogEntity;
     }
 
     @Override
@@ -73,7 +77,10 @@ public class FetcherLogInternalServiceImpl extends AbstractBaseInternalServiceIm
         Assert.notNull(fetcherLog.getId(), "抓取日志编号不能为空");
 
         logger.info("修改抓取日志服务：锁行查询FetcherLogEntity");
-        FetcherLogEntity fetcherLogEntity = getFetcherLogEntityWithNullCheckForUpdate(fetcherLog.getId());
+        FetcherLogEntity fetcherLogEntity = fetcherLogRepository.findOne(fetcherLog.getId());
+        fetcherLogRepository.detach(fetcherLogEntity);
+
+        fetcherLogEntity = getFetcherLogEntityWithNullCheckForUpdate(fetcherLog.getId());
         copyUpdatableField(fetcherLogEntity, fetcherLog);
 
         logger.info("修改抓取日志服务：将FetcherLogEntity转换为FetcherLog作为返回结果");

@@ -1,6 +1,10 @@
 package com.qatang.team.fetcher.controller;
 
 import com.qatang.team.core.controller.BaseController;
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.fetcher.bean.FetcherLog;
 import com.qatang.team.fetcher.service.FetcherLogInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +22,31 @@ public class FetcherLogController extends BaseController {
     private FetcherLogInternalService fetcherLogInternalService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    FetcherLog create(@RequestBody FetcherLog fetcherLog) {
+    public FetcherLog create(@RequestBody FetcherLog fetcherLog) {
 
         logger.info("开始创建抓取日志对象");
-//        FetcherLog fetcherLogResult = fetcherLogInternalService.save(fetcherLog);
-        return new FetcherLog();
+        FetcherLog fetcherLogResult = fetcherLogInternalService.save(fetcherLog);
+        return fetcherLogResult;
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    FetcherLog update(@RequestBody FetcherLog fetcherLog) {
+    public FetcherLog update(@RequestBody FetcherLog fetcherLog) {
         logger.info("修改抓取日志对象");
-//        FetcherLog fetcherLogResult = fetcherLogInternalService.update(fetcherLog);
-        return new FetcherLog();
+        FetcherLog fetcherLogResult = fetcherLogInternalService.update(fetcherLog);
+        return fetcherLogResult;
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    FetcherLog get(@RequestParam(name = "id") Long id) {
+    public FetcherLog get(@RequestParam("id") Long id) {
         logger.info("获取抓取日志对象信息");
-//        FetcherLog fetcherLogResult = fetcherLogInternalService.get(id);
-        return new FetcherLog();
+        FetcherLog fetcherLogResult = fetcherLogInternalService.get(id);
+        return fetcherLogResult;
+    }
+
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    public ApiResponse<FetcherLog> findAll(@RequestBody PageableWrapper pageableWrapper) {
+        ApiRequest apiRequest = pageableWrapper.getRequest();
+        ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
+        return fetcherLogInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

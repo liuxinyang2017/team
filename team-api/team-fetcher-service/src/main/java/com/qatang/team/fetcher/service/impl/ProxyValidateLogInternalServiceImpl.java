@@ -74,7 +74,10 @@ public class ProxyValidateLogInternalServiceImpl extends AbstractBaseInternalSer
         Assert.notNull(proxyValidateLog.getId(), "抓取日志编号不能为空");
 
         logger.info("修改代理日志服务：锁行查询ProxyValidateLogEntity");
-        ProxyValidateLogEntity proxyValidateLogEntity = getProxyValidateLogEntityWithNullCheckForUpdate(proxyValidateLog.getId());
+        ProxyValidateLogEntity proxyValidateLogEntity = proxyValidateLogRepository.findOne(proxyValidateLog.getId());
+        proxyValidateLogRepository.detach(proxyValidateLogEntity);
+
+        proxyValidateLogEntity = getProxyValidateLogEntityWithNullCheckForUpdate(proxyValidateLog.getId());
         copyUpdatableField(proxyValidateLogEntity, proxyValidateLog);
 
         logger.info("修改代理日志服务：将ProxyValidateLogEntity转换为ProxyValidateLog作为返回结果");

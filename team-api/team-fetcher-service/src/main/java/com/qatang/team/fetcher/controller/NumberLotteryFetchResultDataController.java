@@ -1,6 +1,11 @@
 package com.qatang.team.fetcher.controller;
 
 import com.qatang.team.core.controller.BaseController;
+import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestPage;
+import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.service.NumberLotteryFetchResultDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,7 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     private NumberLotteryFetchResultDataInternalService numberLotteryFetchResultDataInternalService;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    NumberLotteryFetchResultData create(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
+    public NumberLotteryFetchResultData create(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
 
         logger.info("开始创建抓取开奖结果对象");
         NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.save(numberLotteryFetchResultData);
@@ -26,16 +31,29 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    NumberLotteryFetchResultData update(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
+    public NumberLotteryFetchResultData update(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
         logger.info("修改抓取开奖结果对象");
         NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.update(numberLotteryFetchResultData);
         return numberLotteryFetchResultDataResult;
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    NumberLotteryFetchResultData get(@RequestParam(name = "id") Long id) {
+    public NumberLotteryFetchResultData get(@RequestParam Long id) {
         logger.info("获取抓取开奖结果对象信息");
         NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.get(id);
         return numberLotteryFetchResultDataResult;
+    }
+
+    @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.POST)
+    public NumberLotteryFetchResultData getByLotteryTypeAndPhase(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase) {
+        logger.info("根据彩种彩期查询开奖结果抓取数据,彩种{},彩期{}", lotteryType.getName(), phase);
+        return numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
+    }
+
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    public ApiResponse<NumberLotteryFetchResultData> find(@RequestBody PageableWrapper pageableWrapper) {
+        ApiRequest apiRequest = pageableWrapper.getRequest();
+        ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
+        return numberLotteryFetchResultDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

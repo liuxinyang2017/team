@@ -4,6 +4,7 @@ import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
+import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.bean.QProxyData;
 import com.qatang.team.fetcher.config.InitConfig;
@@ -19,9 +20,7 @@ import java.time.LocalDateTime;
 /**
  * @author qatang
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {InitConfig.class})
-public class ProxyDataInternalServiceTest {
+public class ProxyDataInternalServiceTest extends BaseTest {
 
     @Autowired
     private ProxyDataInternalService proxyDataInternalService;

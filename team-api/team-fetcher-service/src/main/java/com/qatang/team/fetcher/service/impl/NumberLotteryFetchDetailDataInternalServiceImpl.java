@@ -5,6 +5,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.entity.NumberLotteryFetchDetailDataEntity;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchDetailDataException;
@@ -29,7 +30,11 @@ public class NumberLotteryFetchDetailDataInternalServiceImpl extends AbstractBas
     private NumberLotteryFetchDetailDataRepository numberLotteryFetchDetailDataRepository;
 
     protected NumberLotteryFetchDetailDataEntity getNumberLotteryFetchDetailDataEntityWithNullCheckForUpdate(Long numberLotteryFetchDetailDataId) throws NumberLotteryFetchDetailDataException {
-        return numberLotteryFetchDetailDataRepository.findOneForUpdate(numberLotteryFetchDetailDataId);
+        NumberLotteryFetchDetailDataEntity numberLotteryFetchDetailDataEntity = numberLotteryFetchDetailDataRepository.findOneForUpdate(numberLotteryFetchDetailDataId);
+        if (numberLotteryFetchDetailDataEntity == null) {
+            throw new NumberLotteryFetchDetailDataException(String.format("未获取到开奖详情抓取数据：numberLotteryFetchDetailDataId=%s", numberLotteryFetchDetailDataId));
+        }
+        return numberLotteryFetchDetailDataEntity;
     }
 
     @Override
@@ -74,7 +79,11 @@ public class NumberLotteryFetchDetailDataInternalServiceImpl extends AbstractBas
         Assert.notNull(numberLotteryFetchDetailData.getId(), "抓取日志编号不能为空");
 
         logger.info("修改数字彩开奖详情抓取数据：锁行查询NumberLotteryFetchDetailDataEntity");
-        NumberLotteryFetchDetailDataEntity numberLotteryFetchDetailDataEntity = getNumberLotteryFetchDetailDataEntityWithNullCheckForUpdate(numberLotteryFetchDetailData.getId());
+        NumberLotteryFetchDetailDataEntity numberLotteryFetchDetailDataEntity = numberLotteryFetchDetailDataRepository.findOne(numberLotteryFetchDetailData.getId());
+
+        numberLotteryFetchDetailDataRepository.detach(numberLotteryFetchDetailDataEntity);
+
+        numberLotteryFetchDetailDataEntity = getNumberLotteryFetchDetailDataEntityWithNullCheckForUpdate(numberLotteryFetchDetailData.getId());
         copyUpdatableField(numberLotteryFetchDetailDataEntity, numberLotteryFetchDetailData);
 
         logger.info("修改数字彩开奖详情抓取数据：将NumberLotteryFetchDetailDataEntity转换为NumberLotteryFetchDetailData作为返回结果");
@@ -82,5 +91,15 @@ public class NumberLotteryFetchDetailDataInternalServiceImpl extends AbstractBas
 
         logger.info("修改数字彩开奖详情抓取数据：结束执行");
         return numberLotteryFetchDetailDataResult;
+    }
+
+    @Override
+    public NumberLotteryFetchDetailData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) {
+        NumberLotteryFetchDetailDataEntity numberLotteryFetchDetailDataEntity = numberLotteryFetchDetailDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryFetchDetailDataEntity == null) {
+            String msg = String.format("根据彩种[%s]、彩期[%s]获取开奖详情抓取数据为空", lotteryType.getName(), phase);
+            throw new NumberLotteryFetchDetailDataException(msg);
+        }
+        return BeanMapping.map(numberLotteryFetchDetailDataEntity, NumberLotteryFetchDetailData.class);
     }
 }

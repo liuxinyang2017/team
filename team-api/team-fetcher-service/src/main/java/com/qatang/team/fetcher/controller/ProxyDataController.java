@@ -29,7 +29,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    ProxyData create(@RequestBody ProxyData proxyData) throws ProxyDataException {
+    public ProxyData create(@RequestBody ProxyData proxyData) throws ProxyDataException {
         return proxyDataInternalService.save(proxyData);
     }
 
@@ -39,7 +39,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException {
+    public ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException {
         ApiRequest apiRequest = proxyDataWrapper.convertRequest();
         ApiRequestPage apiRequestPage = proxyDataWrapper.convertPageable();
         return proxyDataInternalService.findAll(apiRequest, apiRequestPage);
@@ -52,7 +52,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    ProxyData get(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData get(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.get(id);
     }
 
@@ -63,7 +63,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateWaitingTestStatus", method = RequestMethod.GET)
-    ProxyData updateWaitingTestStatus(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData updateWaitingTestStatus(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.updateWaitingTestStatus(id);
     }
 
@@ -74,7 +74,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateTestingStatus", method = RequestMethod.GET)
-    ProxyData updateTestingStatus(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData updateTestingStatus(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.updateTestingStatus(id);
     }
 
@@ -89,7 +89,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updatePassStatus", method = RequestMethod.GET)
-    ProxyData updatePassStatus(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData updatePassStatus(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.updatePassStatus(id);
     }
 
@@ -100,7 +100,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateFailedStatus", method = RequestMethod.GET)
-    ProxyData updateFailedStatus(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData updateFailedStatus(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.updateFailedStatus(id);
     }
 
@@ -111,7 +111,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateObsoletedStatus", method = RequestMethod.GET)
-    ProxyData updateObsoletedStatus(@RequestParam Long id) throws ProxyDataException {
+    public ProxyData updateObsoletedStatus(@RequestParam Long id) throws ProxyDataException {
         return proxyDataInternalService.updateObsoletedStatus(id);
     }
 
@@ -123,7 +123,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
-    ProxyData updateBeginTestTime(@RequestParam Long id, @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
+    public ProxyData updateBeginTestTime(@RequestParam Long id, @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
         return proxyDataInternalService.updateBeginTestTime(id, beginTestTime);
     }
 
@@ -135,7 +135,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateEndTestTime", method = RequestMethod.GET)
-    ProxyData updateEndTestTime(@RequestParam Long id, @RequestParam LocalDateTime endTestTime) throws ProxyDataException {
+    public ProxyData updateEndTestTime(@RequestParam Long id, @RequestParam LocalDateTime endTestTime) throws ProxyDataException {
         return proxyDataInternalService.updateEndTestTime(id, endTestTime);
     }
 }

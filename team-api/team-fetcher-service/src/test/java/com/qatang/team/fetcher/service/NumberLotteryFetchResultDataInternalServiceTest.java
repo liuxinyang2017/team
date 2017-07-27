@@ -5,6 +5,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.config.InitConfig;
 import org.junit.Assert;
@@ -20,9 +21,7 @@ import java.time.LocalDateTime;
  * @author wp
  * @since 2017/7/23
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {InitConfig.class})
-public class NumberLotteryFetchResultDataInternalServiceTest {
+public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
 
     @Autowired
     private  NumberLotteryFetchResultDataInternalService numberLotteryFetchResultDataInternalService;
@@ -63,5 +62,11 @@ public class NumberLotteryFetchResultDataInternalServiceTest {
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         ApiResponse<NumberLotteryFetchResultData> list = numberLotteryFetchResultDataInternalService.findAll(apiRequest, apiRequestPage);
         Assert.assertTrue(list.getPagedData().size() > 0);
+    }
+
+    @Test
+    public void testGetByLotteryTypeAndPhase() {
+        NumberLotteryFetchResultData numberLotteryFetchResultData = numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhase(LotteryType.FC_SSQ, "20170801");
+        Assert.assertNotNull(numberLotteryFetchResultData);
     }
 }

@@ -5,6 +5,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.entity.NumberLotteryFetchResultDataEntity;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
@@ -28,7 +29,11 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
     private NumberLotteryFetchResultDataRepository numberLotteryFetchResultDataRepository;
 
     protected NumberLotteryFetchResultDataEntity getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(Long numberLotteryFetchResultDataId) throws NumberLotteryFetchResultDataException {
-        return numberLotteryFetchResultDataRepository.findOneForUpdate(numberLotteryFetchResultDataId);
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOneForUpdate(numberLotteryFetchResultDataId);
+        if (numberLotteryFetchResultDataEntity == null) {
+            throw new NumberLotteryFetchResultDataException(String.format("未获取到开奖结果抓取数据：numberLotteryFetchResultDataId=%s", numberLotteryFetchResultDataId));
+        }
+        return numberLotteryFetchResultDataEntity;
     }
 
     @Override
@@ -60,7 +65,7 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
         logger.info("按id获取数字彩开奖结果抓取数据, numberLotteryFetchResultDataId={}", id);
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(id);
         if (numberLotteryFetchResultDataEntity == null) {
-            throw new NumberLotteryFetchResultDataException(String.format("按id获取数字彩开奖结果抓取数据, numberLotteryFetchResultDataId=%s", id));
+            throw new NumberLotteryFetchResultDataException(String.format("按id获取数字彩开奖结果抓取数据为空, numberLotteryFetchResultDataId=%s", id));
         }
         return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
     }
@@ -73,7 +78,12 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
         Assert.notNull(numberLotteryFetchResultData.getId(), "抓取日志编号不能为空");
 
         logger.info("修改数字彩开奖结果抓取数据：锁行查询NumberLotteryFetchResultDataEntity");
-        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(numberLotteryFetchResultData.getId());
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(numberLotteryFetchResultData.getId());
+
+        numberLotteryFetchResultDataRepository.detach(numberLotteryFetchResultDataEntity);
+
+        numberLotteryFetchResultDataEntity = this.getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(numberLotteryFetchResultData.getId());
+
         copyUpdatableField(numberLotteryFetchResultDataEntity, numberLotteryFetchResultData);
 
         logger.info("修改数字彩开奖结果抓取数据：将NumberLotteryFetchResultDataEntity转换为NumberLotteryFetchResultData作为返回结果");
@@ -81,5 +91,15 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
 
         logger.info("修改数字彩开奖结果抓取数据：结束执行");
         return numberLotteryFetchResultDataResult;
+    }
+
+    @Override
+    public NumberLotteryFetchResultData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) {
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryFetchResultDataEntity == null) {
+            String msg = String.format("根据彩种[%s]、彩期[%s]获取开奖结果抓取数据为空", lotteryType.getName(), phase);
+            throw new NumberLotteryFetchResultDataException(msg);
+        }
+        return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
     }
 }

@@ -51,6 +51,7 @@ CREATE TABLE `number_lottery_fetch_detail_data` (
   `prize_count` bigint(20) NOT NULL DEFAULT 0,
   `prize_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_lottery_type_phase` (`lottery_type`, `phase`),
   INDEX `idx_fetch_result_id` (`fetch_result_id`),
   INDEX `idx_lottery_type` (`lottery_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -67,6 +68,7 @@ CREATE TABLE `number_lottery_fetch_result_data` (
   `pool_amount` bigint(20) NOT NULL DEFAULT 0,
   `sale_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_lottery_type_phase` (`lottery_type`, `phase`),
   INDEX `idx_lottery_type` (`lottery_type`),
   INDEX `idx_fetcher_type` (`fetcher_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -84,7 +86,6 @@ CREATE TABLE `proxy_validate_log` (
   `success`  TINYINT(3) NOT NULL,
   `message`  varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_host_port` (`host`, `port`),
   INDEX `idx_proxy_validator_type` (`proxy_validator_type`),
   INDEX `idx_success` (`success`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

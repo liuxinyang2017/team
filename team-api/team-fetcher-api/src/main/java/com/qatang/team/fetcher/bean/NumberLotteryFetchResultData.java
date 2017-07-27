@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.bean;
 
+import com.qatang.team.core.annotation.request.RequestApiBean;
 import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.fetcher.FetcherType;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * 数字彩开奖结果抓取数据对象
  * @author qatang
  */
+@RequestApiBean
 public class NumberLotteryFetchResultData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 2771227063335205275L;
 

@@ -1,45 +1,44 @@
-package com.qatang.team.fetcher.service;
+package com.qatang.team.fetcher.controller;
 
+import com.google.common.collect.Lists;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.FetcherType;
-import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.FetcherLog;
-import com.qatang.team.fetcher.config.InitConfig;
+import com.qatang.team.fetcher.service.FetcherLogApiService;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author wp
- * @since 2017/7/21
+ * @since 2017/7/27
  */
-public class FetcherLogInternalServiceTest extends BaseTest {
+public class FetcherLogControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private FetcherLogInternalService fetcherLogInternalService;
+    private FetcherLogApiService fetcherLogApiService;
 
     @Test
     public void testSave() {
         FetcherLog fetcherLog = new FetcherLog();
         fetcherLog.setBeginTestTime(LocalDateTime.now());
         fetcherLog.setEndTestTime(LocalDateTime.now());
-        fetcherLog.setFetcherType(FetcherType.F_500W);
-        fetcherLog.setHost("127.0.0.1");
+        fetcherLog.setFetcherType(FetcherType.F_AICAI);
+        fetcherLog.setHost("127.0.0.3");
         fetcherLog.setPort(80);
         fetcherLog.setMessage("测试用例");
         fetcherLog.setProxyId(111L);
         fetcherLog.setSpentMills(1000L);
         fetcherLog.setSuccess(YesNoStatus.YES);
 
-        FetcherLog fetcherLogResult = fetcherLogInternalService.save(fetcherLog);
+        FetcherLog fetcherLogResult = fetcherLogApiService.create(fetcherLog);
         Assert.assertNotNull(fetcherLogResult);
     }
 
@@ -48,21 +47,24 @@ public class FetcherLogInternalServiceTest extends BaseTest {
         FetcherLog fetcherLog = new FetcherLog();
         fetcherLog.setId(1L);
         fetcherLog.setPort(81);
-        fetcherLogInternalService.update(fetcherLog);
+        fetcherLogApiService.update(fetcherLog);
     }
 
     @Test
     public void testGet() {
-        FetcherLog fetcherLog = fetcherLogInternalService.get(1L);
+        FetcherLog fetcherLog = fetcherLogApiService.get(1L);
         Assert.assertNotNull(fetcherLog);
     }
 
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual("id", 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
-        ApiResponse<FetcherLog> list = fetcherLogInternalService.findAll(apiRequest, apiRequestPage);
-        Assert.assertTrue(list.getPagedData().size() > 0);
+        PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
+        ApiResponse<FetcherLog> numberLotteryFetchResultDataApiResponse = fetcherLogApiService.findAll(pageableWrapper);
+        List<FetcherLog> list = Lists.newArrayList(numberLotteryFetchResultDataApiResponse.getPagedData());
+        list.forEach(fetcherLog -> {
+            System.out.println(fetcherLog.getId());
+        });
     }
 }
