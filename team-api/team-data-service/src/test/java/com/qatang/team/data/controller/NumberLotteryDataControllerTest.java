@@ -165,7 +165,8 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
     public void testSpecifyCurrentPhase() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
         String phase = "2017001";
-        numberLotteryDataApiService.specifyCurrentPhase(lotteryType, phase);
+        NumberLotteryData numberLotteryData = numberLotteryDataApiService.specifyCurrentPhase(lotteryType, phase);
+        logger.info("彩种[{}]当前期为：{}", lotteryType.getName(), numberLotteryData.getPhase());
     }
 
     @Test

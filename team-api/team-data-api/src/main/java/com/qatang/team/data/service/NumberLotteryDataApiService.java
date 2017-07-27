@@ -113,7 +113,7 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/getNextPhaseByLotteryTypeAndPhase", method = RequestMethod.GET)
-    NumberLotteryData getNextPhase(@RequestParam("lotteryType") LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+    NumberLotteryData getNextPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) throws NumberLotteryDataException;
 
     /**
      * 更新彩期状态
