@@ -185,7 +185,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
     @Override
     @Transactional
-    public NumberLotteryData updatePhaseStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException {
+    public NumberLotteryData updateStatus(LotteryType lotteryType, String phase, PhaseStatus toStatus, PhaseStatus checkStatus) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (numberLotteryDataEntity == null) {
             String msg = String.format("更新彩期状态，根据彩种[%s]、彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
