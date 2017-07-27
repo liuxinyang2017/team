@@ -22,12 +22,12 @@ public class ClientExceptionConverter {
 
     }
 
-    private ClientExceptionRegistry saasClientExceptionRegistry = ClientExceptionRegistry.instance();
+    private ClientExceptionRegistry clientExceptionRegistry = ClientExceptionRegistry.instance();
 
     public ClientException converter(ErrorInfo errorInfo) {
         Class<? extends ClientException> cls;
         if (errorInfo != null) {
-            cls = saasClientExceptionRegistry.get(errorInfo.getModule(), errorInfo.getCode());
+            cls = clientExceptionRegistry.get(errorInfo.getModule(), errorInfo.getCode());
             String errorMessage = errorInfo.getMessage();
             try {
                 return cls.getDeclaredConstructor(String.class).newInstance(errorMessage);
