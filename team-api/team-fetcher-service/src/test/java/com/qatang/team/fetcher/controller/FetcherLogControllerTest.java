@@ -8,6 +8,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.fetcher.bean.FetcherLog;
+import com.qatang.team.fetcher.bean.QFetcherLog;
 import com.qatang.team.fetcher.service.FetcherLogApiService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,25 +47,34 @@ public class FetcherLogControllerTest extends AbstractControllerTest {
     public void testUpdate() {
         FetcherLog fetcherLog = new FetcherLog();
         fetcherLog.setId(1L);
-        fetcherLog.setPort(81);
-        fetcherLogApiService.update(fetcherLog);
+        fetcherLog.setSuccess(YesNoStatus.NO);
+        fetcherLog = fetcherLogApiService.update(fetcherLog);
+        Assert.assertTrue(YesNoStatus.NO.equals(fetcherLog.getSuccess()));
     }
 
     @Test
     public void testGet() {
-        FetcherLog fetcherLog = fetcherLogApiService.get(1L);
+        Long id = 1L;
+        FetcherLog fetcherLog = fetcherLogApiService.get(id);
+        logger.info("根据id[{}]获取抓取日志，代理地址为：{}，代理端口为：{}", id, fetcherLog.getHost(), fetcherLog.getPort());
         Assert.assertNotNull(fetcherLog);
     }
 
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual(QFetcherLog.id, 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
+        apiRequestPage.paging(0, 10);
+        apiRequestPage.addOrder(QFetcherLog.createdTime);
+        apiRequestPage.addOrder(QFetcherLog.id);
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
         ApiResponse<FetcherLog> numberLotteryFetchResultDataApiResponse = fetcherLogApiService.findAll(pageableWrapper);
+        logger.info("抓取日志总数：{}", numberLotteryFetchResultDataApiResponse.getTotal());
+
         List<FetcherLog> list = Lists.newArrayList(numberLotteryFetchResultDataApiResponse.getPagedData());
         list.forEach(fetcherLog -> {
-            System.out.println(fetcherLog.getId());
+            logger.info("抓取日志代理地址[{}],代理端口：[{}]", fetcherLog.getHost(), fetcherLog.getPort());
         });
     }
 }

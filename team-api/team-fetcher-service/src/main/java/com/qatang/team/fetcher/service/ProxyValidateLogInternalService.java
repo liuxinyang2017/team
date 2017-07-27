@@ -42,7 +42,7 @@ public interface ProxyValidateLogInternalService extends BaseInternalSerivce {
     /**
      * 修改代理日志
      * @param proxyValidateLog
-     * @return
+     * @return 修改后的代理日志
      * @throws ProxyValidateLogException
      */
     ProxyValidateLog update(ProxyValidateLog proxyValidateLog) throws ProxyValidateLogException;

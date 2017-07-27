@@ -31,7 +31,9 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
     protected NumberLotteryFetchResultDataEntity getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(Long numberLotteryFetchResultDataId) throws NumberLotteryFetchResultDataException {
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOneForUpdate(numberLotteryFetchResultDataId);
         if (numberLotteryFetchResultDataEntity == null) {
-            throw new NumberLotteryFetchResultDataException(String.format("未获取到开奖结果抓取数据：numberLotteryFetchResultDataId=%s", numberLotteryFetchResultDataId));
+            String msg = String.format("未获取到开奖结果抓取数据：numberLotteryFetchResultDataId=%s", numberLotteryFetchResultDataId);
+            logger.error(msg);
+            throw new NumberLotteryFetchResultDataException(msg);
         }
         return numberLotteryFetchResultDataEntity;
     }
@@ -65,7 +67,9 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
         logger.info("按id获取数字彩开奖结果抓取数据, numberLotteryFetchResultDataId={}", id);
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(id);
         if (numberLotteryFetchResultDataEntity == null) {
-            throw new NumberLotteryFetchResultDataException(String.format("按id获取数字彩开奖结果抓取数据为空, numberLotteryFetchResultDataId=%s", id));
+            String msg = String.format("按id获取数字彩开奖结果抓取数据为空, numberLotteryFetchResultDataId=%s", id);
+            logger.error(msg);
+            throw new NumberLotteryFetchResultDataException(msg);
         }
         return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
     }
@@ -98,6 +102,7 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (numberLotteryFetchResultDataEntity == null) {
             String msg = String.format("根据彩种[%s]、彩期[%s]获取开奖结果抓取数据为空", lotteryType.getName(), phase);
+            logger.error(msg);
             throw new NumberLotteryFetchResultDataException(msg);
         }
         return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);

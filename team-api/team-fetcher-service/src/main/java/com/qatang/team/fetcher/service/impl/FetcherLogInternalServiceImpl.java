@@ -30,7 +30,9 @@ public class FetcherLogInternalServiceImpl extends AbstractBaseInternalServiceIm
     protected FetcherLogEntity getFetcherLogEntityWithNullCheckForUpdate(Long fetcherLogId) throws FetcherLogException {
         FetcherLogEntity fetcherLogEntity = fetcherLogRepository.findOneForUpdate(fetcherLogId);
         if (fetcherLogEntity == null) {
-            throw new FetcherLogException(String.format("未获取到抓取日志信息，fetcherLogId=%s", fetcherLogId));
+            String msg = String.format("未获取到抓取日志信息，fetcherLogId=%s", fetcherLogId);
+            logger.error(msg);
+            throw new FetcherLogException(msg);
         }
         return fetcherLogEntity;
     }
@@ -64,7 +66,9 @@ public class FetcherLogInternalServiceImpl extends AbstractBaseInternalServiceIm
         logger.info("按id获取抓取日志, fetcherLogId={}", id);
         FetcherLogEntity fetcherLogEntity = fetcherLogRepository.findOne(id);
         if (fetcherLogEntity == null) {
-            throw new FetcherLogException(String.format("按id获取抓取日志未获取到抓取日志, fetcherLogId=%s", id));
+            String msg = String.format("按id获取抓取日志未获取到抓取日志, fetcherLogId=%s", id);
+            logger.error(msg);
+            throw new FetcherLogException(msg);
         }
         return BeanMapping.map(fetcherLogEntity, FetcherLog.class);
     }

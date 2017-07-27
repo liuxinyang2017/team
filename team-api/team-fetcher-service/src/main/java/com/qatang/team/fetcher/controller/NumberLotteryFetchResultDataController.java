@@ -24,24 +24,20 @@ public class NumberLotteryFetchResultDataController extends BaseController{
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public NumberLotteryFetchResultData create(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
-
         logger.info("开始创建抓取开奖结果对象");
-        NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.save(numberLotteryFetchResultData);
-        return numberLotteryFetchResultDataResult;
+        return numberLotteryFetchResultDataInternalService.save(numberLotteryFetchResultData);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public NumberLotteryFetchResultData update(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) {
         logger.info("修改抓取开奖结果对象");
-        NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.update(numberLotteryFetchResultData);
-        return numberLotteryFetchResultDataResult;
+        return numberLotteryFetchResultDataInternalService.update(numberLotteryFetchResultData);
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public NumberLotteryFetchResultData get(@RequestParam Long id) {
         logger.info("获取抓取开奖结果对象信息");
-        NumberLotteryFetchResultData numberLotteryFetchResultDataResult = numberLotteryFetchResultDataInternalService.get(id);
-        return numberLotteryFetchResultDataResult;
+        return numberLotteryFetchResultDataInternalService.get(id);
     }
 
     @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.POST)
@@ -54,6 +50,7 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     public ApiResponse<NumberLotteryFetchResultData> find(@RequestBody PageableWrapper pageableWrapper) {
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
+        logger.info("自定义查询抓取开奖结果对象信息");
         return numberLotteryFetchResultDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

@@ -1,6 +1,7 @@
 package com.qatang.team.fetcher.bean;
 
 import com.qatang.team.core.annotation.request.RequestApiBean;
+import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.FetcherType;
@@ -64,6 +65,7 @@ public class FetcherLog extends AbstractBaseApiBean {
     /**
      * 是否成功
      */
+    @RequestApiFieldUpdatable
     private YesNoStatus success;
 
     /**

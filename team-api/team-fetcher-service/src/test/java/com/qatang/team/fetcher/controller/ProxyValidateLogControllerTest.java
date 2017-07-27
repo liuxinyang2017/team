@@ -8,6 +8,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.fetcher.bean.ProxyValidateLog;
+import com.qatang.team.fetcher.bean.QProxyValidateLog;
 import com.qatang.team.fetcher.service.ProxyValidateLogApiService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,24 +49,32 @@ public class ProxyValidateLogControllerTest extends AbstractControllerTest {
         proxyValidateLog.setId(1L);
         proxyValidateLog.setSuccess(YesNoStatus.NO);
         proxyValidateLog = proxyValidateLogApiService.update(proxyValidateLog);
+        Assert.assertTrue(proxyValidateLog.getSuccess().equals(YesNoStatus.NO));
     }
 
     @Test
     public void testGet() throws Exception {
-        ProxyValidateLog proxyValidateLog = proxyValidateLogApiService.get(1L);
+        Long id = 1L;
+        ProxyValidateLog proxyValidateLog = proxyValidateLogApiService.get(id);
+        logger.info("根据id[{}]获取代理验证日志：代理地址：[{}], 代理端口：[{}]", id, proxyValidateLog.getHost(), proxyValidateLog.getPort());
         Assert.assertNotNull(proxyValidateLog);
     }
 
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual(QProxyValidateLog.id, 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
+        apiRequestPage.paging(0, 10);
+        apiRequestPage.addOrder(QProxyValidateLog.createdTime);
+        apiRequestPage.addOrder(QProxyValidateLog.id);
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
         ApiResponse<ProxyValidateLog> proxyValidateLogApiResponse = proxyValidateLogApiService.findAll(pageableWrapper);
+        logger.info("查询总数：{}", proxyValidateLogApiResponse.getPageTotal());
+
         List<ProxyValidateLog> list = Lists.newArrayList(proxyValidateLogApiResponse.getPagedData());
         list.forEach(proxyValidateLog -> {
-            System.out.println(proxyValidateLog.getHost());
-            System.out.println(proxyValidateLog.getPort());
+           logger.info("查询代理验证日志：代理地址：[{}], 代理端口：[{}]", proxyValidateLog.getHost(), proxyValidateLog.getPort());
         });
     }
 }

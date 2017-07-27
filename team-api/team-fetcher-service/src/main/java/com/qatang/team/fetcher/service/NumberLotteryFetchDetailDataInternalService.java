@@ -43,7 +43,7 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
     /**
      * 修改数字彩开奖详情抓取数据对象
      * @param NumberLotteryFetchDetailDataException
-     * @return
+     * @return 修改后的数字彩开奖详情抓取数据
      * @throws NumberLotteryFetchDetailDataException
      */
     NumberLotteryFetchDetailData update(NumberLotteryFetchDetailData NumberLotteryFetchDetailDataException) throws NumberLotteryFetchDetailDataException;
