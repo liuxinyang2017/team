@@ -31,7 +31,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 数字彩彩果
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    NumberLotteryData create(@RequestBody NumberLotteryData numberLotteryData) {
+    public NumberLotteryData create(@RequestBody NumberLotteryData numberLotteryData) {
         logger.info("开始创建数字彩开奖号码对象");
         return numberLotteryDataInternalService.save(numberLotteryData);
     }
@@ -42,7 +42,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 数字彩彩果
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    NumberLotteryData update(@RequestBody NumberLotteryData numberLotteryData) {
+    public NumberLotteryData update(@RequestBody NumberLotteryData numberLotteryData) {
         logger.info("修改数字彩开奖号码对象");
         return numberLotteryDataInternalService.update(numberLotteryData);
     }
@@ -53,7 +53,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 数字彩彩果
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    NumberLotteryData get(@RequestParam("id") Long numberLotteryDataId) {
+    public NumberLotteryData get(@RequestParam("id") Long numberLotteryDataId) {
         logger.info("获取数字彩开奖号码对象信息");
         return numberLotteryDataInternalService.get(numberLotteryDataId);
     }
@@ -65,7 +65,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 数字彩彩果对象
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.GET)
-    NumberLotteryData getByLotteryTypeAndPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
+    public NumberLotteryData getByLotteryTypeAndPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
         logger.info("根据彩种、彩期获取数字彩开奖号码对象");
         return numberLotteryDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
     }
@@ -76,7 +76,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 分页组织的数字彩彩果信息查询列表
      */
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryData> findAll(@RequestBody PageableWrapper pageableWrapper) {
+    public ApiResponse<NumberLotteryData> findAll(@RequestBody PageableWrapper pageableWrapper) {
         logger.info("自定义查询数字彩开奖号码对象信息");
         ApiRequest request = pageableWrapper.getRequest();
         ApiRequestPage requestPage = pageableWrapper.getRequestPage();
@@ -89,7 +89,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 当前彩期
      */
     @RequestMapping(value = "/getCurrentPhase", method = RequestMethod.GET)
-    NumberLotteryData getCurrentPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
+    public NumberLotteryData getCurrentPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
         logger.info("根据彩种获取当前期");
         return numberLotteryDataInternalService.getCurrentPhase(lotteryType);
     }
@@ -100,7 +100,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 当前期的上一期
      */
     @RequestMapping(value = "/getPreviousPhaseByLotteryType", method = RequestMethod.GET)
-    NumberLotteryData getPreviousPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
+    public NumberLotteryData getPreviousPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
         logger.info("开始获取彩种[{}]当前期的上一期", lotteryType.getName());
         return numberLotteryDataInternalService.getPreviousPhase(lotteryType);
     }
@@ -112,7 +112,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 指定期的上一期
      */
     @RequestMapping(value = "/getPreviousPhaseByLotteryTypeAndPhase", method = RequestMethod.GET)
-    NumberLotteryData getPreviousPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
+    public NumberLotteryData getPreviousPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
         logger.info("开始获取彩种[{}]指定期[{}]的上一期", lotteryType.getName(), phase);
         return numberLotteryDataInternalService.getPreviousPhase(lotteryType, phase);
     }
@@ -123,7 +123,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 当前期的下一期
      */
     @RequestMapping(value = "/getNextPhaseByLotteryType", method = RequestMethod.GET)
-    NumberLotteryData getNextPhase(@RequestParam LotteryType lotteryType) {
+    public NumberLotteryData getNextPhase(@RequestParam LotteryType lotteryType) {
         logger.info("开始获取彩种[{}]当前期的下一期", lotteryType.getName());
         return numberLotteryDataInternalService.getNextPhase(lotteryType);
     }
@@ -135,7 +135,7 @@ public class NumberLotteryDataController extends BaseController {
      * @return 指定期的下一期
      */
     @RequestMapping(value = "/getNextPhaseByLotteryTypeAndPhase", method = RequestMethod.GET)
-    NumberLotteryData getNextPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
+    public NumberLotteryData getNextPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
         logger.info("开始获取彩种[{}]指定期[{}]的下一期", lotteryType.getName(), phase);
         return numberLotteryDataInternalService.getNextPhase(lotteryType, phase);
     }
@@ -148,7 +148,7 @@ public class NumberLotteryDataController extends BaseController {
      * @param checkStatus 检查状态
      */
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
-    void updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) {
+    public void updateStatus(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("toStatus") PhaseStatus toStatus, @RequestParam("checkStatus") PhaseStatus checkStatus) {
         logger.info("开始更新彩期状态");
         numberLotteryDataInternalService.updatePhaseStatus(lotteryType, phase, toStatus, checkStatus);
     }
@@ -159,7 +159,7 @@ public class NumberLotteryDataController extends BaseController {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/switchCurrentPhase", method = RequestMethod.POST)
-    void switchCurrentPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
+    public void switchCurrentPhase(@RequestParam("lotteryType") LotteryType lotteryType) {
         logger.info("开始切换彩种[{}]当前期", lotteryType.getName());
         numberLotteryDataInternalService.switchCurrentPhase(lotteryType);
     }
@@ -182,7 +182,7 @@ public class NumberLotteryDataController extends BaseController {
      * @param result 开奖结果
      */
     @RequestMapping(value = "/updateResult", method = RequestMethod.POST)
-    void updateResult(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("result") String result) {
+    public void updateResult(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("result") String result) {
         logger.info("开始更新彩种[{}]彩期[{}]开奖结果", lotteryType.getName(), phase);
         numberLotteryDataInternalService.updateResult(lotteryType, phase, result);
     }
@@ -196,7 +196,7 @@ public class NumberLotteryDataController extends BaseController {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/findNearestPhaseList", method = RequestMethod.GET)
-    List<NumberLotteryData> findNearestPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("prePhases") int prePhases, @RequestParam("nextPhases") int nextPhases) {
+    public List<NumberLotteryData> findNearestPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("prePhases") int prePhases, @RequestParam("nextPhases") int nextPhases) {
         logger.info("开始获取当前彩期前后n期彩期列表");
         return numberLotteryDataInternalService.findNearestPhaseList(lotteryType, prePhases, nextPhases);
     }
@@ -210,7 +210,7 @@ public class NumberLotteryDataController extends BaseController {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/findPreviousPhaseList", method = RequestMethod.GET)
-    List<NumberLotteryData> findPreviousPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) {
+    public List<NumberLotteryData> findPreviousPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) {
         logger.info("开始获取指定彩期之前n期");
         return numberLotteryDataInternalService.findPreviousPhaseList(lotteryType, phase, n);
     }
@@ -224,7 +224,7 @@ public class NumberLotteryDataController extends BaseController {
      * @throws NumberLotteryDataException
      */
     @RequestMapping(value = "/findNextPhaseList", method = RequestMethod.GET)
-    List<NumberLotteryData> findNextPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) {
+    public List<NumberLotteryData> findNextPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) {
         logger.info("开始获取指定彩期之后n期");
         return numberLotteryDataInternalService.findNextPhaseList(lotteryType, phase, n);
     }
