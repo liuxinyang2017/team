@@ -84,7 +84,7 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
 
         logger.info("排除掉已过期的任务");
         LocalDateTime now = LocalDateTime.now();
-        return allDaemonEventTaskList.stream().filter(task -> CoreDateUtils.convertFrom(task.getExecuteTime()).isAfter(now)).collect(Collectors.toList());
+        return allDaemonEventTaskList.stream().filter(task -> task.getExecuteTime().isAfter(now)).collect(Collectors.toList());
     }
 
     /**
@@ -136,7 +136,7 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
                 default:
                     logger.error("不支持的彩期守护事件类型, 跳过处理, type={}", daemonEventType);
             }
-            daemonEventTask.setExecuteTime(CoreDateUtils.convertTo(executeTime));
+            daemonEventTask.setExecuteTime(executeTime);
             daemonEventTaskList.add(daemonEventTask);
         }
         return daemonEventTaskList;

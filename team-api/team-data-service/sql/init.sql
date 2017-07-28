@@ -34,5 +34,6 @@ CREATE TABLE `daemon_event_task` (
   `execute_time` timestamp NOT NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX `idx_status_type` (`status`, `lottery_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

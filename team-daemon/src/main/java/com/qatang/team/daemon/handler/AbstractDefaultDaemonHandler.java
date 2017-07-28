@@ -7,6 +7,7 @@ import com.qatang.team.data.service.DaemonEventTaskApiService;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -52,10 +53,10 @@ public abstract class AbstractDefaultDaemonHandler extends AbstractDaemonHandler
         if (taskList == null) {
             return;
         }
-        Date date = new Date();
+        LocalDateTime now = LocalDateTime.now();
         for (DaemonEventTask daemonEventTask : taskList) {
             // 已经过期的任务, 不做处理, 可能是服务重启了等情况要回收
-            if (daemonEventTask.getExecuteTime().before(date)) {
+            if (daemonEventTask.getExecuteTime().isBefore(now)) {
                 continue;
             }
             try {
@@ -72,7 +73,7 @@ public abstract class AbstractDefaultDaemonHandler extends AbstractDaemonHandler
         Collection<DaemonEventTask> pendingTaskCollection = this.findPendingTaskOrderByExecuteTimeAsc();
         if (pendingTaskCollection != null && !pendingTaskCollection.isEmpty()) {
             List<DaemonEventTask> taskList = Lists.newArrayList();
-            Date executeTime = null;
+            LocalDateTime executeTime = null;
 
             for (DaemonEventTask daemonEventTask : pendingTaskCollection) {
                 if (executeTime == null) {
