@@ -67,7 +67,12 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
         }
 
         // 确定当前期
-        NumberLotteryData currentNumberLotteryData = numberLotteryDataApiService.getCurrentPhase(lotteryType);
+        NumberLotteryData currentNumberLotteryData = null;
+        try {
+            currentNumberLotteryData = numberLotteryDataApiService.getCurrentPhase(lotteryType);
+        } catch (NumberLotteryDataException e) {
+            logger.error(e.getMessage(), e);
+        }
         if (currentNumberLotteryData == null) {
             // 指定当前期
             LocalDateTime now = LocalDateTime.now();
