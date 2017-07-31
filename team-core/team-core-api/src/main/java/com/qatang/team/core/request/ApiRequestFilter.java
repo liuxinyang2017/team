@@ -17,6 +17,8 @@ public class ApiRequestFilter implements Serializable {
     private OperatorType operatorType;
     private List<Object> valueList;
 
+    public ApiRequestFilter() {}
+
     public ApiRequestFilter(OperatorType operatorType, String field) {
         this.field = field;
         this.operatorType = operatorType;
