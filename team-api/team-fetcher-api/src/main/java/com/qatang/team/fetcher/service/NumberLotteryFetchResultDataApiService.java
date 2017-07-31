@@ -61,7 +61,7 @@ public interface NumberLotteryFetchResultDataApiService {
      * 自定义查询开奖结果抓取数据
      * @param pageableWrapper 查询条件
      * @return 分页组织的开奖结果抓取数据信息查询列表
-     * @throws NumberLotteryFetchResultDataException
+     * @throws NumberLotteryFetchResultDataException 异常
      */
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
     ApiResponse<NumberLotteryFetchResultData> findAll(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryFetchResultDataException;

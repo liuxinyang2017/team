@@ -42,7 +42,7 @@ public interface NumberLotteryFetchDetailDataApiService {
      * 按id获取开奖详情抓取数据
      * @param id 开奖详情id
      * @return 获取到的抓取数据
-     * @throws NumberLotteryFetchDetailDataException
+     * @throws NumberLotteryFetchDetailDataException 异常
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     NumberLotteryFetchDetailData get(@RequestParam("id") Long id) throws NumberLotteryFetchDetailDataException;

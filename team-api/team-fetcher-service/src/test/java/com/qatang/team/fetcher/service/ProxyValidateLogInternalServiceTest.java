@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.service;
 
+import com.google.common.collect.Lists;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
@@ -7,6 +8,7 @@ import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.ProxyValidateLog;
+import com.qatang.team.fetcher.bean.QProxyValidateLog;
 import com.qatang.team.fetcher.config.InitConfig;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author wp
@@ -49,20 +52,31 @@ public class ProxyValidateLogInternalServiceTest extends BaseTest {
         proxyValidateLog.setId(1L);
         proxyValidateLog.setSuccess(YesNoStatus.NO);
         proxyValidateLog = proxyValidateLogInternalService.update(proxyValidateLog);
+        Assert.assertTrue(proxyValidateLog.getSuccess().equals(YesNoStatus.NO));
     }
 
     @Test
     public void testGet() throws Exception {
-        ProxyValidateLog proxyValidateLog = proxyValidateLogInternalService.get(1L);
+        Long id = 1L;
+        ProxyValidateLog proxyValidateLog = proxyValidateLogInternalService.get(id);
+        logger.info("根据id[{}]获取代理验证日志：代理地址：[{}], 代理端口：[{}]", id, proxyValidateLog.getHost(), proxyValidateLog.getPort());
         Assert.assertNotNull(proxyValidateLog);
     }
 
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual("id", 1L);
+        apiRequest.filterEqual(QProxyValidateLog.id, 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
-        ApiResponse<ProxyValidateLog> list = proxyValidateLogInternalService.findAll(apiRequest, apiRequestPage);
-        Assert.assertTrue(list.getPagedData().size() > 0);
+        apiRequestPage.paging(0, 10);
+        apiRequestPage.addOrder(QProxyValidateLog.createdTime);
+        apiRequestPage.addOrder(QProxyValidateLog.id);
+        ApiResponse<ProxyValidateLog> proxyValidateLogApiResponse = proxyValidateLogInternalService.findAll(apiRequest, apiRequestPage);
+        logger.info("查询总数：{}", proxyValidateLogApiResponse.getPageTotal());
+
+        List<ProxyValidateLog> list = Lists.newArrayList(proxyValidateLogApiResponse.getPagedData());
+        list.forEach(proxyValidateLog -> {
+            logger.info("查询代理验证日志：代理地址：[{}], 代理端口：[{}]", proxyValidateLog.getHost(), proxyValidateLog.getPort());
+        });
     }
 }

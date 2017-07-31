@@ -30,13 +30,21 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
     private ProxyDataRepository proxyDataRepository;
 
     protected ProxyDataEntity getProxyDataEntityWithNullCheckForUpdate(Long proxyDataId) throws ProxyDataException {
-        return proxyDataRepository.findOneForUpdate(proxyDataId);
+        ProxyDataEntity proxyDataEntity = proxyDataRepository.findOneForUpdate(proxyDataId);
+        if (proxyDataEntity == null) {
+            String msg = String.format("未获取到代理数据：proxyDataId=%s", proxyDataId);
+            logger.error(msg);
+            throw new ProxyDataException(msg);
+        }
+        return proxyDataEntity;
     }
 
     protected ProxyDataEntity updateStatus(Long id, ProxyValidateStatus toStatus) throws ProxyDataException {
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {
-            throw new ProxyDataException(String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id));
+            String msg = String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id);
+            logger.error(msg);
+            throw new ProxyDataException(msg);
         }
 
         proxyDataRepository.detach(proxyDataEntity);
@@ -85,7 +93,9 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         logger.info("按id获取代理数据, proxyDataId={}", id);
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {
-            throw new ProxyDataException(String.format("按id获取代理数据未获取到代理数据, proxyDataId=%s", id));
+            String msg = String.format("按id获取代理数据未获取到代理数据, proxyDataId=%s", id);
+            logger.error(msg);
+            throw new ProxyDataException(msg);
         }
         return BeanMapping.map(proxyDataEntity, ProxyData.class);
     }
