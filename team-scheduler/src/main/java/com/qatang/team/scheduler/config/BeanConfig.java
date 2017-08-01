@@ -2,9 +2,9 @@ package com.qatang.team.scheduler.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qatang.team.json.CustomObjectMapper;
-import com.qatang.team.scheduler.error.SpringWebClientErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @author wangzhiliang
@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfig {
     @Bean
+    @Primary
     public ObjectMapper customObjectMapper() {
         return new CustomObjectMapper();
     }

@@ -7,7 +7,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
  * @author jinsheng
  */
 @EnableFeignClients({
-        "com.qatang.team.data"
+        "com.qatang.team"
 })
 public class AbstractControllerTest extends BaseTest {
 }

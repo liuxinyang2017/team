@@ -1,9 +1,8 @@
 package com.qatang.team.data.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qatang.team.json.CustomObjectMapper;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
@@ -21,5 +20,10 @@ public class InitConfig {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+    @Bean
+    @Primary
+    public ObjectMapper customObjectMapper() {
+        return new CustomObjectMapper();
+    }
 
 }
