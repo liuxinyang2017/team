@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient("team-data-service")
 @RequestMapping("/data/daemonEventTask")
-public interface DaemonEventTaskApiService extends BaseApiService {
+public interface DaemonEventTaskApiService {
 
     /**
      * 新建待执行的守护事件任务
