@@ -108,9 +108,6 @@ public class DaemonEventTaskController extends BaseController {
                     }
                     break;
                 case QDaemonEventTask.createdTime:
-                case QDaemonEventTask.updatedTime:
-                case QDaemonEventTask.executeTime:
-                default:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);
@@ -119,6 +116,28 @@ public class DaemonEventTaskController extends BaseController {
                         valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
                         filter.setValueList(valueList);
                     }
+                    break;
+                case QDaemonEventTask.updatedTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QDaemonEventTask.executeTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                default:
             }
 
         }
