@@ -1,7 +1,6 @@
 package com.qatang.team.core.enums.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -29,7 +28,7 @@ public abstract class CustomValueEnumDeserializer<T> extends JsonDeserializer<T>
 
     @SuppressWarnings("unchecked")
 	@Override
-	public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+	public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = p.getCurrentToken();
         Integer value = null;
         if (currentToken == JsonToken.VALUE_NUMBER_INT) {

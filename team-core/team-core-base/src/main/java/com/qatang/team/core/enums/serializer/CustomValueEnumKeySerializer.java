@@ -1,7 +1,6 @@
 package com.qatang.team.core.enums.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.apache.commons.beanutils.BeanUtils;
@@ -19,7 +18,7 @@ public class CustomValueEnumKeySerializer<T> extends JsonSerializer<T> {
     protected static final transient Logger logger = LoggerFactory.getLogger(CustomValueEnumKeySerializer.class);
 	
     @Override
-    public void serialize(T value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+    public void serialize(T value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 		try {
             gen.writeFieldName(BeanUtils.getProperty(value, "value"));
 		} catch (Exception e) {

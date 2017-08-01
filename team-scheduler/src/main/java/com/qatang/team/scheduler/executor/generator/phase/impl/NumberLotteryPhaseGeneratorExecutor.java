@@ -102,6 +102,7 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
 
             currentNumberLotteryData = list.get(0);
             currentNumberLotteryData = numberLotteryDataApiService.specifyCurrentPhase(lotteryType, currentNumberLotteryData.getPhase());
+            logger.info(String.format("数字彩彩期生成定时：设定(%s)的彩期(%s)为当前期", lotteryType.getName(), currentNumberLotteryData.getPhase()));
         }
 
         // 当前期之后彩期不足10期，创建彩期

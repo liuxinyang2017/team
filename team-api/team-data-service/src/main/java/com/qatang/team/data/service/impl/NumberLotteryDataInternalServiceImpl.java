@@ -2,10 +2,12 @@ package com.qatang.team.data.service.impl;
 
 import com.google.common.collect.Lists;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.entity.NumberLotteryDataEntity;
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author qatang
@@ -99,6 +102,117 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
     @Override
     public ApiResponse<NumberLotteryData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDataException {
+
+        for (ApiRequestFilter filter : request.getFilterList()) {
+            String field = filter.getField();
+            Object value = filter.getValue();
+            List<Object> valueList = filter.getValueList();
+
+            switch (field) {
+                case "lotteryType":
+                    if (value != null) {
+                        value = LotteryType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> LotteryType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "phaseStatus":
+                    if (value != null) {
+                        value = PhaseStatus.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> PhaseStatus.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "isCurrent":
+                    if (value != null) {
+                        value = YesNoStatus.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> YesNoStatus.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "createdTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "updatedTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "openTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "closeTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "prizeTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "resultTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case "resultDetailTime":
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                default:
+            }
+
+        }
         Page<NumberLotteryDataEntity> numberLotteryDataEntityPage = numberLotteryDataRepository.findAll(convertSpecification(request), convertPageable(requestPage));
         return convertApiResponse(numberLotteryDataEntityPage, NumberLotteryData.class);
     }
@@ -239,6 +353,14 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public NumberLotteryData specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity != null) {
+            numberLotteryDataRepository.detach(numberLotteryDataEntity);
+
+            numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
+            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+        }
+
         NumberLotteryDataEntity specifyNumberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (specifyNumberLotteryDataEntity == null) {
             String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
@@ -249,14 +371,6 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
         specifyNumberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(specifyNumberLotteryDataEntity.getId());
         specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
-
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
-        if (numberLotteryDataEntity != null) {
-            numberLotteryDataRepository.detach(numberLotteryDataEntity);
-
-            numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
-            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
-        }
         return BeanMapping.map(specifyNumberLotteryDataEntity, NumberLotteryData.class);
     }
 

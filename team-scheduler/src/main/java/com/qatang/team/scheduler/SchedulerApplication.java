@@ -1,6 +1,5 @@
 package com.qatang.team.scheduler;
 
-import com.qatang.team.scheduler.config.FeignConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +15,7 @@ import javax.annotation.PreDestroy;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(value = {"com.qatang.team"}, defaultConfiguration = FeignConfig.class)
+@EnableFeignClients(value = {"com.qatang.team"})
 public class SchedulerApplication implements CommandLineRunner {
     protected static final transient Logger logger = LoggerFactory.getLogger(SchedulerApplication.class);
 

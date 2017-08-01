@@ -7,6 +7,7 @@ import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

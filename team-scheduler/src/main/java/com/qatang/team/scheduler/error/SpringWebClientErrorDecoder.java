@@ -52,6 +52,8 @@ public class SpringWebClientErrorDecoder implements ErrorDecoder {
             logger.error("读取响应数据异常", e.getMessage());
         }
 
+        logger.error("响应信息：{}", responseBody);
+
         if (response.status() >= 400 && response.status() <= 499) {
             ErrorInfo errorInfo = null;
             try {

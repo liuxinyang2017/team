@@ -1,6 +1,5 @@
 package com.qatang.team.core.enums.deserializer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class CustomValueEnumKeyDeserializer<T> extends KeyDeserializer {
     }
 
     @Override
-    public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException {
         Integer value = null;
         try {
             value = Integer.valueOf(key);
