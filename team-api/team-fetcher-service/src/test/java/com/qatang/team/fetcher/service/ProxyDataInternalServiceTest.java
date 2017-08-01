@@ -3,6 +3,7 @@ package com.qatang.team.fetcher.service;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.ProxyData;
@@ -49,6 +50,7 @@ public class ProxyDataInternalServiceTest extends BaseTest {
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         ApiResponse<ProxyData> list = proxyDataInternalService.findAll(apiRequest, apiRequestPage);
         Assert.assertTrue(list.getPagedData().size() > 0);
+        logger.info("查询结果数量：[{}]", list.getPagedData().size());
     }
 
     @Test
@@ -60,42 +62,49 @@ public class ProxyDataInternalServiceTest extends BaseTest {
     @Test
     public void testUpdateWaitingTestStatus() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateWaitingTestStatus(1L);
+        logger.info("修改后的状态：{}", proxyData.getProxyValidateStatus().getName());
         Assert.assertTrue(proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.WAITING_TEST));
     }
 
     @Test
     public void testUpdateTestingStatus() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateTestingStatus(1L);
+        logger.info("修改后的状态：{}", proxyData.getProxyValidateStatus().getName());
         Assert.assertTrue(proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.TESTING));
     }
 
     @Test
     public void testUpdatePassStatus() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updatePassStatus(1L);
+        logger.info("修改后的状态：{}", proxyData.getProxyValidateStatus().getName());
         Assert.assertTrue(proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.PASS));
     }
 
     @Test
     public void testUpdateFailedStatus() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateFailedStatus(1L);
+        logger.info("修改后的状态：{}", proxyData.getProxyValidateStatus().getName());
         Assert.assertTrue(proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.FAILED));
     }
 
     @Test
     public void testUpdateObsoletedStatus() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateObsoletedStatus(1L);
+        logger.info("修改后的状态：{}", proxyData.getProxyValidateStatus().getName());
         Assert.assertTrue(proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.OBSOLETED));
     }
 
     @Test
     public void testUpdateBeginTestTime() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateBeginTestTime(1L, LocalDateTime.now());
+        logger.info("修改后的开始时间：{}", CoreDateUtils.formatLocalDateTime(proxyData.getBeginTestTime()));
         Assert.assertNotNull(proxyData.getBeginTestTime());
     }
 
     @Test
     public void testUpdateEndTestTime() throws Exception {
         ProxyData proxyData = proxyDataInternalService.updateEndTestTime(1L, LocalDateTime.now());
+        logger.info("修改后的结束时间：{}", CoreDateUtils.formatLocalDateTime(proxyData.getEndTestTime()));
         Assert.assertNotNull(proxyData.getEndTestTime());
     }
 }
