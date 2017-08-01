@@ -2,14 +2,22 @@ package com.qatang.team.data.controller;
 
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.DaemonEventTask;
+import com.qatang.team.data.bean.QDaemonEventTask;
 import com.qatang.team.data.service.DaemonEventTaskInternalService;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
+import com.qatang.team.enums.daemon.DaemonEventType;
+import com.qatang.team.enums.lottery.LotteryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author jinsheng
@@ -58,11 +66,62 @@ public class DaemonEventTaskController extends BaseController {
      * @param pageableWrapper 自定义组合查询条件、分页和排序条件
      * @return 分页组织的守护事件任务对象信息查询列表
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
     public ApiResponse<DaemonEventTask> findAll(@RequestBody PageableWrapper pageableWrapper) {
         logger.info("开始守护事件任务对象自定义查询");
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
+        for (ApiRequestFilter filter : apiRequest.getFilterList()) {
+            String field = filter.getField();
+            Object value = filter.getValue();
+            List<Object> valueList = filter.getValueList();
+
+            switch (field) {
+                case QDaemonEventTask.lotteryType:
+                    if (value != null) {
+                        value = LotteryType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> LotteryType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QDaemonEventTask.status:
+                    if (value != null) {
+                        value = DaemonEventStatus.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> DaemonEventStatus.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QDaemonEventTask.type:
+                    if (value != null) {
+                        value = DaemonEventType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> DaemonEventType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QDaemonEventTask.createdTime:
+                case QDaemonEventTask.updatedTime:
+                case QDaemonEventTask.executeTime:
+                default:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+            }
+
+        }
         return daemonEventTaskInternalService.findAll(apiRequest, apiRequestPage);
     }
 
