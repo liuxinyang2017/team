@@ -63,7 +63,6 @@ public interface ProxyDataApiService {
     @RequestMapping(value = "/updateTestingStatus", method = RequestMethod.GET)
     ProxyData updateTestingStatus(@RequestParam("id") Long id) throws ProxyDataException;
 
-
     /**
      * 将代理数据检测状态更新为 已通过
      * 连续失败次数清零

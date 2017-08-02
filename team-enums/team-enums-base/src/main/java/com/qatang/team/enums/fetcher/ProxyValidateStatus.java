@@ -14,7 +14,7 @@ import java.util.*;
  */
 public enum ProxyValidateStatus {
     ALL(-1, "全部"),
-    INIT(1, "待处理"),
+    PENDING(1, "待处理"),
     WAITING_TEST(2, "待测试"),
     TESTING(3, "测试中"),
     PASS(4, "已通过"),
@@ -50,7 +50,7 @@ public enum ProxyValidateStatus {
             _ALL_LIST = Collections.unmodifiableList(listAll);
 
             statusFlow = Maps.newHashMap();
-            statusFlow.put(INIT, ImmutableSet.of(WAITING_TEST, OBSOLETED));
+            statusFlow.put(PENDING, ImmutableSet.of(WAITING_TEST, OBSOLETED));
             statusFlow.put(WAITING_TEST, ImmutableSet.of(TESTING, OBSOLETED));
             statusFlow.put(TESTING, ImmutableSet.of(WAITING_TEST, PASS, FAILED, OBSOLETED));
             statusFlow.put(PASS, ImmutableSet.of(WAITING_TEST, OBSOLETED));

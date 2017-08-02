@@ -35,7 +35,7 @@ public class ProxyDataControllerTest {
         proxyData.setPort(10002);
         proxyData.setPassword("test");
         proxyData.setUsername("test");
-        proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
+        proxyData.setProxyValidateStatus(ProxyValidateStatus.PENDING);
         proxyDataApiService.create(proxyData);
     }
 

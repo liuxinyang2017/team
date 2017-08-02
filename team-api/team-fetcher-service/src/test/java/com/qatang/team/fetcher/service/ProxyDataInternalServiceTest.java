@@ -8,13 +8,9 @@ import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.bean.QProxyData;
-import com.qatang.team.fetcher.config.InitConfig;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 
@@ -33,7 +29,7 @@ public class ProxyDataInternalServiceTest extends BaseTest {
         proxyData.setPort(80);
         proxyData.setUsername("proxy");
         proxyData.setPassword("proxy123");
-        proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
+        proxyData.setProxyValidateStatus(ProxyValidateStatus.PENDING);
         proxyData.setBeginTestTime(LocalDateTime.now());
         proxyData.setEndTestTime(LocalDateTime.now());
         proxyData.setFailedCount(0);

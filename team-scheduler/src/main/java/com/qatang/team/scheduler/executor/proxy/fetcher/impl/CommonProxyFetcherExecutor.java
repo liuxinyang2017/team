@@ -7,7 +7,6 @@ import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
-import com.qatang.team.fetcher.service.FetcherLogApiService;
 import com.qatang.team.fetcher.service.ProxyDataApiService;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.proxy.fetcher.IProxyFetcher;
@@ -67,7 +66,7 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
             proxyData.setPort(proxyInfo.getPort());
             proxyData.setUsername(proxyInfo.getUsername());
             proxyData.setPassword(proxyInfo.getPassword());
-            proxyData.setProxyValidateStatus(ProxyValidateStatus.INIT);
+            proxyData.setProxyValidateStatus(ProxyValidateStatus.PENDING);
             proxyData.setFailedCount(0);
             proxyData.setScore(0);
 
