@@ -1,9 +1,9 @@
 package com.qatang.team.fetcher.service;
 
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
-import com.qatang.team.fetcher.wrapper.ProxyDataWrapper;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +33,8 @@ public interface ProxyDataApiService {
      * @return 代理数据
      * @throws ProxyDataException 异常
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException;
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    ApiResponse<ProxyData> findAll(@RequestBody PageableWrapper pageableWrapper) throws ProxyDataException;
 
     /**
      * 按id获取代理数据

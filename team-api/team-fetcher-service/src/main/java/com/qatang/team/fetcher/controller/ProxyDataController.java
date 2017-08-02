@@ -2,17 +2,22 @@ package com.qatang.team.fetcher.controller;
 
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.util.CoreDateUtils;
+import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
+import com.qatang.team.fetcher.bean.QProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
 import com.qatang.team.fetcher.service.ProxyDataInternalService;
-import com.qatang.team.fetcher.wrapper.ProxyDataWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wangzhiliang
@@ -40,11 +45,70 @@ public class ProxyDataController extends BaseController {
      * @return 代理数据
      * @throws ProxyDataException 异常
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    public ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException {
-        ApiRequest apiRequest = proxyDataWrapper.convertRequest();
-        ApiRequestPage apiRequestPage = proxyDataWrapper.convertPageable();
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    public ApiResponse<ProxyData> findAll(@RequestBody PageableWrapper pageableWrapper) throws ProxyDataException {
+        ApiRequest apiRequest = pageableWrapper.getRequest();
+        ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         logger.info("自定义查询代理数据信息");
+        for (ApiRequestFilter filter : apiRequest.getFilterList()) {
+            String field = filter.getField();
+            Object value = filter.getValue();
+            List<Object> valueList = filter.getValueList();
+
+            switch (field) {
+                case QProxyData.proxyValidateStatus:
+                    if (value != null) {
+                        value = ProxyValidateStatus.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> ProxyValidateStatus.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyData.createdTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyData.updatedTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyData.beginTestTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyData.endTestTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                default:
+            }
+        }
         return proxyDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 
