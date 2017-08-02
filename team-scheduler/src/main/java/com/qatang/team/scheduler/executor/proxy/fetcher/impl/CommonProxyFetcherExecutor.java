@@ -6,6 +6,7 @@ import com.qatang.team.core.util.CoreCollectionUtils;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
+import com.qatang.team.fetcher.exception.ProxyDataException;
 import com.qatang.team.fetcher.service.FetcherLogApiService;
 import com.qatang.team.fetcher.service.ProxyDataApiService;
 import com.qatang.team.proxy.bean.ProxyInfo;
@@ -54,6 +55,13 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
         // 入库
         allProxyInfoList.forEach(proxyInfo -> {
+            try {
+                proxyDataApiService.getByHostAndPort(proxyInfo.getHost(), proxyInfo.getPort());
+                return;
+            } catch (ProxyDataException e) {
+                // 抛异常说明没查询到，继续入库操作
+            }
+
             ProxyData proxyData = new ProxyData();
             proxyData.setHost(proxyInfo.getHost());
             proxyData.setPort(proxyInfo.getPort());
