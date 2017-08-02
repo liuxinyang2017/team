@@ -41,9 +41,9 @@ public interface FetcherLogInternalService extends BaseInternalSerivce {
 
     /**
      * 修改抓取日志
-     * @param fetcherLog
-     * @return
-     * @throws FetcherLogException
+     * @param fetcherLog 抓取日志
+     * @return 修改后的抓取日志
+     * @throws FetcherLogException 异常
      */
     FetcherLog update(FetcherLog fetcherLog) throws FetcherLogException;
 }

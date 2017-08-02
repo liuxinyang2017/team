@@ -41,9 +41,9 @@ public interface NumberLotteryFetchResultDataInternalService extends BaseInterna
 
     /**
      * 修改数字彩开奖结果抓取数据对象
-     * @param numberLotteryFetchResultData
+     * @param numberLotteryFetchResultData 数字彩开奖结果抓取数据对象
      * @return 数字彩开奖结果抓取数据对象
-     * @throws NumberLotteryFetchResultDataException
+     * @throws NumberLotteryFetchResultDataException 异常
      */
     NumberLotteryFetchResultData update(NumberLotteryFetchResultData numberLotteryFetchResultData) throws NumberLotteryFetchResultDataException;
 

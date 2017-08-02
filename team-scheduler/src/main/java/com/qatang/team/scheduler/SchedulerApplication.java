@@ -15,7 +15,7 @@ import javax.annotation.PreDestroy;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients({"com.qatang.team"})
+@EnableFeignClients(value = {"com.qatang.team"})
 public class SchedulerApplication implements CommandLineRunner {
     protected static final transient Logger logger = LoggerFactory.getLogger(SchedulerApplication.class);
 

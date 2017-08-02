@@ -4,6 +4,7 @@ import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
 import com.qatang.team.fetcher.service.ProxyDataInternalService;
@@ -30,6 +31,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ProxyData create(@RequestBody ProxyData proxyData) throws ProxyDataException {
+        logger.info("开始创建代理数据对象");
         return proxyDataInternalService.save(proxyData);
     }
 
@@ -42,6 +44,7 @@ public class ProxyDataController extends BaseController {
     public ApiResponse<ProxyData> find(@RequestBody ProxyDataWrapper proxyDataWrapper) throws ProxyDataException {
         ApiRequest apiRequest = proxyDataWrapper.convertRequest();
         ApiRequestPage apiRequestPage = proxyDataWrapper.convertPageable();
+        logger.info("自定义查询代理数据信息");
         return proxyDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 
@@ -53,6 +56,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public ProxyData get(@RequestParam Long id) throws ProxyDataException {
+        logger.info("按id获取代理数据，id：[{}]", id);
         return proxyDataInternalService.get(id);
     }
 
@@ -64,6 +68,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateWaitingTestStatus", method = RequestMethod.GET)
     public ProxyData updateWaitingTestStatus(@RequestParam Long id) throws ProxyDataException {
+        logger.info("将代理数据检测状态更新为 待测试,id:[{}]", id);
         return proxyDataInternalService.updateWaitingTestStatus(id);
     }
 
@@ -75,6 +80,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateTestingStatus", method = RequestMethod.GET)
     public ProxyData updateTestingStatus(@RequestParam Long id) throws ProxyDataException {
+        logger.info("将代理数据检测状态更新为 测试中,id:[{}]", id);
         return proxyDataInternalService.updateTestingStatus(id);
     }
 
@@ -90,6 +96,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updatePassStatus", method = RequestMethod.GET)
     public ProxyData updatePassStatus(@RequestParam Long id) throws ProxyDataException {
+        logger.info("将代理数据检测状态更新为 已通过,id:[{}]", id);
         return proxyDataInternalService.updatePassStatus(id);
     }
 
@@ -101,6 +108,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateFailedStatus", method = RequestMethod.GET)
     public ProxyData updateFailedStatus(@RequestParam Long id) throws ProxyDataException {
+        logger.info("将代理数据检测状态更新为 测试失败,id:[{}]", id);
         return proxyDataInternalService.updateFailedStatus(id);
     }
 
@@ -112,6 +120,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateObsoletedStatus", method = RequestMethod.GET)
     public ProxyData updateObsoletedStatus(@RequestParam Long id) throws ProxyDataException {
+        logger.info("将代理数据检测状态更新为 已作废,id:[{}]", id);
         return proxyDataInternalService.updateObsoletedStatus(id);
     }
 
@@ -124,6 +133,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
     public ProxyData updateBeginTestTime(@RequestParam Long id, @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
+        logger.info("更新开始测试时间,id:[{}],开始测试时间：[{}]", id, CoreDateUtils.formatLocalDateTime(beginTestTime));
         return proxyDataInternalService.updateBeginTestTime(id, beginTestTime);
     }
 
@@ -136,6 +146,7 @@ public class ProxyDataController extends BaseController {
      */
     @RequestMapping(value = "/updateEndTestTime", method = RequestMethod.GET)
     public ProxyData updateEndTestTime(@RequestParam Long id, @RequestParam LocalDateTime endTestTime) throws ProxyDataException {
+        logger.info("更新结束测试时间,id:[{}],结束测试时间：[{}]", id, CoreDateUtils.formatLocalDateTime(endTestTime));
         return proxyDataInternalService.updateEndTestTime(id, endTestTime);
     }
 }

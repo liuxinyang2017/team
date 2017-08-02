@@ -2,10 +2,12 @@ package com.qatang.team.data.service.impl;
 
 import com.google.common.collect.Lists;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.entity.NumberLotteryDataEntity;
@@ -28,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author qatang
@@ -239,6 +242,14 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
     @Override
     @Transactional
     public NumberLotteryData specifyCurrentPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
+        if (numberLotteryDataEntity != null) {
+            numberLotteryDataRepository.detach(numberLotteryDataEntity);
+
+            numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
+            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
+        }
+
         NumberLotteryDataEntity specifyNumberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (specifyNumberLotteryDataEntity == null) {
             String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
@@ -249,14 +260,6 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
         specifyNumberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(specifyNumberLotteryDataEntity.getId());
         specifyNumberLotteryDataEntity.setIsCurrent(YesNoStatus.YES);
-
-        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndIsCurrent(lotteryType, YesNoStatus.YES);
-        if (numberLotteryDataEntity != null) {
-            numberLotteryDataRepository.detach(numberLotteryDataEntity);
-
-            numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
-            numberLotteryDataEntity.setIsCurrent(YesNoStatus.NO);
-        }
         return BeanMapping.map(specifyNumberLotteryDataEntity, NumberLotteryData.class);
     }
 

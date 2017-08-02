@@ -9,7 +9,9 @@ public class ApiRequestOrder implements Serializable {
 
 	private String field;
 	private PageOrderType orderType;
-	
+
+	public ApiRequestOrder() {}
+
 	public ApiRequestOrder(String field, PageOrderType orderType) {
 		this.field = field;
 		this.orderType = orderType;

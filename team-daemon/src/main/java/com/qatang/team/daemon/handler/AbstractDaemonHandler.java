@@ -6,7 +6,6 @@ import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.data.bean.DaemonEventTask;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -67,7 +66,7 @@ public abstract class AbstractDaemonHandler extends AbstractThreadRunnable imple
 
             // 下一个要执行的时间点
             DaemonEventTask daemonEventTask = nextTimeTaskList.get(0);
-            LocalDateTime next = LocalDateTime.ofInstant(daemonEventTask.getExecuteTime().toInstant(), ZoneId.systemDefault());
+            LocalDateTime next = daemonEventTask.getExecuteTime();
             LocalDateTime now = LocalDateTime.now();
             logger.error("[{}]守护线程下一个执行事件时间: next={}, now={}, 需要执行的守护任务数量={}", daemonEventTask.getLotteryType().getName(), next.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), nextTimeTaskList.size());
 
@@ -226,7 +225,7 @@ public abstract class AbstractDaemonHandler extends AbstractThreadRunnable imple
                 daemonEventTask.getMatchNum(),
                 daemonEventTask.getType(),
                 daemonEventTask.getStatus(),
-                CoreDateUtils.formatDateTime(daemonEventTask.getExecuteTime())));
+                CoreDateUtils.formatLocalDateTime(daemonEventTask.getExecuteTime())));
     }
 
     /**

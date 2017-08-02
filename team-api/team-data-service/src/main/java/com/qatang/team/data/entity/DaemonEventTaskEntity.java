@@ -12,7 +12,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author jinsheng
@@ -67,7 +66,7 @@ public class DaemonEventTaskEntity implements BaseEntity {
      * 任务的预期执行时间
      */
     @Column(name = "execute_time", nullable = false)
-    private Date executeTime;
+    private LocalDateTime executeTime;
 
     /**
      * 创建时间
@@ -144,11 +143,11 @@ public class DaemonEventTaskEntity implements BaseEntity {
         this.status = status;
     }
 
-    public Date getExecuteTime() {
+    public LocalDateTime getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(Date executeTime) {
+    public void setExecuteTime(LocalDateTime executeTime) {
         this.executeTime = executeTime;
     }
 

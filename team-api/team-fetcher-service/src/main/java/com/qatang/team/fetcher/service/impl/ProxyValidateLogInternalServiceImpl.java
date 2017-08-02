@@ -29,7 +29,13 @@ public class ProxyValidateLogInternalServiceImpl extends AbstractBaseInternalSer
     private ProxyValidateLogRepository proxyValidateLogRepository;
 
     protected ProxyValidateLogEntity getProxyValidateLogEntityWithNullCheckForUpdate(Long proxyValidateLogId) throws ProxyValidateLogException {
-        return proxyValidateLogRepository.findOneForUpdate(proxyValidateLogId);
+        ProxyValidateLogEntity proxyValidateLogEntity = proxyValidateLogRepository.findOneForUpdate(proxyValidateLogId);
+        if (proxyValidateLogEntity == null) {
+            String msg = String.format("未获取到代理日志数据：proxyValidateLogId=%s", proxyValidateLogId);
+            logger.error(msg);
+            throw new ProxyValidateLogException(msg);
+        }
+        return proxyValidateLogEntity;
     }
 
     @Override
@@ -61,7 +67,9 @@ public class ProxyValidateLogInternalServiceImpl extends AbstractBaseInternalSer
         logger.info("按id获取代理日志, proxyValidateLogId={}", id);
         ProxyValidateLogEntity proxyValidateLogEntity = proxyValidateLogRepository.findOne(id);
         if (proxyValidateLogEntity == null) {
-            throw new ProxyValidateLogException(String.format("按id获取代理日志未获取到代理日志, proxyValidateLogId=%s", id));
+            String msg = String.format("按id获取代理日志未获取到代理日志, proxyValidateLogId=%s", id);
+            logger.error(msg);
+            throw new ProxyValidateLogException(msg);
         }
         return BeanMapping.map(proxyValidateLogEntity, ProxyValidateLog.class);
     }

@@ -8,6 +8,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataApiService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,33 +45,45 @@ public class NumberLotteryFetchDetailDataControllerTest extends AbstractControll
 
     @Test
     public void testUpdate() {
+        Long id = 1L;
         NumberLotteryFetchDetailData numberLotteryFetchDetailData = new NumberLotteryFetchDetailData();
-        numberLotteryFetchDetailData.setId(1L);
+        numberLotteryFetchDetailData.setId(id);
         numberLotteryFetchDetailData.setPrizeName("二等奖");
-        numberLotteryFetchDetailDataApiService.update(numberLotteryFetchDetailData);
+        numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.update(numberLotteryFetchDetailData);
+        Assert.assertTrue("二等奖".equals(numberLotteryFetchDetailData.getPrizeName()));
     }
 
     @Test
     public void testGet() {
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.get(1L);
+        Long id = 1L;
+        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.get(id);
+        logger.info("根据id[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", id, numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
         Assert.assertNotNull(numberLotteryFetchDetailData);
     }
 
     @Test
     public void testGetByLotteryTypeAndPhase() {
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.getByLotteryTypeAndPhase(LotteryType.FC_SSQ, "20170701");
+        String phase = "20170701";
+        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.getByLotteryTypeAndPhase(LotteryType.FC_SSQ, phase);
+        logger.info("根据彩种[{}]，彩期[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", LotteryType.FC_SSQ.getName(), phase, numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
         Assert.assertNotNull(numberLotteryFetchDetailData);
     }
 
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
+        apiRequest.filterEqual(QNumberLotteryFetchDetailData.id, 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
+        apiRequestPage.paging(0, 10);
+        apiRequestPage.addOrder(QNumberLotteryFetchDetailData.createdTime);
+        apiRequestPage.addOrder(QNumberLotteryFetchDetailData.id);
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
-        ApiResponse<NumberLotteryFetchDetailData> numberLotteryFetchResultDataApiResponse = numberLotteryFetchDetailDataApiService.findAll(pageableWrapper);
-        List<NumberLotteryFetchDetailData> list = Lists.newArrayList(numberLotteryFetchResultDataApiResponse.getPagedData());
+        ApiResponse<NumberLotteryFetchDetailData> numberLotteryFetchDetailDataApiResponse = numberLotteryFetchDetailDataApiService.findAll(pageableWrapper);
+        logger.info("查询总数：{}", numberLotteryFetchDetailDataApiResponse.getTotal());
+
+        List<NumberLotteryFetchDetailData> list = Lists.newArrayList(numberLotteryFetchDetailDataApiResponse.getPagedData());
         list.forEach(numberLotteryFetchDetailData -> {
-            System.out.println(numberLotteryFetchDetailData.getPhase());
+            logger.info("开奖详情抓取彩种[{}], 抓取来源[{}]", numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
         });
     }
 }

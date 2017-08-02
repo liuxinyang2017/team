@@ -2,7 +2,6 @@ package com.qatang.team.data.service;
 
 
 import com.qatang.team.core.response.ApiResponse;
-import com.qatang.team.core.service.BaseApiService;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.exception.DaemonEventTaskDuplicatedException;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient("team-data-service")
 @RequestMapping("/data/daemonEventTask")
-public interface DaemonEventTaskApiService extends BaseApiService {
+public interface DaemonEventTaskApiService {
 
     /**
      * 新建待执行的守护事件任务
@@ -71,6 +70,6 @@ public interface DaemonEventTaskApiService extends BaseApiService {
      * @return 分页组织的守护事件任务信息查询列表
      * @throws DaemonEventTaskException
      */
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
-    ApiResponse<DaemonEventTask> find(@RequestBody PageableWrapper pageableWrapper) throws DaemonEventTaskException;
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    ApiResponse<DaemonEventTask> findAll(@RequestBody PageableWrapper pageableWrapper) throws DaemonEventTaskException;
 }

@@ -26,7 +26,7 @@ public abstract class AbstractDaemonEventExecutor implements IDaemonEventExecuto
             logger.error("[{}]开始处理守护事件任务, id={}, type={}, lotteryType={}, phase={}, matchNum={}, executeTime={}", daemonEventTask.getLotteryType().getName(),
                     daemonEventTask.getId(), daemonEventTask.getType(),
                     daemonEventTask.getLotteryType(), daemonEventTask.getPhase(), daemonEventTask.getMatchNum(),
-                    CoreDateUtils.formatDateTime(daemonEventTask.getExecuteTime()));
+                    CoreDateUtils.formatLocalDateTime(daemonEventTask.getExecuteTime()));
 
             // 获取一次最新的任务数据
             daemonEventTask = daemonEventTaskApiService.get(daemonEventTask.getId());
@@ -53,7 +53,7 @@ public abstract class AbstractDaemonEventExecutor implements IDaemonEventExecuto
             logger.error("[{}]成功处理守护事件任务, id={}, type={}, lotteryType={}, phase={}, matchNum={}, executeTime={}", daemonEventTask.getLotteryType().getName(),
                     daemonEventTask.getId(), daemonEventTask.getType(),
                     daemonEventTask.getLotteryType(), daemonEventTask.getPhase(), daemonEventTask.getMatchNum(),
-                    CoreDateUtils.formatDateTime(daemonEventTask.getExecuteTime()));
+                    CoreDateUtils.formatLocalDateTime(daemonEventTask.getExecuteTime()));
         } catch (Exception e) {
             logger.error("执行守护事件任务发生异常, 重新将任务设置成待处理, id=" + daemonEventTask.getId(), e);
 //            daemonEventTaskApiService.updateStatus(daemonEventTask.getId(), DaemonEventStatus.PENDING, DaemonEventStatus.EXECUTING);
