@@ -27,7 +27,7 @@ public class ApiRequest implements Serializable {
 
     private boolean distinct;
 
-    private ApiRequest() {
+    public ApiRequest() {
 
     }
 

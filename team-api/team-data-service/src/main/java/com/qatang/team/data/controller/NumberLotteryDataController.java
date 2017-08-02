@@ -55,6 +55,9 @@ public class NumberLotteryDataController extends BaseController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public NumberLotteryData get(@RequestParam("id") Long numberLotteryDataId) {
         logger.info("获取数字彩开奖号码对象信息");
+        if (numberLotteryDataId < 0) {
+           throw new NumberLotteryDataException("id buneng xiaofd");
+        }
         return numberLotteryDataInternalService.get(numberLotteryDataId);
     }
 

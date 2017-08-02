@@ -77,14 +77,14 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
     public void testFindAll() {
         LotteryType lotteryType = LotteryType.FC_SSQ;
 
-        ApiRequest apiRequest = ApiRequest.newInstance();
+        ApiRequest apiRequest = new ApiRequest();
         apiRequest.filterEqual(QNumberLotteryData.lotteryType, lotteryType);
 
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
-        apiRequestPage.paging(0, 10);
+        /*apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QNumberLotteryData.createdTime);
         apiRequestPage.addOrder(QNumberLotteryData.id);
-
+*/
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
         ApiResponse<NumberLotteryData> response = numberLotteryDataApiService.findAll(pageableWrapper);
         logger.info("彩种[{}]数字彩彩果总数：{}", lotteryType.getName(), response.getTotal());

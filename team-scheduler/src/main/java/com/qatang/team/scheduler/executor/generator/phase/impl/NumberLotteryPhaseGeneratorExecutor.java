@@ -55,7 +55,7 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
         // 初始化
         NumberLotteryData numberLotteryData = null;
         try {
-            numberLotteryData = numberLotteryDataApiService.get(1L);
+            numberLotteryData = numberLotteryDataApiService.get(-1L);
         } catch (NumberLotteryDataException e) {
             logger.error(e.getMessage(), e);
         }
