@@ -12,6 +12,7 @@ import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.service.NumberLotteryDataApiService;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import com.qatang.team.generator.phase.bean.PhaseInfo;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -52,74 +54,44 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
     }
 
     private void generate(LotteryType lotteryType) {
-        // 初始化
-        NumberLotteryData numberLotteryData = null;
-        try {
-            numberLotteryData = numberLotteryDataApiService.get(-1L);
-        } catch (NumberLotteryDataException e) {
-            logger.error(e.getMessage(), e);
-        }
-        if (numberLotteryData == null) {
-            logger.info(String.format("数字彩彩期生成定时：未查询到(%s)的彩期数据，从当前年份的第1期开始，生成200期数据", lotteryType.getName()));
-            PhaseInfo startPhaseInfo = StartPhaseInfoBuilder.build(lotteryType);
-            createNumberLotteryData(startPhaseInfo, 200);
-            logger.info(String.format("数字彩彩期生成定时：初始化(%s)的彩期数据成功！", lotteryType.getName()));
-        }
-
-        // 确定当前期
-        NumberLotteryData currentNumberLotteryData = numberLotteryDataApiService.getCurrentPhase(lotteryType);
-        if (currentNumberLotteryData == null) {
-            // 指定当前期
-            LocalDateTime now = LocalDateTime.now();
+        {// 初始化创建彩期
             ApiRequest request = ApiRequest.newInstance();
             request.filterEqual(QNumberLotteryData.lotteryType, lotteryType);
-            request.filterLessEqual(QNumberLotteryData.openTime, now);
-            request.filterGreaterEqual(QNumberLotteryData.closeTime, now);
 
             ApiRequestPage requestPage = ApiRequestPage.newInstance();
-            requestPage.paging(0, 10);
+            requestPage.paging(0, 1);
             requestPage.addOrder(QNumberLotteryData.id);
 
             PageableWrapper pageableWrapper = new PageableWrapper(request, requestPage);
             ApiResponse<NumberLotteryData> response = numberLotteryDataApiService.findAll(pageableWrapper);
             if (response == null || response.getPagedData().isEmpty()) {
-                String msg = String.format("数字彩彩期生成定时：未找到(%s)开始时间<%s，结束时间>%s的彩期，无法确认当前期", lotteryType.getName(), CoreDateUtils.formatLocalDateTime(now), CoreDateUtils.formatLocalDateTime(now));
-                logger.error(msg);
-                throw new SchedulerException(msg);
+                logger.info(String.format("数字彩彩期生成定时：未查询到(%s)的彩期数据，从当前年份的第1期开始，生成200期数据", lotteryType.getName()));
+                PhaseInfo startPhaseInfo = StartPhaseInfoBuilder.build(lotteryType);
+                createNumberLotteryData(startPhaseInfo, 92);
+                logger.info(String.format("数字彩彩期生成定时：初始化(%s)的彩期数据成功！", lotteryType.getName()));
             }
-
-            List<NumberLotteryData> list = Lists.newArrayList(response.getPagedData());
-            if (list.size() != 1) {
-                String msg = String.format("数字彩彩期生成定时：(%s)开始时间<%s，结束时间>%s的彩期，不止1期，无法指定当前期", lotteryType.getName(), CoreDateUtils.formatLocalDateTime(now), CoreDateUtils.formatLocalDateTime(now));
-                logger.error(msg);
-                throw new SchedulerException(msg);
-            }
-
-            currentNumberLotteryData = list.get(0);
-            currentNumberLotteryData = numberLotteryDataApiService.specifyCurrentPhase(lotteryType, currentNumberLotteryData.getPhase());
         }
 
-        // 当前期之后彩期不足10期，创建彩期
+        // 当前时间+20天>最后一期的结束时间，创建彩期
         ApiRequest request = ApiRequest.newInstance();
         request.filterEqual(QNumberLotteryData.lotteryType, lotteryType);
-        request.filterGreaterThan(QNumberLotteryData.phase, currentNumberLotteryData.getPhase());
 
         ApiRequestPage requestPage = ApiRequestPage.newInstance();
-        requestPage.paging(0, 20);
-        requestPage.addOrder(QNumberLotteryData.id);
+        requestPage.paging(0, 1);
+        requestPage.addOrder(QNumberLotteryData.id, PageOrderType.DESC);
 
         PageableWrapper pageableWrapper = new PageableWrapper(request, requestPage);
         ApiResponse<NumberLotteryData> response = numberLotteryDataApiService.findAll(pageableWrapper);
         if (response == null || response.getPagedData().isEmpty()) {
-            String msg = String.format("数字彩彩期生成定时：(%s)当前期(%s)之后已无彩期，不足10期自动生成逻辑异常，请检查", lotteryType.getName(), currentNumberLotteryData.getPhase());
+            String msg = String.format("数字彩彩期生成定时：(%s)彩期不存在，自动生成彩期逻辑异常，请检查", lotteryType.getName());
             logger.error(msg);
             throw new SchedulerException(msg);
         }
 
-        List<NumberLotteryData> list = Lists.newArrayList(response.getPagedData());
-        if (list.size() < 10) {
-            logger.info(String.format("数字彩彩期生成定时：(%s)当前期(%s)之后的彩期数量不足10期，需要生成新彩期", lotteryType.getName(), currentNumberLotteryData.getPhase()));
-            NumberLotteryData lastNumberLotteryData =  list.get(list.size() - 1);
+        LocalDateTime now = LocalDateTime.now();
+        NumberLotteryData lastNumberLotteryData = response.getPagedData().iterator().next();
+        if (now.until(lastNumberLotteryData.getCloseTime(), ChronoUnit.DAYS) < 20) {
+            logger.info(String.format("数字彩彩期生成定时：(%s)当前时间+20天>最后一期的结束时间，需要生成新彩期", lotteryType.getName()));
 
             PhaseInfo startPhaseInfo = new PhaseInfo();
             startPhaseInfo.setLotteryType(lotteryType);
