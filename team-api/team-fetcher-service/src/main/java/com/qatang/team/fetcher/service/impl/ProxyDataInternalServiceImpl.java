@@ -175,4 +175,15 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         proxyDataEntity.setEndTestTime(endTestTime);
         return BeanMapping.map(proxyDataEntity, ProxyData.class);
     }
+
+    @Override
+    public ProxyData getByHostAndPort(String host, int port) throws ProxyDataException {
+        ProxyDataEntity proxyDataEntity = proxyDataRepository.findByHostAndPort(host, port);
+        if (proxyDataEntity == null) {
+            String msg = String.format("根据代理地址[%s]、代理端口[%s]获取代理数据为空", host, port);
+            logger.error(msg);
+            throw new ProxyDataException(msg);
+        }
+        return BeanMapping.map(proxyDataEntity, ProxyData.class);
+    }
 }

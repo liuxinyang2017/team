@@ -113,4 +113,15 @@ public interface ProxyDataApiService {
      */
     @RequestMapping(value = "/updateEndTestTime", method = RequestMethod.GET)
     ProxyData updateEndTestTime(@RequestParam("id") Long id, @RequestParam("endTestTime") LocalDateTime endTestTime) throws ProxyDataException;
+
+    /***
+     * 根据代理地址，代理端口获取代理数据
+     * @param host 代理地址
+     * @param port 代理端口
+     * @return 获取到的代理数据
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/getByHostAndPort", method = RequestMethod.POST)
+    ProxyData getByHostAndPort(@RequestParam("host") String host, @RequestParam("port") int port) throws ProxyDataException;
+
 }

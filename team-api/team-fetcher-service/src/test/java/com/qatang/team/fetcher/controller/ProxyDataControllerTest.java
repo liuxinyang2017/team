@@ -7,6 +7,8 @@ import com.qatang.team.fetcher.service.ProxyDataApiService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,6 +26,8 @@ public class ProxyDataControllerTest {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Test
     public void testCreate() {
         ProxyData proxyData = new ProxyData();
@@ -39,5 +43,11 @@ public class ProxyDataControllerTest {
     public void testGet() {
         ProxyData p = proxyDataApiService.get(1L);
         Assert.assertEquals(80, p.getPort().longValue());
+    }
+
+    @Test
+    public void findByHostAndPort() {
+        ProxyData proxyData = proxyDataApiService.getByHostAndPort("127.0.0.1", 80);
+        logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", proxyData.getHost(), proxyData.getPort());
     }
 }

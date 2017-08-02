@@ -149,4 +149,17 @@ public class ProxyDataController extends BaseController {
         logger.info("更新结束测试时间,id:[{}],结束测试时间：[{}]", id, CoreDateUtils.formatLocalDateTime(endTestTime));
         return proxyDataInternalService.updateEndTestTime(id, endTestTime);
     }
+
+    /***
+     * 根据代理地址，代理端口获取代理数据
+     * @param host 代理地址
+     * @param port 代理端口
+     * @return 获取到的代理数据
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/getByHostAndPort", method = RequestMethod.POST)
+    ProxyData getByHostAndPort(@RequestParam("host") String host, @RequestParam("port") int port) throws ProxyDataException {
+        logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", host, port);
+        return proxyDataInternalService.getByHostAndPort(host, port);
+    }
 }
