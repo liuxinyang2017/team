@@ -1,4 +1,4 @@
-package com.qatang.team.scheduler.error;
+package com.qatang.team.daemon.config.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qatang.team.core.bean.ErrorInfo;

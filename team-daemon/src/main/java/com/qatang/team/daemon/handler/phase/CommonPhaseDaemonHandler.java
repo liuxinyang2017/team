@@ -7,10 +7,14 @@ import com.qatang.team.core.request.ApiRequest;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.util.CoreDateUtils;
+import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.daemon.executor.DaemonEventExecutorFactory;
+import com.qatang.team.daemon.executor.IDaemonEventExecutor;
 import com.qatang.team.daemon.handler.AbstractDefaultDaemonHandler;
 import com.qatang.team.data.bean.DaemonEventTask;
 import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.data.bean.QDaemonEventTask;
+import com.qatang.team.data.service.DaemonEventTaskApiService;
 import com.qatang.team.data.service.NumberLotteryDataApiService;
 import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
@@ -23,6 +27,8 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -44,6 +50,14 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
     @Autowired
     private NumberLotteryDataApiService numberLotteryDataApiService;
 
+    @Autowired
+    private DaemonEventTaskApiService daemonEventTaskApiService;
+
+    @Autowired
+    private DaemonEventExecutorFactory daemonEventExecutorFactory;
+
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
     public CommonPhaseDaemonHandler(LotteryType lotteryType, Set<DaemonEventType> daemonEventTypeSet) {
         this.lotteryType = lotteryType;
         this.daemonEventTypeSet = ImmutableSet.copyOf(daemonEventTypeSet);
@@ -54,8 +68,18 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
         taskList.forEach(task -> {
             // 派发任务前先将task状态更新为 已派发未执行
             // 由于派发之后是异步执行, 会导致异步任务还没执行(task状态还没设置成 执行中),守护循环又去拿下一个任务(还是相同的任务), 造成重复派发
-//            daemonEventTaskApiService.updateStatus(task.getId(), DaemonEventStatus.SENDING, DaemonEventStatus.PENDING);
+            daemonEventTaskApiService.updateStatus(task.getId(), DaemonEventStatus.SENDING, DaemonEventStatus.PENDING);
 
+            logger.info(String.format("[%s]守护监听到守护任务, 开始执行守护事件: taskId=%s, phase=%s, taskType=%s", task.getLotteryType().getName(), task.getId(), task.getPhase(), task.getType().getName()));
+            IDaemonEventExecutor daemonEventExecutor = daemonEventExecutorFactory.getExecutor(task.getLotteryType(), task.getType());
+            if (daemonEventExecutor == null) {
+                logger.error("处理守护事件任务时未找到对应事件类型的执行器, id={}, lotteryType={}, type={}",
+                        task.getId(), task.getLotteryType(), task.getType());
+                return;
+            }
+
+            // 提交到线程池处理
+            executor.submit(() -> daemonEventExecutor.execute(task));
         });
     }
 
@@ -68,8 +92,8 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
                 .paging(0, 100)
                 .addOrder(QDaemonEventTask.executeTime, PageOrderType.ASC)
                 .addOrder(QDaemonEventTask.id, PageOrderType.ASC);
-//        return ApiPageRequestHelper.request(apiRequest, apiRequestPage, daemonEventTaskApiService::findAll);
-        return null;
+        PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
+        return ApiPageRequestHelper.request(pageableWrapper, daemonEventTaskApiService::findAll);
     }
 
     @Override
@@ -145,9 +169,9 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
     @Override
     protected boolean isSameTask(DaemonEventTask task1, DaemonEventTask task2) {
         try {
-            Assert.isTrue(task1.getType() == task2.getType());
-            Assert.isTrue(task1.getLotteryType() == task2.getLotteryType());
-            Assert.isTrue(task1.getPhase().equals(task2.getPhase()));
+            Assert.isTrue(task1.getType() == task2.getType(), "任务类型不一致");
+            Assert.isTrue(task1.getLotteryType() == task2.getLotteryType(), "彩种类型不一致");
+            Assert.isTrue(task1.getPhase().equals(task2.getPhase()), "彩期不一致");
             return true;
         } catch (Exception e) {
             return false;
@@ -164,11 +188,10 @@ public class CommonPhaseDaemonHandler extends AbstractDefaultDaemonHandler {
                 .paging(0, 100)
                 .addOrder(QDaemonEventTask.executeTime, PageOrderType.ASC)
                 .addOrder(QDaemonEventTask.id, PageOrderType.ASC);
-
+        PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
         try {
-//            ApiResponse<DaemonEventTask> apiResponse = daemonEventTaskApiService.findAll(apiRequest, apiRequestPage);
-//            return apiResponse.getPagedData();
-            return null;
+            ApiResponse<DaemonEventTask> apiResponse = daemonEventTaskApiService.findAll(pageableWrapper);
+            return apiResponse.getPagedData();
         } catch (Exception e) {
             logger.error("查找下一个执行的任务时间点出错, lotteryType=" + lotteryType, e);
             return null;

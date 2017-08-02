@@ -31,9 +31,12 @@ CREATE TABLE `daemon_event_task` (
   `match_num` VARCHAR(64) NOT NULL DEFAULT '',
   `type` INT NOT NULL,
   `status` INT NOT NULL,
-  `execute_time` timestamp NOT NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `execute_time` timestamp NOT NULL,
   `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `idx_status_type` (`status`, `lottery_type`)
+  KEY `idx_lotterytype_phase_matchnum_type` (`lottery_type`, `phase`, `match_num`, `type`),
+  KEY `idx_lotterytype_status_executetime` (`lottery_type`, `status`, `execute_time`),
+  KEY `idx_status_executetime` (`status`, `execute_time`),
+  KEY `idx_created_time` (`created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
