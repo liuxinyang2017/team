@@ -29,7 +29,7 @@ public class PhaseRecycleScheduler {
     @Autowired
     private NumberLotteryDataApiService numberLotteryDataApiService;
 
-    @Scheduled(fixedDelay = 6000)
+    @Scheduled(fixedDelay = 6000, initialDelay = 15000L)
     public void run() {
         for (LotteryType lotteryType : GlobalConstants.NUMBER_LOTTERY_LIST) {
             logger.info(String.format("彩期回收定时：开始执行(%s)的彩期回收定时", lotteryType.getName()));

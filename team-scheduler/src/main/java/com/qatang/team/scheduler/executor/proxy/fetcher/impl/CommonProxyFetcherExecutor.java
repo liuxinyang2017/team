@@ -6,11 +6,14 @@ import com.qatang.team.core.util.CoreCollectionUtils;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
+import com.qatang.team.fetcher.service.FetcherLogApiService;
+import com.qatang.team.fetcher.service.ProxyDataApiService;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.proxy.fetcher.IProxyFetcher;
 import com.qatang.team.proxy.fetcher.ProxyFetcherFactory;
 import com.qatang.team.scheduler.executor.proxy.fetcher.AbstractProxyFetcherExecutor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,10 +25,13 @@ import java.util.stream.Collectors;
 @Component
 public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
+    @Autowired
+    private ProxyDataApiService proxyDataApiService;
+
     @Override
     public void executeFetcher() {
         String sourceName = StringUtils.join(GlobalConstants.PROXY_FETCHER_TYPE_LIST.stream().map(ProxyFetcherType::getName).collect(Collectors.toList()), ",");
-        logger.info(String.format("开始执行代理抓取定时，代理来源：%s", sourceName));
+        logger.info(String.format("代理抓取定时：开始执行代理抓取，代理来源：%s", sourceName));
         List<ProxyInfo> allProxyInfoList = Lists.newArrayList();
         for (ProxyFetcherType proxyFetcherType : GlobalConstants.PROXY_FETCHER_TYPE_LIST) {
             IProxyFetcher proxyFetcher = ProxyFetcherFactory.getFetcher(proxyFetcherType);
@@ -48,8 +54,6 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
         // 入库
         allProxyInfoList.forEach(proxyInfo -> {
-            // 按照host和port查询，如果存在，return
-
             ProxyData proxyData = new ProxyData();
             proxyData.setHost(proxyInfo.getHost());
             proxyData.setPort(proxyInfo.getPort());
@@ -61,13 +65,13 @@ public class CommonProxyFetcherExecutor extends AbstractProxyFetcherExecutor {
 
             try {
                 // save
-
-
+                proxyDataApiService.create(proxyData);
                 logger.info(String.format("代理抓取定时：代理入库成功，%s", proxyInfo.getUrlStr()));
             } catch (Exception e) {
                 logger.error(String.format("代理抓取定时：代理入库失败，%s", proxyInfo.getUrlStr()));
                 logger.error(e.getMessage(), e);
             }
         });
+        logger.info(String.format("代理抓取定时：结束执行代理抓取，代理来源：%s", sourceName));
     }
 }
