@@ -1,9 +1,9 @@
 package com.qatang.team.data.bean;
 
+import com.qatang.team.core.annotation.request.RequestApiBean;
+import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
-import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.enums.lottery.PhaseStatus;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  * 数字彩彩果
  * @author qatang
  */
+@RequestApiBean
 public class NumberLotteryDetailData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 9140489116564265451L;
 
@@ -52,6 +53,7 @@ public class NumberLotteryDetailData extends AbstractBaseApiBean {
     /**
      * 奖级名称
      */
+    @RequestApiFieldUpdatable
     private String prizeName;
 
     /**
@@ -67,6 +69,7 @@ public class NumberLotteryDetailData extends AbstractBaseApiBean {
     /**
      * 排序优先级，数字越大，优先级越高
      */
+    @RequestApiFieldUpdatable
     private Integer priority;
 
     public Long getId() {

@@ -24,6 +24,22 @@ CREATE TABLE `number_lottery_data` (
   INDEX `idx_open_close_type` (`open_time`, `close_time`, `lottery_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `number_lottery_detail_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `lottery_data_id` bigint(20) NOT NULL,
+  `lottery_type` INT NOT NULL,
+  `phase` VARCHAR(16) NOT NULL,
+  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `prize_key` VARCHAR(16) NOT NULL,
+  `prize_name` VARCHAR(16) NOT NULL DEFAULT '',
+  `prize_count` bigint(20) NOT NULL DEFAULT 0,
+  `prize_amount` bigint(20) NOT NULL DEFAULT 0,
+  `priority` INT(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `idx_lottery_data_id` (`lottery_data_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `daemon_event_task` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `lottery_type` INT NOT NULL,

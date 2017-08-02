@@ -23,6 +23,9 @@ public class NumberLotteryDetailDataEntity implements BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * 开奖结果对象编码
+     */
     @Column(name = "lottery_data_id", nullable = false)
     private Long lotteryDataId;
 
@@ -36,6 +39,7 @@ public class NumberLotteryDetailDataEntity implements BaseEntity {
     /**
      * 彩期
      */
+    @Column(name = "phase", nullable = false)
     private String phase;
 
     /**
