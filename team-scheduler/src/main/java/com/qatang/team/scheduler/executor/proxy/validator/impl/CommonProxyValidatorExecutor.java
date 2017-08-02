@@ -8,10 +8,13 @@ import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.bean.ProxyValidateLog;
+import com.qatang.team.fetcher.service.ProxyDataApiService;
+import com.qatang.team.fetcher.service.ProxyValidateLogApiService;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.proxy.validator.IProxyValidator;
 import com.qatang.team.proxy.validator.ProxyValidatorFactory;
 import com.qatang.team.scheduler.executor.proxy.validator.AbstractProxyValidatorExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.Proxy;
@@ -24,6 +27,12 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor {
 
+    @Autowired
+    private ProxyDataApiService proxyDataApiService;
+
+    @Autowired
+    private ProxyValidateLogApiService proxyValidateLogApiService;
+
     @Override
     public void executeValidator(ProxyData proxyData) {
         if (proxyData == null || !proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.WAITING_TEST)) {
@@ -32,6 +41,7 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
         }
 
         // 更新proxyData状态，从 待测试 更新为 测试中
+        proxyData = proxyDataApiService.updateTestingStatus(proxyData.getId());
 
         boolean pass = true;
         for (ProxyValidatorType proxyValidatorType : GlobalConstants.PROXY_VALIDATOR_TYPE_LIST) {
@@ -44,7 +54,8 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
             ProxyInfo proxyInfo = new ProxyInfo(Proxy.Type.HTTP, proxyData.getHost(), proxyData.getPort(), proxyData.getUsername(), proxyData.getPassword());
             // 重试3次，每次间隔1秒
             LocalDateTime begin = LocalDateTime.now();
-            ProxyValidateLog proxyValidateLog = generateProxyValidateLog(proxyData, proxyValidatorType, begin, YesNoStatus.YES, "代理测试通过");
+            YesNoStatus success = YesNoStatus.YES;
+            String message = "代理测试通过";
             try {
                 ApiRetryTaskExecutor.invoke(new ApiRetryCallback<Void>() {
 
@@ -56,23 +67,25 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
                 });
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                proxyValidateLog = generateProxyValidateLog(proxyData, proxyValidatorType, begin, YesNoStatus.NO, "代理测试失败：" + e.getMessage());
+                success = YesNoStatus.NO;
+                message = "代理测试失败：" + e.getMessage();
                 pass = false;
             }
 
             // 入库
-
+            ProxyValidateLog proxyValidateLog = generateProxyValidateLog(proxyData, proxyValidatorType, begin, success, message);
+            proxyValidateLogApiService.create(proxyValidateLog);
             logger.info(String.format("代理测试定时：代理测试日志入库成功，proxyValidatorType=%s，proxy=%s", proxyValidatorType.getName(), proxyInfo.getUrlStr()));
         }
 
         // 如果所有代理检测器测试全部通过
-        ProxyValidateStatus proxyValidateStatus = ProxyValidateStatus.FAILED;
         if (pass) {
-            proxyValidateStatus = ProxyValidateStatus.PASS;
+            proxyDataApiService.updatePassStatus(proxyData.getId());
+            logger.info(String.format("代理测试定时：代理测试通过，代理数据状态更新为：%s，proxyId=%s，", ProxyValidateStatus.PASS.getName(), proxyData.getId()));
+        } else {
+            proxyDataApiService.updateFailedStatus(proxyData.getId());
+            logger.info(String.format("代理测试定时：代理测试失败，代理数据状态更新为：%s，proxyId=%s", ProxyValidateStatus.FAILED.getName(), proxyData.getId()));
         }
-        // 更新proxyData, 从 测试中 更新为 通过或失败
-
-        logger.info(String.format("代理测试定时：代理数据状态更新成功，proxyId=%s，状态更新为：%s", proxyData.getId(), proxyValidateStatus.getName()));
     }
 
     private ProxyValidateLog generateProxyValidateLog(ProxyData proxyData, ProxyValidatorType proxyValidatorType, LocalDateTime begin, YesNoStatus success, String message) {

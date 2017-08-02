@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,13 +43,13 @@ public class ProxyValidatorScheduler {
         this.proxyValidatorExecutor = proxyValidatorExecutor;
     }
 
-//    @Scheduled(fixedDelay = 6000)
+    @Scheduled(fixedDelay = 60000, initialDelay = 25000L)
     public void run() {
         try {
             logger.info(String.format("代理测试定时：开始处理所有状态为(%s)的代理数据", ProxyValidateStatus.PENDING.getName()));
             // 查询所有状态为 待处理 的代理数据对象
             ApiRequest apiRequest = ApiRequest.newInstance()
-                    .filterEqual(QProxyData.proxyValidateStatus, ProxyValidateStatus.PENDING);
+                    .filterEqual(QProxyData.proxyValidateStatus, ProxyValidateStatus.WAITING_TEST);
             ApiRequestPage apiRequestPage = ApiRequestPage.newInstance()
                     .paging(0, 100)
                     .addOrder(QProxyData.id, PageOrderType.ASC);
@@ -56,19 +57,18 @@ public class ProxyValidatorScheduler {
 
             List<ProxyData> proxyDataList = ApiPageRequestHelper.request(pageableWrapper, proxyDataApiService::findAll);
             if (proxyDataList != null && !proxyDataList.isEmpty()) {
-                logger.info(String.format("代理测试定时：查询到状态为(%s)的代理数据(%s)条，开始进行测试", ProxyValidateStatus.PENDING.getName(), proxyDataList.size()));
+                logger.info(String.format("代理测试定时：查询到状态为(%s)的代理数据(%s)条，开始进行测试", ProxyValidateStatus.WAITING_TEST.getName(), proxyDataList.size()));
                 proxyDataList.forEach(proxyData -> {
-                    // 循环 更新状态为 待测试
-                    proxyData = proxyDataApiService.updateWaitingTestStatus(proxyData.getId());
-
+                    proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
                     // 开始测试
                     proxyValidatorExecutor.executeValidator(proxyData);
+                    proxyDataApiService.updateEndTestTime(proxyData.getId(), LocalDateTime.now());
                 });
-                logger.info(String.format("代理测试定时：完成代理数据(%s)条的测试", proxyDataList.size()));
+                logger.info(String.format("代理测试定时：完成(%s)条代理数据的测试", proxyDataList.size()));
             } else {
-                logger.info(String.format("代理测试定时：未查询到状态为(%s)的代理数据", ProxyValidateStatus.PENDING.getName()));
+                logger.info(String.format("代理测试定时：未查询到状态为(%s)的代理数据", ProxyValidateStatus.WAITING_TEST.getName()));
             }
-            logger.info(String.format("代理测试定时：结束处理所有状态为(%s)的代理数据", ProxyValidateStatus.PENDING.getName()));
+            logger.info(String.format("代理测试定时：结束处理所有状态为(%s)的代理数据", ProxyValidateStatus.WAITING_TEST.getName()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

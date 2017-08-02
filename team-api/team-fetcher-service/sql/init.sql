@@ -31,7 +31,7 @@ CREATE TABLE `fetcher_log` (
   `end_test_time` TIMESTAMP NULL DEFAULT NULL,
   `spent_mills` int(11) NOT NULL DEFAULT 0,
   `success`  TINYINT(3) NOT NULL,
-  `message`  varchar(255) NOT NULL DEFAULT '',
+  `message`  varchar(2000) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   INDEX `idx_proxy_id` (`proxy_id`),
   INDEX `idx_success` (`success`)

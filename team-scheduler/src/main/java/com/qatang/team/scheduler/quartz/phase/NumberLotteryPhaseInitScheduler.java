@@ -35,7 +35,7 @@ public class NumberLotteryPhaseInitScheduler {
     @Autowired
     private NumberLotteryDataApiService numberLotteryDataApiService;
 
-    @Scheduled(fixedDelay = 6000, initialDelay = 10000L)
+//    @Scheduled(fixedDelay = 6000, initialDelay = 10000L)
     public void run() {
         for (LotteryType lotteryType : GlobalConstants.NUMBER_LOTTERY_LIST) {
             logger.info(String.format("数字彩彩期初始化定时：开始执行(%s)的数字彩彩期初始化定时", lotteryType.getName()));
