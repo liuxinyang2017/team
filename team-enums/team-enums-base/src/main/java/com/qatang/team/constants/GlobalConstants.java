@@ -1,6 +1,7 @@
 package com.qatang.team.constants;
 
 import com.google.common.collect.Lists;
+import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.fetcher.ProxyFetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.enums.lottery.LotteryType;
@@ -39,6 +40,13 @@ public class GlobalConstants {
     public final static List<ProxyValidatorType> PROXY_VALIDATOR_TYPE_LIST = Lists.newArrayList(
             ProxyValidatorType.V_BAIDU,
             ProxyValidatorType.V_FUCAI
+    );
+
+    /**
+     * 正在使用的代理检测器类型
+     */
+    public final static List<FetcherType> FETCHER_TYPE_LIST = Lists.newArrayList(
+            FetcherType.F_OFFICIAL
     );
 
     /**

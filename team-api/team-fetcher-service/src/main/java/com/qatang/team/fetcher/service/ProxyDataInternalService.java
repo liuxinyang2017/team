@@ -109,4 +109,18 @@ public interface ProxyDataInternalService extends BaseInternalSerivce {
      * @throws ProxyDataException 异常
      */
     ProxyData getByHostAndPort(String host, int port) throws ProxyDataException;
+
+    /**
+     * 加分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    void increaseScore(Long id) throws ProxyDataException;
+
+    /**
+     * 减分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    void decreaseScore(Long id) throws ProxyDataException;
 }

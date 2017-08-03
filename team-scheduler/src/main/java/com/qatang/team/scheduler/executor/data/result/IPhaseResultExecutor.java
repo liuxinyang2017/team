@@ -1,4 +1,4 @@
-package com.qatang.team.scheduler.executor.data.phase;
+package com.qatang.team.scheduler.executor.data.result;
 
 import com.qatang.team.data.bean.NumberLotteryData;
 

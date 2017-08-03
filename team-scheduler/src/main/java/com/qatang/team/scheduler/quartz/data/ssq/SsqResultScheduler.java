@@ -66,9 +66,7 @@ public class SsqResultScheduler {
 
             List<NumberLotteryData> numberLotteryDataList = ApiPageRequestHelper.request(pageableWrapper, numberLotteryDataApiService::findAll);
             if (numberLotteryDataList != null && !numberLotteryDataList.isEmpty()) {
-                CountDownLatch latch = new CountDownLatch(numberLotteryDataList.size());
-                numberLotteryDataList.forEach(proxyData -> this.doExecute(proxyData, latch));
-                latch.await();
+
             } else {
                 logger.info(String.format("双色球开奖结果抓取定时：未查询到状态为(%s)的代理数据", ProxyValidateStatus.WAITING_TEST.getName()));
             }
@@ -78,18 +76,4 @@ public class SsqResultScheduler {
         }
     }
 
-    private void doExecute(ProxyData proxyData, CountDownLatch latch) {
-        executor.submit(() -> {
-            try {
-                proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
-                // 开始测试
-                proxyValidatorExecutor.executeValidator(proxyData);
-                proxyDataApiService.updateEndTestTime(proxyData.getId(), LocalDateTime.now());
-            } catch (Exception e) {
-                logger.error("双色球开奖结果抓取定时：由于异常中断测试流程");
-                logger.error(e.getMessage(), e);
-            }
-            latch.countDown();
-        });
-    }
 }

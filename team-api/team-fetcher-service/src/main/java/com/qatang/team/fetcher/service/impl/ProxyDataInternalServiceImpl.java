@@ -186,4 +186,49 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         }
         return BeanMapping.map(proxyDataEntity, ProxyData.class);
     }
+
+    @Override
+    public void increaseScore(Long id) throws ProxyDataException {
+        ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
+        if (proxyDataEntity == null) {
+            throw new ProxyDataException(String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id));
+        }
+
+        proxyDataRepository.detach(proxyDataEntity);
+
+        proxyDataEntity = this.getProxyDataEntityWithNullCheckForUpdate(id);
+
+        if (!proxyDataEntity.getProxyValidateStatus().equals(ProxyValidateStatus.PASS)) {
+            String msg = String.format("加分操作对应代理状态必须为(%s)", ProxyValidateStatus.PASS.getName());
+            logger.error(msg);
+            throw new ProxyDataException(msg);
+        }
+
+        proxyDataEntity.setScore(proxyDataEntity.getScore() + 1);
+    }
+
+    @Override
+    public void decreaseScore(Long id) throws ProxyDataException {
+        ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
+        if (proxyDataEntity == null) {
+            throw new ProxyDataException(String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id));
+        }
+
+        proxyDataRepository.detach(proxyDataEntity);
+
+        proxyDataEntity = this.getProxyDataEntityWithNullCheckForUpdate(id);
+
+        if (!proxyDataEntity.getProxyValidateStatus().equals(ProxyValidateStatus.PASS)) {
+            String msg = String.format("减分操作对应代理状态必须为(%s)", ProxyValidateStatus.PASS.getName());
+            logger.error(msg);
+            throw new ProxyDataException(msg);
+        }
+        int currentScore = proxyDataEntity.getScore();
+
+        int score = currentScore - 1;
+        if (score == 0) {
+            proxyDataEntity.setProxyValidateStatus(ProxyValidateStatus.WAITING_TEST);
+        }
+        proxyDataEntity.setScore(score);
+    }
 }
