@@ -8,6 +8,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
+import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchResultData;
 import com.qatang.team.fetcher.service.NumberLotteryFetchResultDataApiService;
 import org.junit.Assert;
@@ -72,6 +73,7 @@ public class NumberLotteryFetchResultControllerTest extends AbstractControllerTe
     public void testFind() {
         ApiRequest apiRequest = ApiRequest.newInstance();
         apiRequest.filterEqual(QNumberLotteryFetchResultData.id, 1L);
+        apiRequest.filterEqual(QNumberLotteryFetchDetailData.lotteryType, LotteryType.TC_DLT);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QNumberLotteryFetchResultData.createdTime);

@@ -2,13 +2,21 @@ package com.qatang.team.fetcher.controller;
 
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.fetcher.ProxyValidatorType;
 import com.qatang.team.fetcher.bean.ProxyValidateLog;
+import com.qatang.team.fetcher.bean.QProxyValidateLog;
 import com.qatang.team.fetcher.service.ProxyValidateLogInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wp
@@ -64,6 +72,66 @@ public class ProxyValidateLogController extends BaseController {
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         logger.info("自定义查询代理日志对象信息");
+
+        for (ApiRequestFilter filter : apiRequest.getFilterList()) {
+            String filed = filter.getField();
+            Object value = filter.getValue();
+            List<Object> valueList = filter.getValueList();
+
+            switch (filed) {
+                case QProxyValidateLog.proxyValidatorType:
+                    if (value != null) {
+                        value = ProxyValidatorType.get((int) value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> ProxyValidatorType.get((int) val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyValidateLog.success:
+                    if (value != null) {
+                        value = YesNoStatus.get((int) value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> YesNoStatus.get((int) val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyValidateLog.createdTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String) value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String) val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyValidateLog.beginTestTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String) value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String) val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QProxyValidateLog.endTestTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String) value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String) val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                default:
+            }
+        }
         return proxyValidateLogInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

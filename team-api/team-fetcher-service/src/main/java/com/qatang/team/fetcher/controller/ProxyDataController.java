@@ -197,7 +197,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
-    public ProxyData updateBeginTestTime(@RequestParam Long id, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
+    public ProxyData updateBeginTestTime(@RequestParam Long id, @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
         logger.info("更新开始测试时间,id:[{}],开始测试时间：[{}]", id, CoreDateUtils.formatLocalDateTime(beginTestTime));
         return proxyDataInternalService.updateBeginTestTime(id, beginTestTime);
     }

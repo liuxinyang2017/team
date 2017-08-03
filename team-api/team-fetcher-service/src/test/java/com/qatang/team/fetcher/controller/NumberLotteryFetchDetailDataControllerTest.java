@@ -73,6 +73,7 @@ public class NumberLotteryFetchDetailDataControllerTest extends AbstractControll
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
         apiRequest.filterEqual(QNumberLotteryFetchDetailData.id, 1L);
+        apiRequest.filterEqual(QNumberLotteryFetchDetailData.lotteryType, LotteryType.FC_SSQ);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QNumberLotteryFetchDetailData.createdTime);

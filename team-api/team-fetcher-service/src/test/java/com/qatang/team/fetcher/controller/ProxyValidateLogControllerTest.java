@@ -64,6 +64,7 @@ public class ProxyValidateLogControllerTest extends AbstractControllerTest {
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
         apiRequest.filterEqual(QProxyValidateLog.id, 1L);
+        apiRequest.filterEqual(QProxyValidateLog.proxyValidatorType, ProxyValidatorType.V_BAIDU);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QProxyValidateLog.createdTime);

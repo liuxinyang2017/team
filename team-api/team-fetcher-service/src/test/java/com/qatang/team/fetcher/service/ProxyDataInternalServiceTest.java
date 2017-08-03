@@ -103,4 +103,10 @@ public class ProxyDataInternalServiceTest extends BaseTest {
         logger.info("修改后的结束时间：{}", CoreDateUtils.formatLocalDateTime(proxyData.getEndTestTime()));
         Assert.assertNotNull(proxyData.getEndTestTime());
     }
+
+    @Test
+    public void findByHostAndPort() {
+        ProxyData proxyData = proxyDataInternalService.getByHostAndPort("60.214.236.132", 8118);
+        logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", proxyData.getHost(), proxyData.getPort());
+    }
 }

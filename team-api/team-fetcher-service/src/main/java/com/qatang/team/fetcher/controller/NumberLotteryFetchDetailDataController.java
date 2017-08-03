@@ -2,14 +2,21 @@ package com.qatang.team.fetcher.controller;
 
 import com.qatang.team.core.controller.BaseController;
 import com.qatang.team.core.request.ApiRequest;
+import com.qatang.team.core.request.ApiRequestFilter;
 import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author wp
@@ -77,6 +84,66 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         logger.info("自定义查询抓取开奖详情对象信息");
+
+        for (ApiRequestFilter filter : apiRequest.getFilterList()) {
+            String filed = filter.getField();
+            Object value = filter.getValue();
+            List<Object> valueList = filter.getValueList();
+
+            switch (filed) {
+                case QNumberLotteryFetchDetailData.lotteryType:
+                    if (value != null) {
+                        value = LotteryType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> LotteryType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QNumberLotteryFetchDetailData.fetcherType:
+                    if (value != null) {
+                        value = FetcherType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> FetcherType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QNumberLotteryFetchDetailData.createdTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QNumberLotteryFetchDetailData.updatedTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QNumberLotteryFetchDetailData.fetchedTime:
+                    if (value != null) {
+                        value = CoreDateUtils.parseLocalDateTime((String)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> CoreDateUtils.parseLocalDateTime((String)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                default:
+            }
+        }
         return numberLotteryFetchDetailDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

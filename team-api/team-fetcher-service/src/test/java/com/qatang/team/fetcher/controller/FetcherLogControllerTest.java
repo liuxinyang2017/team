@@ -64,6 +64,7 @@ public class FetcherLogControllerTest extends AbstractControllerTest {
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
         apiRequest.filterEqual(QFetcherLog.id, 1L);
+        apiRequest.filterEqual(QFetcherLog.fetcherType, FetcherType.F_500W);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QFetcherLog.createdTime);
