@@ -108,7 +108,7 @@ public abstract class AbstractPhaseResultExecutor implements IPhaseResultExecuto
                 logger.info(String.format("数字彩开奖结果抓取定时：抓取日志入库成功，lotteryType=%s，phase=%s，fetcherType=%s", numberLotteryData.getLotteryType(), numberLotteryData.getPhase(), fetcherType.getName()));
 
                 if (fetched) {
-
+                    // 加分
                     break;
                 }
             }

@@ -205,7 +205,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
             throw new ProxyDataException(msg);
         }
 
-        proxyDataEntity.setScore(proxyDataEntity.getScore() + 1);
+        proxyDataEntity.setScore(proxyDataEntity.getScore() + 10);
     }
 
     @Override
