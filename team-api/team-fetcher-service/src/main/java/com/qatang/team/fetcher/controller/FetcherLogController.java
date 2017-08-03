@@ -8,7 +8,9 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.FetcherLog;
 import com.qatang.team.fetcher.bean.QFetcherLog;
 import com.qatang.team.fetcher.service.FetcherLogInternalService;
@@ -99,6 +101,26 @@ public class FetcherLogController extends BaseController {
                         filter.setValueList(valueList);
                     }
                     break;
+                case QFetcherLog.lotteryType:
+                    if (value != null) {
+                        value = LotteryType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> LotteryType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
+                case QFetcherLog.fetcherDataType:
+                    if (value != null) {
+                        value = FetcherDataType.get((int)value);
+                        filter.setValue(value);
+                    }
+                    if (valueList != null) {
+                        valueList = valueList.stream().map(val -> FetcherDataType.get((int)val)).collect(Collectors.toList());
+                        filter.setValueList(valueList);
+                    }
+                    break;
                 case QFetcherLog.createdTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
@@ -109,7 +131,7 @@ public class FetcherLogController extends BaseController {
                         filter.setValueList(valueList);
                     }
                     break;
-                case QFetcherLog.beginTestTime:
+                case QFetcherLog.beginFetchTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);
@@ -119,7 +141,7 @@ public class FetcherLogController extends BaseController {
                         filter.setValueList(valueList);
                     }
                     break;
-                case QFetcherLog.endTestTime:
+                case QFetcherLog.endFetchTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);

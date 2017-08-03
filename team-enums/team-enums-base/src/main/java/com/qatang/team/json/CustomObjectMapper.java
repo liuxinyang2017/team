@@ -18,10 +18,7 @@ import com.qatang.team.enums.common.OperatorType;
 import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.daemon.DaemonEventStatus;
 import com.qatang.team.enums.daemon.DaemonEventType;
-import com.qatang.team.enums.fetcher.FetcherType;
-import com.qatang.team.enums.fetcher.ProxyFetcherType;
-import com.qatang.team.enums.fetcher.ProxyValidateStatus;
-import com.qatang.team.enums.fetcher.ProxyValidatorType;
+import com.qatang.team.enums.fetcher.*;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 
@@ -65,6 +62,7 @@ public class CustomObjectMapper extends ObjectMapper {
         simpleModule.addSerializer(ProxyFetcherType.class, new CustomValueEnumSerializer<>());
         simpleModule.addSerializer(ProxyValidateStatus.class, new CustomValueEnumSerializer<>());
         simpleModule.addSerializer(ProxyValidatorType.class, new CustomValueEnumSerializer<>());
+        simpleModule.addSerializer(FetcherDataType.class, new CustomValueEnumSerializer<>());
 
         // 注册自定义enum反序列化
         simpleModule.addDeserializer(EnableDisableStatus.class, new CustomValueEnumDeserializer<EnableDisableStatus>() {});
@@ -79,6 +77,7 @@ public class CustomObjectMapper extends ObjectMapper {
         simpleModule.addDeserializer(ProxyFetcherType.class, new CustomValueEnumDeserializer<ProxyFetcherType>() {});
         simpleModule.addDeserializer(ProxyValidateStatus.class, new CustomValueEnumDeserializer<ProxyValidateStatus>() {});
         simpleModule.addDeserializer(ProxyValidatorType.class, new CustomValueEnumDeserializer<ProxyValidatorType>() {});
+        simpleModule.addDeserializer(FetcherDataType.class, new CustomValueEnumDeserializer<FetcherDataType>() {});
 
         this.registerModule(simpleModule);
     }

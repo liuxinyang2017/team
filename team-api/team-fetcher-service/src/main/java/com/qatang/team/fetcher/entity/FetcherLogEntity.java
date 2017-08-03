@@ -3,8 +3,12 @@ package com.qatang.team.fetcher.entity;
 import com.qatang.team.core.entity.BaseEntity;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.converter.YesNoStatusConverter;
+import com.qatang.team.enums.converter.fetcher.FetcherDataTypeConverter;
 import com.qatang.team.enums.converter.fetcher.FetcherTypeConverter;
+import com.qatang.team.enums.converter.lottery.LotteryTypeConverter;
+import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
+import com.qatang.team.enums.lottery.LotteryType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -36,19 +40,19 @@ public class FetcherLogEntity implements BaseEntity {
     /**
      * 代理编码
      */
-    @Column(name = "proxy_id", nullable = false)
+    @Column(name = "proxy_id")
     private Long proxyId;
 
     /**
      * 代理地址
      */
-    @Column(name = "host", nullable = false)
+    @Column(name = "host")
     private String host;
 
     /**
      * 代理端口
      */
-    @Column(name = "port", nullable = false)
+    @Column(name = "port")
     private int port;
 
     /**
@@ -59,22 +63,42 @@ public class FetcherLogEntity implements BaseEntity {
     private FetcherType fetcherType;
 
     /**
+     * 彩种类型
+     */
+    @Column(name = "lottery_type", nullable = false)
+    @Convert(converter = LotteryTypeConverter.class)
+    private LotteryType lotteryType;
+
+    /**
+     * 抓取数据类型
+     */
+    @Column(name = "fetcher_data_type", nullable = false)
+    @Convert(converter = FetcherDataTypeConverter.class)
+    private FetcherDataType fetcherDataType;
+
+    /**
+     * 彩期
+     */
+    @Column(name = "phase")
+    private String phase;
+
+    /**
      * 创建时间
      */
     @Column(name = "created_time", nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
     /**
-     * 开始测试时间
+     * 开始抓取时间
      */
-    @Column(name = "begin_test_time")
-    private LocalDateTime beginTestTime;
+    @Column(name = "begin_fetch_time")
+    private LocalDateTime beginFetchTime;
 
     /**
-     * 结束测试时间
+     * 结束抓取时间
      */
-    @Column(name = "end_test_time")
-    private LocalDateTime endTestTime;
+    @Column(name = "end_fetch_time")
+    private LocalDateTime endFetchTime;
 
     /**
      * 耗时，单位：毫秒
@@ -142,6 +166,30 @@ public class FetcherLogEntity implements BaseEntity {
         this.fetcherType = fetcherType;
     }
 
+    public LotteryType getLotteryType() {
+        return lotteryType;
+    }
+
+    public void setLotteryType(LotteryType lotteryType) {
+        this.lotteryType = lotteryType;
+    }
+
+    public FetcherDataType getFetcherDataType() {
+        return fetcherDataType;
+    }
+
+    public void setFetcherDataType(FetcherDataType fetcherDataType) {
+        this.fetcherDataType = fetcherDataType;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
     public LocalDateTime getCreatedTime() {
         return createdTime;
     }
@@ -150,20 +198,20 @@ public class FetcherLogEntity implements BaseEntity {
         this.createdTime = createdTime;
     }
 
-    public LocalDateTime getBeginTestTime() {
-        return beginTestTime;
+    public LocalDateTime getBeginFetchTime() {
+        return beginFetchTime;
     }
 
-    public void setBeginTestTime(LocalDateTime beginTestTime) {
-        this.beginTestTime = beginTestTime;
+    public void setBeginFetchTime(LocalDateTime beginFetchTime) {
+        this.beginFetchTime = beginFetchTime;
     }
 
-    public LocalDateTime getEndTestTime() {
-        return endTestTime;
+    public LocalDateTime getEndFetchTime() {
+        return endFetchTime;
     }
 
-    public void setEndTestTime(LocalDateTime endTestTime) {
-        this.endTestTime = endTestTime;
+    public void setEndFetchTime(LocalDateTime endFetchTime) {
+        this.endFetchTime = endFetchTime;
     }
 
     public Long getSpentMills() {

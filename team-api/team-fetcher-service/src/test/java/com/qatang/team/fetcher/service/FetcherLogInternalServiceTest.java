@@ -6,7 +6,9 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.FetcherLog;
 import com.qatang.team.fetcher.bean.QFetcherLog;
@@ -33,8 +35,8 @@ public class FetcherLogInternalServiceTest extends BaseTest {
     @Test
     public void testSave() {
         FetcherLog fetcherLog = new FetcherLog();
-        fetcherLog.setBeginTestTime(LocalDateTime.now());
-        fetcherLog.setEndTestTime(LocalDateTime.now());
+        fetcherLog.setBeginFetchTime(LocalDateTime.now());
+        fetcherLog.setEndFetchTime(LocalDateTime.now());
         fetcherLog.setFetcherType(FetcherType.F_500W);
         fetcherLog.setHost("127.0.0.1");
         fetcherLog.setPort(80);
@@ -42,6 +44,8 @@ public class FetcherLogInternalServiceTest extends BaseTest {
         fetcherLog.setProxyId(111L);
         fetcherLog.setSpentMills(1000L);
         fetcherLog.setSuccess(YesNoStatus.YES);
+        fetcherLog.setLotteryType(LotteryType.JC_GJ);
+        fetcherLog.setFetcherDataType(FetcherDataType.D_DETAIL);
 
         FetcherLog fetcherLogResult = fetcherLogInternalService.save(fetcherLog);
         Assert.assertNotNull(fetcherLogResult);

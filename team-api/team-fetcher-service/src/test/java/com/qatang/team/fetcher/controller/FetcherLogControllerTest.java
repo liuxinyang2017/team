@@ -6,7 +6,9 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
+import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.FetcherLog;
 import com.qatang.team.fetcher.bean.QFetcherLog;
 import com.qatang.team.fetcher.service.FetcherLogApiService;
@@ -29,15 +31,17 @@ public class FetcherLogControllerTest extends AbstractControllerTest {
     @Test
     public void testSave() {
         FetcherLog fetcherLog = new FetcherLog();
-        fetcherLog.setBeginTestTime(LocalDateTime.now());
-        fetcherLog.setEndTestTime(LocalDateTime.now());
+        fetcherLog.setBeginFetchTime(LocalDateTime.now());
+        fetcherLog.setEndFetchTime(LocalDateTime.now());
         fetcherLog.setFetcherType(FetcherType.F_AICAI);
         fetcherLog.setHost("127.0.0.3");
-        fetcherLog.setPort(80);
-        fetcherLog.setMessage("测试用例");
+        fetcherLog.setPort(81);
+        fetcherLog.setMessage("测试controller");
         fetcherLog.setProxyId(111L);
         fetcherLog.setSpentMills(1000L);
         fetcherLog.setSuccess(YesNoStatus.YES);
+        fetcherLog.setLotteryType(LotteryType.JC_GJ);
+        fetcherLog.setFetcherDataType(FetcherDataType.D_DETAIL);
 
         FetcherLog fetcherLogResult = fetcherLogApiService.create(fetcherLog);
         Assert.assertNotNull(fetcherLogResult);
@@ -65,6 +69,7 @@ public class FetcherLogControllerTest extends AbstractControllerTest {
         ApiRequest apiRequest = ApiRequest.newInstance();
         apiRequest.filterEqual(QFetcherLog.id, 1L);
         apiRequest.filterEqual(QFetcherLog.fetcherType, FetcherType.F_500W);
+        apiRequest.filterEqual(QFetcherLog.fetcherDataType, FetcherDataType.D_DETAIL);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QFetcherLog.createdTime);
