@@ -4,8 +4,10 @@ import com.qatang.team.core.annotation.request.RequestApiBean;
 import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.YesNoStatus;
+import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidatorType;
+import com.qatang.team.enums.lottery.LotteryType;
 
 import java.time.LocalDateTime;
 
@@ -43,19 +45,34 @@ public class FetcherLog extends AbstractBaseApiBean {
     private FetcherType fetcherType;
 
     /**
+     * 彩种类型
+     */
+    private LotteryType lotteryType;
+
+    /**
+     * 抓取数据类型
+     */
+    private FetcherDataType fetcherDataType;
+
+    /**
+     * 彩期
+     */
+    private String phase;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createdTime;
 
     /**
-     * 开始测试时间
+     * 开始抓取时间
      */
-    private LocalDateTime beginTestTime;
+    private LocalDateTime beginFetchTime;
 
     /**
-     * 结束测试时间
+     * 结束抓取时间
      */
-    private LocalDateTime endTestTime;
+    private LocalDateTime endFetchTime;
 
     /**
      * 耗时，单位：毫秒
@@ -113,6 +130,30 @@ public class FetcherLog extends AbstractBaseApiBean {
         this.fetcherType = fetcherType;
     }
 
+    public LotteryType getLotteryType() {
+        return lotteryType;
+    }
+
+    public void setLotteryType(LotteryType lotteryType) {
+        this.lotteryType = lotteryType;
+    }
+
+    public FetcherDataType getFetcherDataType() {
+        return fetcherDataType;
+    }
+
+    public void setFetcherDataType(FetcherDataType fetcherDataType) {
+        this.fetcherDataType = fetcherDataType;
+    }
+
+    public String getPhase() {
+        return phase;
+    }
+
+    public void setPhase(String phase) {
+        this.phase = phase;
+    }
+
     public LocalDateTime getCreatedTime() {
         return createdTime;
     }
@@ -121,20 +162,20 @@ public class FetcherLog extends AbstractBaseApiBean {
         this.createdTime = createdTime;
     }
 
-    public LocalDateTime getBeginTestTime() {
-        return beginTestTime;
+    public LocalDateTime getBeginFetchTime() {
+        return beginFetchTime;
     }
 
-    public void setBeginTestTime(LocalDateTime beginTestTime) {
-        this.beginTestTime = beginTestTime;
+    public void setBeginFetchTime(LocalDateTime beginFetchTime) {
+        this.beginFetchTime = beginFetchTime;
     }
 
-    public LocalDateTime getEndTestTime() {
-        return endTestTime;
+    public LocalDateTime getEndFetchTime() {
+        return endFetchTime;
     }
 
-    public void setEndTestTime(LocalDateTime endTestTime) {
-        this.endTestTime = endTestTime;
+    public void setEndFetchTime(LocalDateTime endFetchTime) {
+        this.endFetchTime = endFetchTime;
     }
 
     public Long getSpentMills() {
