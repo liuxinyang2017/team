@@ -109,6 +109,7 @@ public abstract class AbstractPhaseResultExecutor implements IPhaseResultExecuto
 
                 if (fetched) {
                     // 加分
+                    proxyDataApiService.increaseScore(proxyData.getId());
                     break;
                 }
             }

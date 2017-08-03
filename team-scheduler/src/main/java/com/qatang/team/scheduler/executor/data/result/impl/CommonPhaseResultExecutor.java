@@ -41,7 +41,7 @@ public class CommonPhaseResultExecutor extends AbstractPhaseResultExecutor {
     @Override
     protected boolean hasFetched(NumberLotteryData numberLotteryData, FetcherType fetcherType) {
         try {
-            NumberLotteryFetchResultData data = numberLotteryFetchResultDataApiService.getByLotteryTypeAndPhase(numberLotteryData.getLotteryType(), numberLotteryData.getPhase());
+            NumberLotteryFetchResultData data = numberLotteryFetchResultDataApiService.getByLotteryTypeAndPhaseAndFetcherType(numberLotteryData.getLotteryType(), numberLotteryData.getPhase(), fetcherType);
             if (data != null) {
                 return true;
             }
