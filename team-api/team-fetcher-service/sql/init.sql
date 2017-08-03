@@ -20,6 +20,23 @@ CREATE TABLE `proxy_data` (
   INDEX `idx_status_created_time` (`proxy_validate_status`, `created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `proxy_validate_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `proxy_id` bigint(20) NOT NULL,
+  `host` varchar(32) NOT NULL,
+  `port` int(11) NOT NULL,
+  `proxy_validator_type` int(11) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `begin_test_time` TIMESTAMP NULL DEFAULT NULL,
+  `end_test_time` TIMESTAMP NULL DEFAULT NULL,
+  `spent_mills` int(11) NOT NULL DEFAULT 0,
+  `success`  TINYINT(3) NOT NULL,
+  `message`  varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  INDEX `idx_proxy_validator_type` (`proxy_validator_type`),
+  INDEX `idx_success` (`success`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `fetcher_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `proxy_id` bigint(20) NOT NULL,
@@ -72,20 +89,3 @@ CREATE TABLE `number_lottery_fetch_result_data` (
   INDEX `idx_lottery_type` (`lottery_type`),
   INDEX `idx_fetcher_type` (`fetcher_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `proxy_validate_log` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `proxy_id` bigint(20) NOT NULL,
-  `host` varchar(32) NOT NULL,
-  `port` int(11) NOT NULL,
-  `proxy_validator_type` int(11) NOT NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `begin_test_time` TIMESTAMP NULL DEFAULT NULL,
-  `end_test_time` TIMESTAMP NULL DEFAULT NULL,
-  `spent_mills` int(11) NOT NULL DEFAULT 0,
-  `success`  TINYINT(3) NOT NULL,
-  `message`  varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  INDEX `idx_proxy_validator_type` (`proxy_validator_type`),
-  INDEX `idx_success` (`success`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -45,4 +45,14 @@ public class ProxyFetcherTest {
         proxyInfoList.forEach(proxyInfo -> System.out.println(proxyInfo.getHost() + ":" + proxyInfo.getPort()));
 
     }
+
+    @Test
+    public void testMipuDailiProxyFetcher() {
+        IProxyFetcher proxyFetcher = ProxyFetcherFactory.getFetcher(ProxyFetcherType.P_MIMVP);
+        List<ProxyInfo> proxyInfoList = proxyFetcher.fetchProxyList();
+        Assert.assertTrue(proxyInfoList != null && !proxyInfoList.isEmpty());
+
+        proxyInfoList.forEach(proxyInfo -> System.out.println(proxyInfo.getHost() + ":" + proxyInfo.getPort()));
+
+    }
 }

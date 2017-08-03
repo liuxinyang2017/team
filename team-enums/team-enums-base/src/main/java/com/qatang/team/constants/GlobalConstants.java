@@ -27,9 +27,10 @@ public class GlobalConstants {
      * 正在使用的代理抓取器类型
      */
     public final static List<ProxyFetcherType> PROXY_FETCHER_TYPE_LIST = Lists.newArrayList(
-            ProxyFetcherType.P_XICI,
-            ProxyFetcherType.P_KUAI,
-            ProxyFetcherType.P_CZ88
+//            ProxyFetcherType.P_CZ88,
+//            ProxyFetcherType.P_XICI,
+//            ProxyFetcherType.P_KUAI,
+            ProxyFetcherType.P_MIMVP
     );
 
     /**

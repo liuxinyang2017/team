@@ -48,7 +48,7 @@ public class ProxyValidatorScheduler {
         this.proxyValidatorExecutor = proxyValidatorExecutor;
     }
 
-    @Scheduled(fixedDelay = 60000, initialDelay = 25000L)
+    @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
         try {
             logger.info(String.format("代理测试定时：开始处理所有状态为(%s)的代理数据", ProxyValidateStatus.PENDING.getName()));
@@ -84,6 +84,7 @@ public class ProxyValidatorScheduler {
                 proxyValidatorExecutor.executeValidator(proxyData);
                 proxyDataApiService.updateEndTestTime(proxyData.getId(), LocalDateTime.now());
             } catch (Exception e) {
+                logger.error("代理测试定时：由于异常中断测试流程");
                 logger.error(e.getMessage(), e);
             }
             latch.countDown();

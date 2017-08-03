@@ -23,7 +23,7 @@ public class NumberLotteryPhaseGeneratorScheduler {
         this.phaseGeneratorExecutor = phaseGeneratorExecutor;
     }
 
-//    @Scheduled(fixedDelay = 6000, initialDelay = 5000L)
+    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000L, initialDelay = 5000L)
     public void run() {
         try {
             phaseGeneratorExecutor.executeGenerator();

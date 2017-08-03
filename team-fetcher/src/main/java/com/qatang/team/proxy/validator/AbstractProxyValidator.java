@@ -110,7 +110,7 @@ public abstract class AbstractProxyValidator implements IProxyValidator {
         } catch (Exception e) {
             String msg = String.format("代理测试失败, 错误信息：%s，测试url: %s, proxy=%s:%s@%s", e.getMessage(), this.getTargetUrl(), proxyInfo.getHost(), proxyInfo.getPort(), proxyInfo.getProxyType());
             logger.error(msg);
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
             throw new ProxyException(msg);
         }
     }

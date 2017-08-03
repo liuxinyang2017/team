@@ -33,7 +33,7 @@ public class TestingProxyRecycleScheduler {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
-    @Scheduled(fixedDelay = 60000, initialDelay = 20000L)
+    @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 35 * 1000L)
     public void run() {
         try {
 

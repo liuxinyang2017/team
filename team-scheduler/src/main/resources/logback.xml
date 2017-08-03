@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <property scope="context" name="LogFileNamePrefix" value="team-fetcher-service" />
+    <property scope="context" name="LogFileNamePrefix" value="team-scheduler" />
 
     <property scope="context" name="LogFolder" value="logs" />
     <property scope="context" name="LogLevel" value="INFO" />

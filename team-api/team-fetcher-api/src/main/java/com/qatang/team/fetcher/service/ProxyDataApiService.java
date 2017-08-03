@@ -112,7 +112,7 @@ public interface ProxyDataApiService {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateEndTestTime", method = RequestMethod.GET)
-    ProxyData updateEndTestTime(@RequestParam("id") Long id, @RequestParam("endTestTime") LocalDateTime endTestTime) throws ProxyDataException;
+    ProxyData updateEndTestTime(@RequestParam("id") Long id, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestParam("endTestTime") LocalDateTime endTestTime) throws ProxyDataException;
 
     /***
      * 根据代理地址，代理端口获取代理数据
