@@ -88,4 +88,16 @@ public class ProxyDataControllerTest {
             logger.info("代理数据，代理验证状态：[{}], 失败次数:[{}]", proxyData.getProxyValidateStatus().getName(), proxyData.getFailedCount());
         });
     }
+
+    @Test
+    public void testIncreaseScore() {
+        Long id = 2L;
+        proxyDataApiService.increaseScore(id);
+    }
+
+    @Test
+    public void testDecreaseScore() {
+        Long id = 15L;
+        proxyDataApiService.decreaseScore(id);
+    }
 }

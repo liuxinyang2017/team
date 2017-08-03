@@ -70,7 +70,7 @@ CREATE TABLE `number_lottery_fetch_detail_data` (
   `prize_count` bigint(20) NOT NULL DEFAULT 0,
   `prize_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_lottery_type_phase` (`lottery_type`, `phase`, `fetcher_type`),
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
   INDEX `idx_fetch_result_id` (`fetch_result_id`),
   INDEX `idx_lottery_type` (`lottery_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -87,7 +87,7 @@ CREATE TABLE `number_lottery_fetch_result_data` (
   `pool_amount` bigint(20) NOT NULL DEFAULT 0,
   `sale_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_lottery_type_phase` (`lottery_type`, `phase`, `fetcher_type`),
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
   INDEX `idx_lottery_type` (`lottery_type`),
   INDEX `idx_fetcher_type` (`fetcher_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

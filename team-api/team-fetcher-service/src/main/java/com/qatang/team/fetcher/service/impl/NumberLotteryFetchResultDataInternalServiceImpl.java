@@ -5,6 +5,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
+import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.entity.NumberLotteryFetchResultDataEntity;
@@ -98,10 +99,10 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
     }
 
     @Override
-    public NumberLotteryFetchResultData getByLotteryTypeAndPhase(LotteryType lotteryType, String phase) {
-        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+    public NumberLotteryFetchResultData getByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType) {
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
         if (numberLotteryFetchResultDataEntity == null) {
-            String msg = String.format("根据彩种[%s]、彩期[%s]获取开奖结果抓取数据为空", lotteryType.getName(), phase);
+            String msg = String.format("根据彩种[%s],彩期[%s],抓取来源数据类型[%s]:获取开奖结果抓取数据为空", lotteryType.getName(), phase, fetcherType.getName());
             logger.error(msg);
             throw new NumberLotteryFetchResultDataException(msg);
         }

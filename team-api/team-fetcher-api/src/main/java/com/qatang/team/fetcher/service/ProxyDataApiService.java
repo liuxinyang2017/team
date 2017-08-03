@@ -124,4 +124,20 @@ public interface ProxyDataApiService {
     @RequestMapping(value = "/getByHostAndPort", method = RequestMethod.POST)
     ProxyData getByHostAndPort(@RequestParam("host") String host, @RequestParam("port") int port) throws ProxyDataException;
 
+    /**
+     * 加分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/increaseScore", method = RequestMethod.GET)
+    void increaseScore(@RequestParam("id") Long id) throws ProxyDataException;
+
+    /**
+     * 减分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/decreaseScore", method = RequestMethod.GET)
+    void decreaseScore(@RequestParam("id")Long id) throws ProxyDataException;
+
 }

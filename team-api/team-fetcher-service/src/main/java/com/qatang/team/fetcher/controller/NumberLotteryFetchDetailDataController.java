@@ -63,15 +63,16 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
     }
 
     /***
-     * 根据彩种彩期获取开奖详情信息
+     * 根据彩种彩期获取开奖详情数据
      * @param lotteryType 彩种
      * @param phase 彩期
-     * @return 获取到的开奖详情信息
+     * @param fetcherType 抓取数据来源类型
+     * @return 抓取数据
      */
-    @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.POST)
-    public NumberLotteryFetchDetailData getByLotteryTypeAndPhase(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase) {
-        logger.info("根据彩种彩期查询开奖详情抓取数据,彩种{},彩期{}", lotteryType.getName(), phase);
-        return numberLotteryFetchDetailDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
+    @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
+    NumberLotteryFetchDetailData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
+        logger.info("根据彩种彩期抓取器查询开奖详情抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
+        return numberLotteryFetchDetailDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
 
     /***

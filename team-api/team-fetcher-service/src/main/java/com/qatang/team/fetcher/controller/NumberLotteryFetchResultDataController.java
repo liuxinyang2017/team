@@ -11,6 +11,7 @@ import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchResultData;
+import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
 import com.qatang.team.fetcher.service.NumberLotteryFetchResultDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -63,15 +64,17 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     }
 
     /***
-     * 根据彩种彩期获取开奖结果抓取数据
+     * 根据彩种彩期抓取来源数据类型获取开奖结果抓取信息
      * @param lotteryType 彩种
      * @param phase 彩期
-     * @return 获取到的开奖结果抓取数据信息
+     * @param fetcherType 抓取来源数据类型
+     * @return 获取到的开奖结果抓取信息
+     * @throws NumberLotteryFetchResultDataException 异常
      */
-    @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.POST)
-    public NumberLotteryFetchResultData getByLotteryTypeAndPhase(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase) {
-        logger.info("根据彩种彩期查询开奖结果抓取数据,彩种{},彩期{}", lotteryType.getName(), phase);
-        return numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhase(lotteryType, phase);
+    @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
+    NumberLotteryFetchResultData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcherType")FetcherType fetcherType) {
+        logger.info("根据彩种彩期数据类型查询开奖结果抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
+        return numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
 
     /***

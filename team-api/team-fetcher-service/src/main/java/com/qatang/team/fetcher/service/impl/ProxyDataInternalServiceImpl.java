@@ -188,6 +188,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
     }
 
     @Override
+    @Transactional
     public void increaseScore(Long id) throws ProxyDataException {
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {
@@ -208,6 +209,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
     }
 
     @Override
+    @Transactional
     public void decreaseScore(Long id) throws ProxyDataException {
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {

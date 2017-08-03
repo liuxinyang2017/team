@@ -62,10 +62,10 @@ public class NumberLotteryFetchResultControllerTest extends AbstractControllerTe
     }
 
     @Test
-    public void testGetByLotteryTypeAndPhase() {
-        String phase = "20170802";
-        NumberLotteryFetchResultData numberLotteryFetchResultData = numberLotteryFetchResultDataApiService.getByLotteryTypeAndPhase(LotteryType.TC_DLT, phase);
-        logger.info("根据彩种：[{}], 彩期：[{}]获取开奖结果抓取数据，抓取结果：[{}]", LotteryType.TC_DLT, phase, numberLotteryFetchResultData.getResult());
+    public void testGetByLotteryTypeAndPhaseAndFetcherType() {
+        String phase = "20170801";
+        NumberLotteryFetchResultData numberLotteryFetchResultData = numberLotteryFetchResultDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
+        logger.info("根据彩种：[{}], 彩期：[{}],抓取数据来源类型[{}]:获取开奖结果抓取数据，抓取结果：[{}]", LotteryType.TC_DLT, phase, numberLotteryFetchResultData.getFetcherType().getName(), numberLotteryFetchResultData.getResult());
         Assert.assertNotNull(numberLotteryFetchResultData);
     }
 

@@ -227,4 +227,26 @@ public class ProxyDataController extends BaseController {
         logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", host, port);
         return proxyDataInternalService.getByHostAndPort(host, port);
     }
+
+    /**
+     * 加分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/increaseScore", method = RequestMethod.GET)
+    void increaseScore(@RequestParam("id") Long id) throws ProxyDataException {
+        logger.info("根据id加分操作：id[{}]", id);
+        proxyDataInternalService.increaseScore(id);
+    }
+
+    /**
+     * 减分
+     * @param id 编码
+     * @throws ProxyDataException 异常
+     */
+    @RequestMapping(value = "/decreaseScore", method = RequestMethod.GET)
+    void decreaseScore(@RequestParam("id")Long id) throws ProxyDataException {
+        logger.info("根据id减分操作：id[{}]", id);
+        proxyDataInternalService.decreaseScore(id);
+    }
 }

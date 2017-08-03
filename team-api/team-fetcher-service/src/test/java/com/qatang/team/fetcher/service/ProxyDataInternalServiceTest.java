@@ -109,4 +109,16 @@ public class ProxyDataInternalServiceTest extends BaseTest {
         ProxyData proxyData = proxyDataInternalService.getByHostAndPort("60.214.236.132", 8118);
         logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", proxyData.getHost(), proxyData.getPort());
     }
+
+    @Test
+    public void testIncreaseScore() {
+        Long id = 3L;
+        proxyDataInternalService.increaseScore(id);
+    }
+
+    @Test
+    public void testDecreaseScore() {
+        Long id = 129L;
+        proxyDataInternalService.decreaseScore(id);
+    }
 }

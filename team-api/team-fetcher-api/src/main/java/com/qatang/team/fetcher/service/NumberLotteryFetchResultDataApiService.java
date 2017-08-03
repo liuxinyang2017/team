@@ -2,6 +2,7 @@ package com.qatang.team.fetcher.service;
 
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
+import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
@@ -48,14 +49,15 @@ public interface NumberLotteryFetchResultDataApiService {
     NumberLotteryFetchResultData get(@RequestParam("id") Long id) throws NumberLotteryFetchResultDataException;
 
     /***
-     * 根据彩种彩期获取开奖结果抓取数据
+     * 根据彩种彩期抓取来源数据类型获取开奖结果抓取信息
      * @param lotteryType 彩种
-     * @param phsae 彩期
-     * @return 抓取数据
+     * @param phase 彩期
+     * @param fetcherType 抓取来源数据类型
+     * @return 获取到的开奖结果抓取信息
      * @throws NumberLotteryFetchResultDataException 异常
      */
-    @RequestMapping(value = "/getByLotteryTypeAndPhase", method = RequestMethod.POST)
-    NumberLotteryFetchResultData getByLotteryTypeAndPhase(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phsae) throws NumberLotteryFetchResultDataException;
+    @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
+    NumberLotteryFetchResultData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcherType")FetcherType fetcherType) throws NumberLotteryFetchResultDataException;
 
     /***
      * 自定义查询开奖结果抓取数据
