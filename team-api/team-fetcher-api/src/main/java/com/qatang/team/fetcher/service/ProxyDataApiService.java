@@ -102,7 +102,7 @@ public interface ProxyDataApiService {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
-    ProxyData updateBeginTestTime(@RequestParam("id") Long id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("beginTestTime") LocalDateTime beginTestTime) throws ProxyDataException;
+    ProxyData updateBeginTestTime(@RequestParam("id") Long id, @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @RequestParam("beginTestTime") LocalDateTime beginTestTime) throws ProxyDataException;
 
     /**
      * 更新jieshu测试时间

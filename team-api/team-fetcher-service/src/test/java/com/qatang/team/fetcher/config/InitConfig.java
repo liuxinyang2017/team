@@ -2,8 +2,11 @@ package com.qatang.team.fetcher.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qatang.team.json.CustomObjectMapper;
+import org.springframework.cloud.netflix.feign.FeignFormatterRegistrar;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 
 /**
  * @author sunshow
@@ -24,5 +27,18 @@ public class InitConfig {
     @Primary
     public ObjectMapper customObjectMapper() {
         return new CustomObjectMapper();
+    }
+
+    /**
+     * feign get方式请求入参LocalDateTime类型转换
+     * @return
+     */
+    @Bean
+    public FeignFormatterRegistrar localDateFeignFormatterRegistrar() {
+        return formatterRegistry -> {
+            DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
+            registrar.setUseIsoFormat(true);
+            registrar.registerFormatters(formatterRegistry);
+        };
     }
 }
