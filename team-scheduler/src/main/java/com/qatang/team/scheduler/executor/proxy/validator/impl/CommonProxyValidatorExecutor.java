@@ -68,7 +68,7 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 success = YesNoStatus.NO;
-                message = "代理测试失败：" + e.getMessage();
+                message = "代理测试失败";
                 pass = false;
             }
 

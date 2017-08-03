@@ -30,7 +30,7 @@ public class PendingProxyDataScheduler {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
-    @Scheduled(fixedDelay = 60000, initialDelay = 20000L)
+//    @Scheduled(fixedDelay = 60000, initialDelay = 20000L)
     public void run() {
         try {
             logger.info(String.format("待处理代理数据定时：开始处理所有状态为(%s)的代理数据", ProxyValidateStatus.PENDING.getName()));

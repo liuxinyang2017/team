@@ -24,6 +24,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 代理测试定时
@@ -37,6 +40,8 @@ public class ProxyValidatorScheduler {
 
     @Autowired
     private ProxyDataApiService proxyDataApiService;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
 
     @Autowired
     public ProxyValidatorScheduler(@Qualifier("commonProxyValidatorExecutor") IProxyValidatorExecutor proxyValidatorExecutor) {
@@ -57,13 +62,10 @@ public class ProxyValidatorScheduler {
 
             List<ProxyData> proxyDataList = ApiPageRequestHelper.request(pageableWrapper, proxyDataApiService::findAll);
             if (proxyDataList != null && !proxyDataList.isEmpty()) {
-                logger.info(String.format("代理测试定时：查询到状态为(%s)的代理数据(%s)条，开始进行测试", ProxyValidateStatus.WAITING_TEST.getName(), proxyDataList.size()));
-                proxyDataList.forEach(proxyData -> {
-                    proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
-                    // 开始测试
-                    proxyValidatorExecutor.executeValidator(proxyData);
-                    proxyDataApiService.updateEndTestTime(proxyData.getId(), LocalDateTime.now());
-                });
+                logger.info(String.format("代理测试定时：开始进行测试，查询到状态为(%s)的代理数据(%s)条", ProxyValidateStatus.WAITING_TEST.getName(), proxyDataList.size()));
+                CountDownLatch latch = new CountDownLatch(proxyDataList.size());
+                proxyDataList.forEach(proxyData -> this.doExecute(proxyData, latch));
+                latch.await();
                 logger.info(String.format("代理测试定时：完成(%s)条代理数据的测试", proxyDataList.size()));
             } else {
                 logger.info(String.format("代理测试定时：未查询到状态为(%s)的代理数据", ProxyValidateStatus.WAITING_TEST.getName()));
@@ -72,5 +74,19 @@ public class ProxyValidatorScheduler {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    private void doExecute(ProxyData proxyData, CountDownLatch latch) {
+        executor.submit(() -> {
+            try {
+                proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
+                // 开始测试
+                proxyValidatorExecutor.executeValidator(proxyData);
+                proxyDataApiService.updateEndTestTime(proxyData.getId(), LocalDateTime.now());
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+            latch.countDown();
+        });
     }
 }
