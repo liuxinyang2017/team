@@ -13,6 +13,7 @@ import com.qatang.team.fetcher.bean.QProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
 import com.qatang.team.fetcher.service.ProxyDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -196,7 +197,7 @@ public class ProxyDataController extends BaseController {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
-    public ProxyData updateBeginTestTime(@RequestParam Long id, @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
+    public ProxyData updateBeginTestTime(@RequestParam Long id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam LocalDateTime beginTestTime) throws ProxyDataException {
         logger.info("更新开始测试时间,id:[{}],开始测试时间：[{}]", id, CoreDateUtils.formatLocalDateTime(beginTestTime));
         return proxyDataInternalService.updateBeginTestTime(id, beginTestTime);
     }

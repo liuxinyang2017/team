@@ -1,5 +1,6 @@
 package com.qatang.team.fetcher.controller;
 
+import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.config.InitConfig;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.time.LocalDateTime;
 
 /**
  * @author wangzhiliang
@@ -49,5 +52,12 @@ public class ProxyDataControllerTest {
     public void findByHostAndPort() {
         ProxyData proxyData = proxyDataApiService.getByHostAndPort("127.0.0.1", 80);
         logger.info("根据代理地址,代理端口获取代理数据：代理地址[{}], 代理端口[{}]", proxyData.getHost(), proxyData.getPort());
+    }
+
+    @Test
+    public void testUpdateBeginTestTime() throws Exception {
+        ProxyData proxyData = proxyDataApiService.updateBeginTestTime(1L, LocalDateTime.now());
+        logger.info("修改后的开始时间：{}", CoreDateUtils.formatLocalDateTime(proxyData.getBeginTestTime()));
+        Assert.assertNotNull(proxyData.getBeginTestTime());
     }
 }

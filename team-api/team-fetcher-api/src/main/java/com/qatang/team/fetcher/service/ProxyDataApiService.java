@@ -5,6 +5,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.exception.ProxyDataException;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -101,7 +102,7 @@ public interface ProxyDataApiService {
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/updateBeginTestTime", method = RequestMethod.GET)
-    ProxyData updateBeginTestTime(@RequestParam("id") Long id, @RequestParam("beginTestTime") LocalDateTime beginTestTime) throws ProxyDataException;
+    ProxyData updateBeginTestTime(@RequestParam("id") Long id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") @RequestParam("beginTestTime") LocalDateTime beginTestTime) throws ProxyDataException;
 
     /**
      * 更新jieshu测试时间
