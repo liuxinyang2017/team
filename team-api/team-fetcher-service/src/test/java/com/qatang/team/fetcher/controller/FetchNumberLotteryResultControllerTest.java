@@ -22,7 +22,7 @@ import java.util.List;
  * @author wp
  * @since 2017/7/26
  */
-public class NumberLotteryFetchResultControllerTest extends AbstractControllerTest {
+public class FetchNumberLotteryResultControllerTest extends AbstractControllerTest {
 
     @Autowired
     private FetchNumberLotteryResultDataApiService fetchNumberLotteryResultDataApiService;
@@ -35,22 +35,10 @@ public class NumberLotteryFetchResultControllerTest extends AbstractControllerTe
         fetchNumberLotteryResultData.setFetcherType(FetcherType.F_500W);
         fetchNumberLotteryResultData.setPhase("20170802");
         fetchNumberLotteryResultData.setFetchedTime(LocalDateTime.now());
-        fetchNumberLotteryResultData.setPoolAmount(10000L);
         fetchNumberLotteryResultData.setResult("1,12,34");
-        fetchNumberLotteryResultData.setSaleAmount(100L);
 
         FetchNumberLotteryResultData fetchResultDataNumberLotteryResult = fetchNumberLotteryResultDataApiService.create(fetchNumberLotteryResultData);
         Assert.assertNotNull(fetchResultDataNumberLotteryResult);
-    }
-
-    @Test
-    public void testUpdate() {
-        String result = "1,2,3,4";
-        FetchNumberLotteryResultData fetchNumberLotteryResultData = new FetchNumberLotteryResultData();
-        fetchNumberLotteryResultData.setId(1L);
-        fetchNumberLotteryResultData.setResult(result);
-        fetchNumberLotteryResultData = fetchNumberLotteryResultDataApiService.update(fetchNumberLotteryResultData);
-        Assert.assertTrue(result.equals(fetchNumberLotteryResultData.getResult()));
     }
 
     @Test

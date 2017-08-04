@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
  * @since 2017/7/23
  */
 @Entity
-@Table(name = "number_lottery_fetch_result_data")
+@Table(name = "fetch_number_lottery_result_data")
 @DynamicInsert
 @DynamicUpdate
-public class NumberLotteryFetchResultDataEntity implements BaseEntity {
+public class FetchNumberLotteryResultDataEntity implements BaseEntity {
     private static final long serialVersionUID = -8715008688250566739L;
 
     /**
@@ -73,18 +73,6 @@ public class NumberLotteryFetchResultDataEntity implements BaseEntity {
      */
     @Column(name = "result")
     private String result;
-
-    /**
-     * 奖池金额
-     */
-    @Column(name = "pool_amount")
-    private Long poolAmount;
-
-    /**
-     * 销售总金额
-     */
-    @Column(name = "sale_amount")
-    private Long saleAmount;
 
     @PrePersist
     public void onCreate() {
@@ -165,19 +153,4 @@ public class NumberLotteryFetchResultDataEntity implements BaseEntity {
         this.result = result;
     }
 
-    public Long getPoolAmount() {
-        return poolAmount;
-    }
-
-    public void setPoolAmount(Long poolAmount) {
-        this.poolAmount = poolAmount;
-    }
-
-    public Long getSaleAmount() {
-        return saleAmount;
-    }
-
-    public void setSaleAmount(Long saleAmount) {
-        this.saleAmount = saleAmount;
-    }
 }

@@ -7,16 +7,16 @@ import com.qatang.team.core.exception.ClientException;
  * @author wp
  * @since 2017/7/23
  */
-public class NumberLotteryFetchDetailDataException extends ClientException {
+public class FetchNumberLotteryDetailDataException extends ClientException {
     private static final long serialVersionUID = -5871171740714585918L;
 
     private static final String errorCode = "400001003";
 
-    public NumberLotteryFetchDetailDataException() {
+    public FetchNumberLotteryDetailDataException() {
         super(errorCode, "数字彩开奖详情抓取错误");
     }
 
-    public NumberLotteryFetchDetailDataException(String message) {
+    public FetchNumberLotteryDetailDataException(String message) {
         super(errorCode, message);
     }
 }

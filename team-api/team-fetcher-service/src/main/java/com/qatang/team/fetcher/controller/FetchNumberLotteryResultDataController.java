@@ -11,8 +11,8 @@ import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryResultData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchResultData;
-import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
-import com.qatang.team.fetcher.service.NumberLotteryFetchResultDataInternalService;
+import com.qatang.team.fetcher.exception.FetchNumberLotteryResultDataException;
+import com.qatang.team.fetcher.service.FetchNumberLotteryResultDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/fetcher/numberLotteryFetchResultData")
-public class NumberLotteryFetchResultDataController extends BaseController{
+public class FetchNumberLotteryResultDataController extends BaseController{
 
     @Autowired
-    private NumberLotteryFetchResultDataInternalService numberLotteryFetchResultDataInternalService;
+    private FetchNumberLotteryResultDataInternalService fetchNumberLotteryResultDataInternalService;
 
     /***
      * 创建开奖结果抓取数据信息
@@ -38,7 +38,7 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public FetchNumberLotteryResultData create(@RequestBody FetchNumberLotteryResultData fetchNumberLotteryResultData) {
         logger.info("开始创建抓取开奖结果对象");
-        return numberLotteryFetchResultDataInternalService.save(fetchNumberLotteryResultData);
+        return fetchNumberLotteryResultDataInternalService.save(fetchNumberLotteryResultData);
     }
 
     /***
@@ -49,7 +49,7 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public FetchNumberLotteryResultData update(@RequestBody FetchNumberLotteryResultData fetchNumberLotteryResultData) {
         logger.info("修改抓取开奖结果对象,id:[{}]", fetchNumberLotteryResultData.getId());
-        return numberLotteryFetchResultDataInternalService.update(fetchNumberLotteryResultData);
+        return fetchNumberLotteryResultDataInternalService.update(fetchNumberLotteryResultData);
     }
 
     /***
@@ -60,7 +60,7 @@ public class NumberLotteryFetchResultDataController extends BaseController{
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public FetchNumberLotteryResultData get(@RequestParam Long id) {
         logger.info("获取抓取开奖结果对象信息, id:[{}]", id);
-        return numberLotteryFetchResultDataInternalService.get(id);
+        return fetchNumberLotteryResultDataInternalService.get(id);
     }
 
     /***
@@ -69,12 +69,12 @@ public class NumberLotteryFetchResultDataController extends BaseController{
      * @param phase 彩期
      * @param fetcherType 抓取来源数据类型
      * @return 获取到的开奖结果抓取信息
-     * @throws NumberLotteryFetchResultDataException 异常
+     * @throws FetchNumberLotteryResultDataException 异常
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
     FetchNumberLotteryResultData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcherType")FetcherType fetcherType) {
         logger.info("根据彩种彩期数据类型查询开奖结果抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
-        return numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
+        return fetchNumberLotteryResultDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
 
     /***
@@ -147,6 +147,6 @@ public class NumberLotteryFetchResultDataController extends BaseController{
                 default:
             }
         }
-        return numberLotteryFetchResultDataInternalService.findAll(apiRequest, apiRequestPage);
+        return fetchNumberLotteryResultDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

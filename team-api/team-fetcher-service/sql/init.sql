@@ -56,26 +56,7 @@ CREATE TABLE `fetcher_log` (
   INDEX `idx_proxy_id` (`proxy_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `number_lottery_fetch_detail_data` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `fetch_result_id` bigint(20) NOT NULL,
-  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lottery_type`  int(11) NOT NULL,
-  `phase` varchar(20)  NOT NULL DEFAULT '',
-  `fetcher_type`  int(11) NOT NULL,
-  `fetched_time` TIMESTAMP NULL DEFAULT NULL,
-  `prize_key` varchar(64)  NOT NULL DEFAULT '',
-  `prize_name` varchar(64)  NOT NULL DEFAULT '',
-  `prize_count` bigint(20) NOT NULL DEFAULT 0,
-  `prize_amount` bigint(20) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
-  INDEX `idx_fetch_result_id` (`fetch_result_id`),
-  INDEX `idx_lottery_type` (`lottery_type`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `number_lottery_fetch_result_data` (
+CREATE TABLE `fetch_number_lottery_detail_data` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -88,6 +69,38 @@ CREATE TABLE `number_lottery_fetch_result_data` (
   `sale_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
+  INDEX `idx_lottery_type` (`lottery_type`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `fetch_number_lottery_result_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lottery_type`  int(11) NOT NULL,
+  `phase` varchar(20)  NOT NULL DEFAULT '',
+  `fetcher_type`  int(11) NOT NULL,
+  `fetched_time` TIMESTAMP NULL DEFAULT NULL,
+  `result`  varchar(255)  NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
   INDEX `idx_lottery_type` (`lottery_type`),
   INDEX `idx_fetcher_type` (`fetcher_type`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `fetch_number_lottery_detail_item_data` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `fetch_detail_id` bigint(20) NOT NULL,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lottery_type`  int(11) NOT NULL,
+  `phase` varchar(20)  NOT NULL DEFAULT '',
+  `fetcher_type`  int(11) NOT NULL,
+  `fetched_time` TIMESTAMP NULL DEFAULT NULL,
+  `prize_key` varchar(64)  NOT NULL DEFAULT '',
+  `prize_name` varchar(64)  NOT NULL DEFAULT '',
+  `prize_count` bigint(20) NOT NULL DEFAULT 0,
+  `prize_amount` bigint(20) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
+  INDEX `idx_lottery_type` (`lottery_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -9,9 +9,12 @@ import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailData;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailItemData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
-import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataInternalService;
+import com.qatang.team.fetcher.service.FetchNumberLotteryDetailDataInternalService;
+import com.qatang.team.fetcher.service.FetchNumberLotteryDetailItemDataInternalService;
+import com.qatang.team.fetcher.wrapper.FetchNumberLotteryDetailWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,45 +27,50 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/fetcher/numberLotteryFetchDetailData")
-public class NumberLotteryFetchDetailDataController extends BaseController {
+public class FetchNumberLotteryDetailDataController extends BaseController {
 
     @Autowired
-    private NumberLotteryFetchDetailDataInternalService numberLotteryFetchDetailDataInternalService;
+    private FetchNumberLotteryDetailDataInternalService fetchNumberLotteryDetailDataInternalService;
 
-    /***
+    @Autowired
+    private FetchNumberLotteryDetailItemDataInternalService fetchNumberLotteryDetailItemDataInternalService;
+
+    /**
      * 保存开奖详情
-     * @param fetchNumberLotteryDetailData 开奖详情对象
+     * @param fetchNumberLotteryDetailWrapper 开奖详情对象
      * @return 保存后的开奖详情对象
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public FetchNumberLotteryDetailItemData create(@RequestBody FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData) {
+    public FetchNumberLotteryDetailData create(@RequestBody FetchNumberLotteryDetailWrapper fetchNumberLotteryDetailWrapper) {
         logger.info("开始创建抓取开奖详情对象");
-        return numberLotteryFetchDetailDataInternalService.save(fetchNumberLotteryDetailData);
+        FetchNumberLotteryDetailData fetchNumberLotteryDetailData = fetchNumberLotteryDetailWrapper.getFetchNumberLotteryDetailData();
+        List<FetchNumberLotteryDetailItemData> lotteryDetailItemDatas = fetchNumberLotteryDetailWrapper.getFetchNumberLotteryDetailItemDataList();
+        return fetchNumberLotteryDetailDataInternalService.save(fetchNumberLotteryDetailData, lotteryDetailItemDatas);
     }
 
-    /***
-     * 修改开奖详情
-     * @param fetchNumberLotteryDetailData 开奖详情对象
-     * @return 修改后的开奖详情对象
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public FetchNumberLotteryDetailItemData update(@RequestBody FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData) {
-        logger.info("修改抓取开奖详情对象,id:[{}]", fetchNumberLotteryDetailData.getId());
-        return numberLotteryFetchDetailDataInternalService.update(fetchNumberLotteryDetailData);
-    }
-
-    /***
+    /**
      * 根据id获取开奖详情信息
      * @param id 开奖详情id
      * @return 获取到的开奖详情信息
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public FetchNumberLotteryDetailItemData get(@RequestParam Long id) {
+    public FetchNumberLotteryDetailData get(@RequestParam Long id) {
         logger.info("获取抓取开奖详情对象信息，id:[{}]", id);
-        return numberLotteryFetchDetailDataInternalService.get(id);
+        return fetchNumberLotteryDetailDataInternalService.get(id);
     }
 
-    /***
+    /**
+     * 按id获取开奖详情抓取数据
+     * @param detailId 开奖详情id
+     * @return 获取到的抓取数据
+     */
+    @RequestMapping(value = "/getByFetchDetailId", method = RequestMethod.GET)
+    List<FetchNumberLotteryDetailItemData> getByDetailId(@RequestParam("id") Long detailId) {
+        logger.info("获取抓取开奖详情对象信息，detailId:[{}]", detailId);
+        return fetchNumberLotteryDetailItemDataInternalService.getByDetailId(detailId);
+    }
+
+    /**
      * 根据彩种彩期获取开奖详情数据
      * @param lotteryType 彩种
      * @param phase 彩期
@@ -72,16 +80,16 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
     FetchNumberLotteryDetailItemData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
         logger.info("根据彩种彩期抓取器查询开奖详情抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
-        return numberLotteryFetchDetailDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
+        return fetchNumberLotteryDetailItemDataInternalService.findByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
 
-    /***
+    /**
      * 自定义查询开奖详情信息
      * @param pageableWrapper 自定义查询条件
      * @return 自定义查询到的开奖详情信息
      */
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    public ApiResponse<FetchNumberLotteryDetailItemData> findAll(@RequestBody PageableWrapper pageableWrapper) {
+    public ApiResponse<FetchNumberLotteryDetailData> findAll(@RequestBody PageableWrapper pageableWrapper) {
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         logger.info("自定义查询抓取开奖详情对象信息");
@@ -145,6 +153,6 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
                 default:
             }
         }
-        return numberLotteryFetchDetailDataInternalService.findAll(apiRequest, apiRequestPage);
+        return fetchNumberLotteryDetailDataInternalService.findAll(apiRequest, apiRequestPage);
     }
 }

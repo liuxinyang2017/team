@@ -3,13 +3,13 @@ package com.qatang.team.fetcher.repository;
 import com.qatang.team.core.repository.BaseRepository;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.entity.NumberLotteryFetchDetailDataEntity;
+import com.qatang.team.fetcher.entity.FetchNumberLotteryDetailDataEntity;
 
 /**
  * @author wp
  * @since 2017/7/23
  */
-public interface NumberLotteryFetchDetailDataRepository extends BaseRepository<NumberLotteryFetchDetailDataEntity, Long> {
+public interface FetchNumberLotteryDetailDataRepository extends BaseRepository<FetchNumberLotteryDetailDataEntity, Long> {
 
     /**
      * 根据彩种、彩期获取数字彩开奖详情
@@ -18,5 +18,5 @@ public interface NumberLotteryFetchDetailDataRepository extends BaseRepository<N
      * @param fetcherType 抓取器
      * @return 数字彩开奖详情抓取数据
      */
-    NumberLotteryFetchDetailDataEntity findByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType);
+    FetchNumberLotteryDetailDataEntity findByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType);
 }

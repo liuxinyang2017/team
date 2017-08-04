@@ -167,4 +167,12 @@ public class FetchNumberLotteryDetailItemData extends AbstractBaseApiBean {
     public void setPrizeAmount(Long prizeAmount) {
         this.prizeAmount = prizeAmount;
     }
+
+    public Long getFetchDetailId() {
+        return fetchDetailId;
+    }
+
+    public void setFetchDetailId(Long fetchDetailId) {
+        this.fetchDetailId = fetchDetailId;
+    }
 }

@@ -20,10 +20,10 @@ import java.util.List;
  * @author wp
  * @since 2017/7/23
  */
-public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
+public class FetchNumberLotteryResultDataInternalServiceTest extends BaseTest {
 
     @Autowired
-    private  NumberLotteryFetchResultDataInternalService numberLotteryFetchResultDataInternalService;
+    private FetchNumberLotteryResultDataInternalService fetchNumberLotteryResultDataInternalService;
 
     @Test
     public void testSave() {
@@ -33,10 +33,8 @@ public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
         fetchNumberLotteryResultData.setFetcherType(FetcherType.F_500W);
         fetchNumberLotteryResultData.setPhase("20170801");
         fetchNumberLotteryResultData.setFetchedTime(LocalDateTime.now());
-        fetchNumberLotteryResultData.setPoolAmount(10000L);
         fetchNumberLotteryResultData.setResult("1,12,34");
-        fetchNumberLotteryResultData.setSaleAmount(100L);
-        FetchNumberLotteryResultData fetchResultDataNumberLotteryResult = numberLotteryFetchResultDataInternalService.save(fetchNumberLotteryResultData);
+        FetchNumberLotteryResultData fetchResultDataNumberLotteryResult = fetchNumberLotteryResultDataInternalService.save(fetchNumberLotteryResultData);
         Assert.assertNotNull(fetchResultDataNumberLotteryResult);
     }
 
@@ -46,14 +44,14 @@ public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
         FetchNumberLotteryResultData fetchNumberLotteryResultData = new FetchNumberLotteryResultData();
         fetchNumberLotteryResultData.setId(1L);
         fetchNumberLotteryResultData.setResult(result);
-        fetchNumberLotteryResultData = numberLotteryFetchResultDataInternalService.update(fetchNumberLotteryResultData);
+        fetchNumberLotteryResultData = fetchNumberLotteryResultDataInternalService.update(fetchNumberLotteryResultData);
         Assert.assertTrue(result.equals(fetchNumberLotteryResultData.getResult()));
     }
 
     @Test
     public void testGet() {
         Long id = 1L;
-        FetchNumberLotteryResultData fetchNumberLotteryResultData = numberLotteryFetchResultDataInternalService.get(id);
+        FetchNumberLotteryResultData fetchNumberLotteryResultData = fetchNumberLotteryResultDataInternalService.get(id);
         logger.info("根据id[{}]获取开奖结果抓取数据：抓取结果：[{}], 彩期：[{}]", id, fetchNumberLotteryResultData.getResult(), fetchNumberLotteryResultData.getPhase());
         Assert.assertNotNull(fetchNumberLotteryResultData);
     }
@@ -66,7 +64,7 @@ public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
         apiRequestPage.paging(0, 10);
         apiRequestPage.addOrder(QNumberLotteryFetchResultData.createdTime);
         apiRequestPage.addOrder(QNumberLotteryFetchResultData.id);
-        ApiResponse<FetchNumberLotteryResultData> numberLotteryFetchResultDataApiResponse = numberLotteryFetchResultDataInternalService.findAll(apiRequest, apiRequestPage);
+        ApiResponse<FetchNumberLotteryResultData> numberLotteryFetchResultDataApiResponse = fetchNumberLotteryResultDataInternalService.findAll(apiRequest, apiRequestPage);
         logger.info("查询总数为：{}", numberLotteryFetchResultDataApiResponse.getPageTotal());
 
         List<FetchNumberLotteryResultData> fetchNumberLotteryResultData = Lists.newArrayList(numberLotteryFetchResultDataApiResponse.getPagedData());
@@ -78,7 +76,7 @@ public class NumberLotteryFetchResultDataInternalServiceTest extends BaseTest {
     @Test
     public void testGetByLotteryTypeAndPhaseAndFetcherType() {
         String phase = "20170801";
-        FetchNumberLotteryResultData fetchNumberLotteryResultData = numberLotteryFetchResultDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
+        FetchNumberLotteryResultData fetchNumberLotteryResultData = fetchNumberLotteryResultDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
         logger.info("根据彩种：[{}], 彩期：[{}],抓取数据来源类型[{}]:获取开奖结果抓取数据，抓取结果：[{}]", LotteryType.TC_DLT, phase, fetchNumberLotteryResultData.getFetcherType().getName(), fetchNumberLotteryResultData.getResult());
         Assert.assertNotNull(fetchNumberLotteryResultData);
     }

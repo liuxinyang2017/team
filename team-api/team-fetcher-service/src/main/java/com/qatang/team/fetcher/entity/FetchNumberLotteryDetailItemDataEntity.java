@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 
 /**
  * @author wp
- * @since 2017/7/23
+ * @since 2017/8/4
  */
 @Entity
-@Table(name = "number_lottery_fetch_detail_data")
+@Table(name = "fetch_number_lottery_detail_item_data")
 @DynamicInsert
 @DynamicUpdate
-public class NumberLotteryFetchDetailDataEntity implements BaseEntity {
-    private static final long serialVersionUID = 4421987708633857018L;
+public class FetchNumberLotteryDetailItemDataEntity implements BaseEntity {
+    private static final long serialVersionUID = -2964749964607383064L;
 
     /**
      * 主键
@@ -32,8 +32,8 @@ public class NumberLotteryFetchDetailDataEntity implements BaseEntity {
     /**
      * 抓取结果编码
      */
-    @Column(name = "fetch_result_id", nullable = false)
-    private Long fetchResultId;
+    @Column(name = "fetch_detail_id", nullable = false)
+    private Long fetchDetailId;
 
     /**
      * 创建时间
@@ -120,12 +120,12 @@ public class NumberLotteryFetchDetailDataEntity implements BaseEntity {
         this.id = id;
     }
 
-    public Long getFetchResultId() {
-        return fetchResultId;
+    public Long getFetchDetailId() {
+        return fetchDetailId;
     }
 
-    public void setFetchResultId(Long fetchResultId) {
-        this.fetchResultId = fetchResultId;
+    public void setFetchDetailId(Long fetchDetailId) {
+        this.fetchDetailId = fetchDetailId;
     }
 
     public LocalDateTime getCreatedTime() {
