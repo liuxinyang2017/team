@@ -1,10 +1,8 @@
 package com.qatang.team.fetcher.bean;
 
 import com.qatang.team.core.annotation.request.RequestApiBean;
-import com.qatang.team.core.annotation.request.RequestApiFieldUpdatable;
 import com.qatang.team.core.bean.AbstractBaseApiBean;
 import com.qatang.team.enums.fetcher.FetcherType;
-import com.qatang.team.enums.fetcher.ProxyValidateStatus;
 import com.qatang.team.enums.lottery.LotteryType;
 
 import java.time.LocalDateTime;
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
  * @author qatang
  */
 @RequestApiBean
-public class NumberLotteryFetchResultData extends AbstractBaseApiBean {
+public class FetchNumberLotteryResultData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 2771227063335205275L;
 
     /**
@@ -56,20 +54,7 @@ public class NumberLotteryFetchResultData extends AbstractBaseApiBean {
      * 彩果
      * 01,02,03,04,05,06|07
      */
-    @RequestApiFieldUpdatable
     private String result;
-
-    /**
-     * 奖池金额
-     */
-    @RequestApiFieldUpdatable
-    private Long poolAmount;
-
-    /**
-     * 销售总金额
-     */
-    @RequestApiFieldUpdatable
-    private Long saleAmount;
 
     public Long getId() {
         return id;
@@ -133,21 +118,5 @@ public class NumberLotteryFetchResultData extends AbstractBaseApiBean {
 
     public void setResult(String result) {
         this.result = result;
-    }
-
-    public Long getPoolAmount() {
-        return poolAmount;
-    }
-
-    public void setPoolAmount(Long poolAmount) {
-        this.poolAmount = poolAmount;
-    }
-
-    public Long getSaleAmount() {
-        return saleAmount;
-    }
-
-    public void setSaleAmount(Long saleAmount) {
-        this.saleAmount = saleAmount;
     }
 }

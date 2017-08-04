@@ -4,7 +4,7 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryResultData;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,25 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = "team-fetcher-service")
 @RequestMapping(value = "/fetcher/numberLotteryFetchResultData")
-public interface NumberLotteryFetchResultDataApiService {
+public interface FetchNumberLotteryResultDataApiService {
 
     /***
      * 创建开奖结果抓取数据
-     * @param numberLotteryFetchResultData 抓取数据
+     * @param fetchNumberLotteryResultData 抓取数据
      * @return 保存后的抓取数据
      * @throws NumberLotteryFetchResultDataException 异常
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    NumberLotteryFetchResultData create(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) throws NumberLotteryFetchResultDataException;
-
-    /***
-     * 修改开奖结果抓取数据
-     * @param numberLotteryFetchResultData 开奖抓取数据
-     * @return 修改后的开奖结果抓取数据
-     * @throws NumberLotteryFetchResultDataException 异常
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    NumberLotteryFetchResultData update(@RequestBody NumberLotteryFetchResultData numberLotteryFetchResultData) throws NumberLotteryFetchResultDataException;
+    FetchNumberLotteryResultData create(@RequestBody FetchNumberLotteryResultData fetchNumberLotteryResultData) throws NumberLotteryFetchResultDataException;
 
     /***
      * 按id获取开奖结果抓取数据
@@ -46,7 +37,7 @@ public interface NumberLotteryFetchResultDataApiService {
      * @throws NumberLotteryFetchResultDataException 异常
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    NumberLotteryFetchResultData get(@RequestParam("id") Long id) throws NumberLotteryFetchResultDataException;
+    FetchNumberLotteryResultData get(@RequestParam("id") Long id) throws NumberLotteryFetchResultDataException;
 
     /***
      * 根据彩种彩期抓取来源数据类型获取开奖结果抓取信息
@@ -57,7 +48,7 @@ public interface NumberLotteryFetchResultDataApiService {
      * @throws NumberLotteryFetchResultDataException 异常
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
-    NumberLotteryFetchResultData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcherType")FetcherType fetcherType) throws NumberLotteryFetchResultDataException;
+    FetchNumberLotteryResultData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcherType")FetcherType fetcherType) throws NumberLotteryFetchResultDataException;
 
     /***
      * 自定义查询开奖结果抓取数据
@@ -66,6 +57,6 @@ public interface NumberLotteryFetchResultDataApiService {
      * @throws NumberLotteryFetchResultDataException 异常
      */
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    ApiResponse<NumberLotteryFetchResultData> findAll(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryFetchResultDataException;
+    ApiResponse<FetchNumberLotteryResultData> findAll(@RequestBody PageableWrapper pageableWrapper) throws NumberLotteryFetchResultDataException;
 
 }

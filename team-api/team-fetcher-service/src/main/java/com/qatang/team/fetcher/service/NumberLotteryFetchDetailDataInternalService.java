@@ -6,7 +6,7 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseInternalSerivce;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailItemData;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchDetailDataException;
 
 /**
@@ -18,11 +18,11 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
 
     /**
      * 创建数字彩开奖详情抓取数据对象
-     * @param numberLotteryFetchDetailData 数字彩开奖详情抓取数据对象
+     * @param fetchNumberLotteryDetailData 数字彩开奖详情抓取数据对象
      * @return 保存后的数字彩开奖详情抓取数据对象
      * @throws NumberLotteryFetchDetailDataException 异常
      */
-    NumberLotteryFetchDetailData save(NumberLotteryFetchDetailData numberLotteryFetchDetailData) throws NumberLotteryFetchDetailDataException;
+    FetchNumberLotteryDetailItemData save(FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData) throws NumberLotteryFetchDetailDataException;
 
     /**
      * 分页查询数字彩开奖详情抓取数据对象
@@ -31,7 +31,7 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
      * @return 数字彩开奖详情抓取数据对象
      * @throws NumberLotteryFetchDetailDataException 异常
      */
-    ApiResponse<NumberLotteryFetchDetailData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryFetchDetailDataException;
+    ApiResponse<FetchNumberLotteryDetailItemData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryFetchDetailDataException;
 
     /**
      * 按id获取数字彩开奖详情抓取数据对象
@@ -39,15 +39,15 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
      * @return 抓取日志
      * @throws NumberLotteryFetchDetailDataException 异常
      */
-    NumberLotteryFetchDetailData get(Long id) throws NumberLotteryFetchDetailDataException;
+    FetchNumberLotteryDetailItemData get(Long id) throws NumberLotteryFetchDetailDataException;
 
     /**
      * 修改数字彩开奖详情抓取数据对象
-     * @param NumberLotteryFetchDetailDataException 数字彩开奖详情抓取数据对象
+     * @param fetchNumberLotteryDetailDataException 数字彩开奖详情抓取数据对象
      * @return 修改后的数字彩开奖详情抓取数据
      * @throws NumberLotteryFetchDetailDataException 异常
      */
-    NumberLotteryFetchDetailData update(NumberLotteryFetchDetailData NumberLotteryFetchDetailDataException) throws NumberLotteryFetchDetailDataException;
+    FetchNumberLotteryDetailItemData update(FetchNumberLotteryDetailItemData fetchNumberLotteryDetailDataException) throws NumberLotteryFetchDetailDataException;
 
     /***
      * 根据彩种彩期获取开奖详情抓取数据
@@ -56,5 +56,5 @@ public interface NumberLotteryFetchDetailDataInternalService extends BaseInterna
      * @param fetcherType 抓取数据来源类型
      * @return 查询结果
      */
-    NumberLotteryFetchDetailData getByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType);
+    FetchNumberLotteryDetailItemData getByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType);
 }

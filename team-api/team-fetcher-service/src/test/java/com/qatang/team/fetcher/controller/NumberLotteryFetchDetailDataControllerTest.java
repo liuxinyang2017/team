@@ -7,9 +7,9 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailItemData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
-import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataApiService;
+import com.qatang.team.fetcher.service.FetchNumberLotteryDetailDataApiService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,49 +24,49 @@ import java.util.List;
 public class NumberLotteryFetchDetailDataControllerTest extends AbstractControllerTest {
 
     @Autowired
-    private NumberLotteryFetchDetailDataApiService numberLotteryFetchDetailDataApiService;
+    private FetchNumberLotteryDetailDataApiService fetchNumberLotteryDetailDataApiService;
 
     @Test
     public void testSave() {
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = new NumberLotteryFetchDetailData();
-        numberLotteryFetchDetailData.setLotteryType(LotteryType.FC_SSQ);
-        numberLotteryFetchDetailData.setFetchedTime(LocalDateTime.now());
-        numberLotteryFetchDetailData.setFetcherType(FetcherType.F_500W);
-        numberLotteryFetchDetailData.setFetchResultId(1L);
-        numberLotteryFetchDetailData.setPhase("20170701");
-        numberLotteryFetchDetailData.setPrizeAmount(1000L);
-        numberLotteryFetchDetailData.setPrizeCount(1L);
-        numberLotteryFetchDetailData.setPrizeKey("prize1");
-        numberLotteryFetchDetailData.setPrizeName("一等奖");
+        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData = new FetchNumberLotteryDetailItemData();
+        fetchNumberLotteryDetailData.setLotteryType(LotteryType.FC_SSQ);
+        fetchNumberLotteryDetailData.setFetchedTime(LocalDateTime.now());
+        fetchNumberLotteryDetailData.setFetcherType(FetcherType.F_500W);
+        fetchNumberLotteryDetailData.setFetchResultId(1L);
+        fetchNumberLotteryDetailData.setPhase("20170701");
+        fetchNumberLotteryDetailData.setPrizeAmount(1000L);
+        fetchNumberLotteryDetailData.setPrizeCount(1L);
+        fetchNumberLotteryDetailData.setPrizeKey("prize1");
+        fetchNumberLotteryDetailData.setPrizeName("一等奖");
 
-        NumberLotteryFetchDetailData numberLotteryFetchDetailDataResult = numberLotteryFetchDetailDataApiService.create(numberLotteryFetchDetailData);
-        Assert.assertNotNull(numberLotteryFetchDetailDataResult);
+        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailDataResult = fetchNumberLotteryDetailDataApiService.create(fetchNumberLotteryDetailData);
+        Assert.assertNotNull(fetchNumberLotteryDetailDataResult);
     }
 
     @Test
     public void testUpdate() {
         Long id = 1L;
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = new NumberLotteryFetchDetailData();
-        numberLotteryFetchDetailData.setId(id);
-        numberLotteryFetchDetailData.setPrizeName("二等奖");
-        numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.update(numberLotteryFetchDetailData);
-        Assert.assertTrue("二等奖".equals(numberLotteryFetchDetailData.getPrizeName()));
+        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData = new FetchNumberLotteryDetailItemData();
+        fetchNumberLotteryDetailData.setId(id);
+        fetchNumberLotteryDetailData.setPrizeName("二等奖");
+        fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.update(fetchNumberLotteryDetailData);
+        Assert.assertTrue("二等奖".equals(fetchNumberLotteryDetailData.getPrizeName()));
     }
 
     @Test
     public void testGet() {
         Long id = 1L;
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.get(id);
-        logger.info("根据id[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", id, numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
-        Assert.assertNotNull(numberLotteryFetchDetailData);
+        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.get(id);
+        logger.info("根据id[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", id, fetchNumberLotteryDetailData.getLotteryType().getName(), fetchNumberLotteryDetailData.getFetcherType().getName());
+        Assert.assertNotNull(fetchNumberLotteryDetailData);
     }
 
     @Test
     public void testGetByLotteryTypeAndPhaseAndFetcherType() {
         String phase = "20170701";
-        NumberLotteryFetchDetailData numberLotteryFetchDetailData = numberLotteryFetchDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
-        logger.info("根据彩种[{}]，彩期[{}],抓取器[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", LotteryType.FC_SSQ.getName(), phase, numberLotteryFetchDetailData.getFetcherType().getName(), numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
-        Assert.assertNotNull(numberLotteryFetchDetailData);
+        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
+        logger.info("根据彩种[{}]，彩期[{}],抓取器[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", LotteryType.FC_SSQ.getName(), phase, fetchNumberLotteryDetailData.getFetcherType().getName(), fetchNumberLotteryDetailData.getLotteryType().getName(), fetchNumberLotteryDetailData.getFetcherType().getName());
+        Assert.assertNotNull(fetchNumberLotteryDetailData);
     }
 
     @Test
@@ -79,10 +79,10 @@ public class NumberLotteryFetchDetailDataControllerTest extends AbstractControll
         apiRequestPage.addOrder(QNumberLotteryFetchDetailData.createdTime);
         apiRequestPage.addOrder(QNumberLotteryFetchDetailData.id);
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
-        ApiResponse<NumberLotteryFetchDetailData> numberLotteryFetchDetailDataApiResponse = numberLotteryFetchDetailDataApiService.findAll(pageableWrapper);
+        ApiResponse<FetchNumberLotteryDetailItemData> numberLotteryFetchDetailDataApiResponse = fetchNumberLotteryDetailDataApiService.findAll(pageableWrapper);
         logger.info("查询总数：{}", numberLotteryFetchDetailDataApiResponse.getTotal());
 
-        List<NumberLotteryFetchDetailData> list = Lists.newArrayList(numberLotteryFetchDetailDataApiResponse.getPagedData());
+        List<FetchNumberLotteryDetailItemData> list = Lists.newArrayList(numberLotteryFetchDetailDataApiResponse.getPagedData());
         list.forEach(numberLotteryFetchDetailData -> {
             logger.info("开奖详情抓取彩种[{}], 抓取来源[{}]", numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
         });

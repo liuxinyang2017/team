@@ -7,7 +7,7 @@ import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryResultData;
 import com.qatang.team.fetcher.entity.NumberLotteryFetchResultDataEntity;
 import com.qatang.team.fetcher.exception.NumberLotteryFetchResultDataException;
 import com.qatang.team.fetcher.repository.NumberLotteryFetchResultDataRepository;
@@ -41,30 +41,30 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
 
     @Override
     @Transactional
-    public NumberLotteryFetchResultData save(NumberLotteryFetchResultData numberLotteryFetchResultData) throws NumberLotteryFetchResultDataException {
+    public FetchNumberLotteryResultData save(FetchNumberLotteryResultData fetchNumberLotteryResultData) throws NumberLotteryFetchResultDataException {
         logger.info("新建数字彩开奖结果抓取数据：开始执行");
 
         logger.info("新建数字彩开奖结果抓取数据：将NumberLotteryFetchResultData转换为NumberLotteryFetchResultDataEntity");
-        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = BeanMapping.map(numberLotteryFetchResultData, NumberLotteryFetchResultDataEntity.class);
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = BeanMapping.map(fetchNumberLotteryResultData, NumberLotteryFetchResultDataEntity.class);
 
         logger.info("新建数字彩开奖结果抓取数据：保存NumberLotteryFetchResultDataEntity");
         numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.save(numberLotteryFetchResultDataEntity);
 
         logger.info("新建数字彩开奖结果抓取数据：将NumberLotteryFetchResultDataEntity转换为NumberLotteryFetchResultData作为返回结果");
-        NumberLotteryFetchResultData numberLotteryFetchResultDataResult = BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
+        FetchNumberLotteryResultData fetchResultDataNumberLotteryResult = BeanMapping.map(numberLotteryFetchResultDataEntity, FetchNumberLotteryResultData.class);
 
         logger.info("新建数字彩开奖结果抓取数据：结束执行");
-        return numberLotteryFetchResultDataResult;
+        return fetchResultDataNumberLotteryResult;
     }
 
     @Override
-    public ApiResponse<NumberLotteryFetchResultData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryFetchResultDataException {
+    public ApiResponse<FetchNumberLotteryResultData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryFetchResultDataException {
         Page<NumberLotteryFetchResultDataEntity> numberLotteryFetchResultDataEntityPage = numberLotteryFetchResultDataRepository.findAll(convertSpecification(request), convertPageable(requestPage));
-        return convertApiResponse(numberLotteryFetchResultDataEntityPage, NumberLotteryFetchResultData.class);
+        return convertApiResponse(numberLotteryFetchResultDataEntityPage, FetchNumberLotteryResultData.class);
     }
 
     @Override
-    public NumberLotteryFetchResultData get(Long id) throws NumberLotteryFetchResultDataException {
+    public FetchNumberLotteryResultData get(Long id) throws NumberLotteryFetchResultDataException {
         logger.info("按id获取数字彩开奖结果抓取数据, numberLotteryFetchResultDataId={}", id);
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(id);
         if (numberLotteryFetchResultDataEntity == null) {
@@ -72,40 +72,40 @@ public class NumberLotteryFetchResultDataInternalServiceImpl extends AbstractBas
             logger.error(msg);
             throw new NumberLotteryFetchResultDataException(msg);
         }
-        return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
+        return BeanMapping.map(numberLotteryFetchResultDataEntity, FetchNumberLotteryResultData.class);
     }
 
     @Override
     @Transactional
-    public NumberLotteryFetchResultData update(NumberLotteryFetchResultData numberLotteryFetchResultData) throws NumberLotteryFetchResultDataException {
+    public FetchNumberLotteryResultData update(FetchNumberLotteryResultData fetchNumberLotteryResultData) throws NumberLotteryFetchResultDataException {
         logger.info("修改数字彩开奖结果抓取数据：开始执行");
 
-        Assert.notNull(numberLotteryFetchResultData.getId(), "抓取日志编号不能为空");
+        Assert.notNull(fetchNumberLotteryResultData.getId(), "抓取日志编号不能为空");
 
         logger.info("修改数字彩开奖结果抓取数据：锁行查询NumberLotteryFetchResultDataEntity");
-        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(numberLotteryFetchResultData.getId());
+        NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findOne(fetchNumberLotteryResultData.getId());
 
         numberLotteryFetchResultDataRepository.detach(numberLotteryFetchResultDataEntity);
 
-        numberLotteryFetchResultDataEntity = this.getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(numberLotteryFetchResultData.getId());
+        numberLotteryFetchResultDataEntity = this.getNumberLotteryFetchResultDataEntityWithNullCheckForUpdate(fetchNumberLotteryResultData.getId());
 
-        copyUpdatableField(numberLotteryFetchResultDataEntity, numberLotteryFetchResultData);
+        copyUpdatableField(numberLotteryFetchResultDataEntity, fetchNumberLotteryResultData);
 
         logger.info("修改数字彩开奖结果抓取数据：将NumberLotteryFetchResultDataEntity转换为NumberLotteryFetchResultData作为返回结果");
-        NumberLotteryFetchResultData numberLotteryFetchResultDataResult = BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
+        FetchNumberLotteryResultData fetchResultDataNumberLotteryResult = BeanMapping.map(numberLotteryFetchResultDataEntity, FetchNumberLotteryResultData.class);
 
         logger.info("修改数字彩开奖结果抓取数据：结束执行");
-        return numberLotteryFetchResultDataResult;
+        return fetchResultDataNumberLotteryResult;
     }
 
     @Override
-    public NumberLotteryFetchResultData getByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType) {
+    public FetchNumberLotteryResultData getByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType) {
         NumberLotteryFetchResultDataEntity numberLotteryFetchResultDataEntity = numberLotteryFetchResultDataRepository.findByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
         if (numberLotteryFetchResultDataEntity == null) {
             String msg = String.format("根据彩种[%s],彩期[%s],抓取来源数据类型[%s]:获取开奖结果抓取数据为空", lotteryType.getName(), phase, fetcherType.getName());
             logger.error(msg);
             throw new NumberLotteryFetchResultDataException(msg);
         }
-        return BeanMapping.map(numberLotteryFetchResultDataEntity, NumberLotteryFetchResultData.class);
+        return BeanMapping.map(numberLotteryFetchResultDataEntity, FetchNumberLotteryResultData.class);
     }
 }

@@ -9,7 +9,7 @@ import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
-import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailItemData;
 import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +31,24 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
 
     /***
      * 保存开奖详情
-     * @param numberLotteryFetchDetailData 开奖详情对象
+     * @param fetchNumberLotteryDetailData 开奖详情对象
      * @return 保存后的开奖详情对象
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public NumberLotteryFetchDetailData create(@RequestBody NumberLotteryFetchDetailData numberLotteryFetchDetailData) {
+    public FetchNumberLotteryDetailItemData create(@RequestBody FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData) {
         logger.info("开始创建抓取开奖详情对象");
-        return numberLotteryFetchDetailDataInternalService.save(numberLotteryFetchDetailData);
+        return numberLotteryFetchDetailDataInternalService.save(fetchNumberLotteryDetailData);
     }
 
     /***
      * 修改开奖详情
-     * @param numberLotteryFetchDetailData 开奖详情对象
+     * @param fetchNumberLotteryDetailData 开奖详情对象
      * @return 修改后的开奖详情对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public NumberLotteryFetchDetailData update(@RequestBody NumberLotteryFetchDetailData numberLotteryFetchDetailData) {
-        logger.info("修改抓取开奖详情对象,id:[{}]", numberLotteryFetchDetailData.getId());
-        return numberLotteryFetchDetailDataInternalService.update(numberLotteryFetchDetailData);
+    public FetchNumberLotteryDetailItemData update(@RequestBody FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData) {
+        logger.info("修改抓取开奖详情对象,id:[{}]", fetchNumberLotteryDetailData.getId());
+        return numberLotteryFetchDetailDataInternalService.update(fetchNumberLotteryDetailData);
     }
 
     /***
@@ -57,7 +57,7 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
      * @return 获取到的开奖详情信息
      */
     @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public NumberLotteryFetchDetailData get(@RequestParam Long id) {
+    public FetchNumberLotteryDetailItemData get(@RequestParam Long id) {
         logger.info("获取抓取开奖详情对象信息，id:[{}]", id);
         return numberLotteryFetchDetailDataInternalService.get(id);
     }
@@ -70,7 +70,7 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
      * @return 抓取数据
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
-    NumberLotteryFetchDetailData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
+    FetchNumberLotteryDetailItemData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
         logger.info("根据彩种彩期抓取器查询开奖详情抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
         return numberLotteryFetchDetailDataInternalService.getByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
@@ -81,7 +81,7 @@ public class NumberLotteryFetchDetailDataController extends BaseController {
      * @return 自定义查询到的开奖详情信息
      */
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
-    public ApiResponse<NumberLotteryFetchDetailData> findAll(@RequestBody PageableWrapper pageableWrapper) {
+    public ApiResponse<FetchNumberLotteryDetailItemData> findAll(@RequestBody PageableWrapper pageableWrapper) {
         ApiRequest apiRequest = pageableWrapper.getRequest();
         ApiRequestPage apiRequestPage = pageableWrapper.getRequestPage();
         logger.info("自定义查询抓取开奖详情对象信息");

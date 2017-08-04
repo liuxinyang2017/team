@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @author qatang
  */
 @RequestApiBean
-public class NumberLotteryFetchDetailData extends AbstractBaseApiBean {
+public class FetchNumberLotteryDetailItemData extends AbstractBaseApiBean {
     private static final long serialVersionUID = 2771227063335205275L;
 
     /**
@@ -24,7 +24,7 @@ public class NumberLotteryFetchDetailData extends AbstractBaseApiBean {
     /**
      * 抓取结果编码
      */
-    private Long fetchResultId;
+    private Long fetchDetailId;
 
     /**
      * 创建时间
@@ -86,14 +86,6 @@ public class NumberLotteryFetchDetailData extends AbstractBaseApiBean {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getFetchResultId() {
-        return fetchResultId;
-    }
-
-    public void setFetchResultId(Long fetchResultId) {
-        this.fetchResultId = fetchResultId;
     }
 
     public LocalDateTime getCreatedTime() {
