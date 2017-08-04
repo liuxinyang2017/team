@@ -113,14 +113,16 @@ public interface ProxyDataInternalService extends BaseInternalSerivce {
     /**
      * 加分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
-    void increaseScore(Long id) throws ProxyDataException;
+    void increaseScore(Long id, int score) throws ProxyDataException;
 
     /**
      * 减分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
-    void decreaseScore(Long id) throws ProxyDataException;
+    void decreaseScore(Long id, int score) throws ProxyDataException;
 }

@@ -189,7 +189,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
 
     @Override
     @Transactional
-    public void increaseScore(Long id) throws ProxyDataException {
+    public void increaseScore(Long id, int score) throws ProxyDataException {
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {
             throw new ProxyDataException(String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id));
@@ -210,7 +210,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
 
     @Override
     @Transactional
-    public void decreaseScore(Long id) throws ProxyDataException {
+    public void decreaseScore(Long id, int score) throws ProxyDataException {
         ProxyDataEntity proxyDataEntity = proxyDataRepository.findOne(id);
         if (proxyDataEntity == null) {
             throw new ProxyDataException(String.format("更新代理数据检查状态异常：未查询到代理数据, proxyDataId=%s", id));

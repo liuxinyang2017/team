@@ -231,22 +231,24 @@ public class ProxyDataController extends BaseController {
     /**
      * 加分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/increaseScore", method = RequestMethod.GET)
-    void increaseScore(@RequestParam("id") Long id) throws ProxyDataException {
-        logger.info("根据id加分操作：id[{}]", id);
-        proxyDataInternalService.increaseScore(id);
+    void increaseScore(@RequestParam("id") Long id, @RequestParam("score")int score) throws ProxyDataException {
+        logger.info("根据id加分操作：id[{}],分数[{}]", id, score);
+        proxyDataInternalService.increaseScore(id, score);
     }
 
     /**
      * 减分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/decreaseScore", method = RequestMethod.GET)
-    void decreaseScore(@RequestParam("id")Long id) throws ProxyDataException {
-        logger.info("根据id减分操作：id[{}]", id);
-        proxyDataInternalService.decreaseScore(id);
+    void decreaseScore(@RequestParam("id")Long id, @RequestParam("score")int score) throws ProxyDataException {
+        logger.info("根据id减分操作：id[{}], 分数", id, score);
+        proxyDataInternalService.decreaseScore(id, score);
     }
 }

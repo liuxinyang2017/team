@@ -127,17 +127,19 @@ public interface ProxyDataApiService {
     /**
      * 加分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/increaseScore", method = RequestMethod.GET)
-    void increaseScore(@RequestParam("id") Long id) throws ProxyDataException;
+    void increaseScore(@RequestParam("id") Long id, @RequestParam("score")int score) throws ProxyDataException;
 
     /**
      * 减分
      * @param id 编码
+     * @param score 分数
      * @throws ProxyDataException 异常
      */
     @RequestMapping(value = "/decreaseScore", method = RequestMethod.GET)
-    void decreaseScore(@RequestParam("id")Long id) throws ProxyDataException;
+    void decreaseScore(@RequestParam("id")Long id, @RequestParam("score")int score) throws ProxyDataException;
 
 }

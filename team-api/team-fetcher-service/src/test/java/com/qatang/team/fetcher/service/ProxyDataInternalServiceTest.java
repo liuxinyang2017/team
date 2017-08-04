@@ -113,12 +113,14 @@ public class ProxyDataInternalServiceTest extends BaseTest {
     @Test
     public void testIncreaseScore() {
         Long id = 3L;
-        proxyDataInternalService.increaseScore(id);
+        int score = 1;
+        proxyDataInternalService.increaseScore(id, score);
     }
 
     @Test
     public void testDecreaseScore() {
         Long id = 129L;
-        proxyDataInternalService.decreaseScore(id);
+        int score = 1;
+        proxyDataInternalService.decreaseScore(id, score);
     }
 }

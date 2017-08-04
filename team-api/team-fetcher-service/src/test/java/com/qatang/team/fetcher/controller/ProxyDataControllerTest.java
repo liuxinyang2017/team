@@ -92,12 +92,14 @@ public class ProxyDataControllerTest {
     @Test
     public void testIncreaseScore() {
         Long id = 2L;
-        proxyDataApiService.increaseScore(id);
+        int score = 1;
+        proxyDataApiService.increaseScore(id, score);
     }
 
     @Test
     public void testDecreaseScore() {
         Long id = 15L;
-        proxyDataApiService.decreaseScore(id);
+        int score = 1;
+        proxyDataApiService.decreaseScore(id, score);
     }
 }
