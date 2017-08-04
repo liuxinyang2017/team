@@ -13,8 +13,6 @@ import com.qatang.team.enums.common.PageOrderType;
 import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.fetcher.ProxyValidateStatus;
-import com.qatang.team.enums.fetcher.ProxyValidatorType;
-import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
 import com.qatang.team.fetcher.bean.ProxyData;
 import com.qatang.team.fetcher.bean.FetcherLog;
@@ -33,7 +31,7 @@ import java.util.List;
 /**
  * @author qatang
  */
-public abstract class AbstractPhaseResultExecutor implements IPhaseResultExecutor {
+public abstract class AbstractPhaseFetchDataExecutor implements IPhaseFetchDataExecutor {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired

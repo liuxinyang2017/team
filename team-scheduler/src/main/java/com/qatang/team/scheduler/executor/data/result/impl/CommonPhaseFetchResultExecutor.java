@@ -12,7 +12,7 @@ import com.qatang.team.fetcher.worker.INumberLotteryFetcher;
 import com.qatang.team.fetcher.worker.NumberLotteryFetcherFactory;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.scheduler.exception.SchedulerException;
-import com.qatang.team.scheduler.executor.data.result.AbstractPhaseResultExecutor;
+import com.qatang.team.scheduler.executor.data.result.AbstractPhaseFetchDataExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +21,8 @@ import java.net.Proxy;
 /**
  * @author qatang
  */
-@Component("commonPhaseResultExecutor")
-public class CommonPhaseResultExecutor extends AbstractPhaseResultExecutor {
+@Component("commonPhaseFetchResultExecutor")
+public class CommonPhaseFetchResultExecutor extends AbstractPhaseFetchDataExecutor {
     private final FetcherDataType fetcherDataType = FetcherDataType.D_RESULT;
 
     @Autowired

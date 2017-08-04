@@ -5,7 +5,7 @@ import com.qatang.team.data.bean.NumberLotteryData;
 /**
  * @author qatang
  */
-public interface IPhaseResultExecutor {
+public interface IPhaseFetchDataExecutor {
     /**
      * 执行数字彩开奖结果抓取
      */
