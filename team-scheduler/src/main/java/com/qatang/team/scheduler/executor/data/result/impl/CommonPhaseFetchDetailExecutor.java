@@ -12,13 +12,11 @@ import com.qatang.team.fetcher.worker.NumberLotteryFetcherFactory;
 import com.qatang.team.fetcher.wrapper.FetchNumberLotteryDetailWrapper;
 import com.qatang.team.proxy.bean.ProxyInfo;
 import com.qatang.team.scheduler.exception.SchedulerException;
-import com.qatang.team.scheduler.executor.data.result.AbstractPhaseDetailExecutor;
 import com.qatang.team.scheduler.executor.data.result.AbstractPhaseFetchDataExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.Proxy;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

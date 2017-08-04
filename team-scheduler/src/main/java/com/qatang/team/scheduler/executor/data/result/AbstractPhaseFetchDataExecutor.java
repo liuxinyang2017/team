@@ -52,11 +52,6 @@ public abstract class AbstractPhaseFetchDataExecutor implements IPhaseFetchDataE
 
     @Override
     public void executeFetcher(NumberLotteryData numberLotteryData) {
-        if (numberLotteryData == null || !numberLotteryData.getPhaseStatus().equals(PhaseStatus.CLOSED)) {
-            logger.info(String.format("数字彩开奖结果抓取定时：彩期数据为空或彩期数据测试状态不是(%s)", PhaseStatus.CLOSED.getName()));
-            return;
-        }
-
         // 按分数降序，id升序，获取10个可用代理列表
         ApiRequest apiRequest = ApiRequest.newInstance()
                 .filterEqual(QProxyData.proxyValidateStatus, ProxyValidateStatus.PASS);
