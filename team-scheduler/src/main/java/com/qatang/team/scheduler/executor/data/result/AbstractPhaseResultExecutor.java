@@ -80,6 +80,7 @@ public abstract class AbstractPhaseResultExecutor implements IPhaseResultExecuto
         // 获取可用fetcherType列表
         for (FetcherType fetcherType : GlobalConstants.FETCHER_TYPE_LIST) {
             if (hasFetched(numberLotteryData, fetcherType)) {
+                logger.info(String.format("数字彩开奖结果抓取定时：已抓取到(%s)第(%s)期fetcherType=%s的开奖结果，无需再次抓取", numberLotteryData.getLotteryType(), numberLotteryData.getPhase(), fetcherType.getName()));
                 continue;
             }
 
@@ -109,7 +110,7 @@ public abstract class AbstractPhaseResultExecutor implements IPhaseResultExecuto
 
                 if (fetched) {
                     // 加分
-                    proxyDataApiService.increaseScore(proxyData.getId());
+                    proxyDataApiService.increaseScore(proxyData.getId(), 5);
                     break;
                 }
             }

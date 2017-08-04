@@ -205,7 +205,7 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
             throw new ProxyDataException(msg);
         }
 
-        proxyDataEntity.setScore(proxyDataEntity.getScore() + 10);
+        proxyDataEntity.setScore(proxyDataEntity.getScore() + score);
     }
 
     @Override
@@ -227,10 +227,11 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         }
         int currentScore = proxyDataEntity.getScore();
 
-        int score = currentScore - 1;
-        if (score == 0) {
+        int result = currentScore - score;
+        if (result <= 0) {
+            result = 0;
             proxyDataEntity.setProxyValidateStatus(ProxyValidateStatus.WAITING_TEST);
         }
-        proxyDataEntity.setScore(score);
+        proxyDataEntity.setScore(result);
     }
 }

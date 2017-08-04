@@ -4,10 +4,11 @@ import com.qatang.team.data.bean.NumberLotteryData;
 import com.qatang.team.enums.fetcher.FetcherDataType;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.fetcher.bean.NumberLotteryFetchDetailData;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResult;
 import com.qatang.team.fetcher.bean.NumberLotteryFetchResultData;
 import com.qatang.team.fetcher.bean.ProxyData;
-import com.qatang.team.fetcher.service.FetcherLogApiService;
+import com.qatang.team.fetcher.service.NumberLotteryFetchDetailDataApiService;
 import com.qatang.team.fetcher.service.NumberLotteryFetchResultDataApiService;
 import com.qatang.team.fetcher.worker.INumberLotteryFetcher;
 import com.qatang.team.fetcher.worker.NumberLotteryFetcherFactory;
@@ -18,17 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.Proxy;
-import java.time.LocalDateTime;
 
 /**
  * @author qatang
  */
 @Component("commonPhaseResultExecutor")
-public class CommonPhaseResultExecutor extends AbstractPhaseResultExecutor {
-    private final FetcherDataType fetcherDataType = FetcherDataType.D_RESULT;
+public class CommonPhaseDetailExecutor extends AbstractPhaseResultExecutor {
+    private final FetcherDataType fetcherDataType = FetcherDataType.D_DETAIL;
 
     @Autowired
-    private NumberLotteryFetchResultDataApiService numberLotteryFetchResultDataApiService;
+    private NumberLotteryFetchDetailDataApiService numberLotteryFetchDetailDataApiService;
 
     @Override
     protected FetcherDataType getFetcherDataType() {
@@ -38,7 +38,7 @@ public class CommonPhaseResultExecutor extends AbstractPhaseResultExecutor {
     @Override
     protected boolean hasFetched(NumberLotteryData numberLotteryData, FetcherType fetcherType) {
         try {
-            NumberLotteryFetchResultData data = numberLotteryFetchResultDataApiService.getByLotteryTypeAndPhaseAndFetcherType(numberLotteryData.getLotteryType(), numberLotteryData.getPhase(), fetcherType);
+            NumberLotteryFetchDetailData data = numberLotteryFetchDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(numberLotteryData.getLotteryType(), numberLotteryData.getPhase(), fetcherType);
             if (data != null) {
                 return true;
             }
