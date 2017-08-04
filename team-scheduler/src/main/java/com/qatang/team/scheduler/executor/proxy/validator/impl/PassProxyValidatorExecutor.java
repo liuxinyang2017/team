@@ -24,8 +24,8 @@ import java.time.temporal.ChronoUnit;
 /**
  * @author qatang
  */
-@Component
-public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor {
+@Component("passProxyValidatorExecutor")
+public class PassProxyValidatorExecutor extends AbstractProxyValidatorExecutor {
 
     @Autowired
     private ProxyDataApiService proxyDataApiService;
@@ -35,19 +35,16 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
 
     @Override
     public void executeValidator(ProxyData proxyData) {
-        if (proxyData == null || !proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.WAITING_TEST)) {
-            logger.info(String.format("代理测试定时：代理数据为空或代理数据测试状态不是(%s)", ProxyValidateStatus.WAITING_TEST.getName()));
+        if (proxyData == null || !proxyData.getProxyValidateStatus().equals(ProxyValidateStatus.PASS)) {
+            logger.info(String.format("已通过代理评分定时：代理数据为空或代理数据测试状态不是(%s)", ProxyValidateStatus.PASS.getName()));
             return;
         }
-
-        // 更新proxyData状态，从 待测试 更新为 测试中
-        proxyData = proxyDataApiService.updateTestingStatus(proxyData.getId());
 
         boolean pass = true;
         for (ProxyValidatorType proxyValidatorType : GlobalConstants.PROXY_VALIDATOR_TYPE_LIST) {
             IProxyValidator proxyValidator = ProxyValidatorFactory.getValidator(proxyValidatorType);
             if (proxyValidator == null) {
-                logger.error(String.format("代理测试定时：未找到(%s)的代理检测器，跳过该代理检测器", proxyValidatorType.getName()));
+                logger.error(String.format("已通过代理评分定时：未找到(%s)的代理检测器，跳过该代理检测器", proxyValidatorType.getName()));
                 continue;
             }
 
@@ -75,16 +72,16 @@ public class CommonProxyValidatorExecutor extends AbstractProxyValidatorExecutor
             // 入库
             ProxyValidateLog proxyValidateLog = generateProxyValidateLog(proxyData, proxyValidatorType, begin, success, message);
             proxyValidateLogApiService.create(proxyValidateLog);
-            logger.info(String.format("代理测试定时：代理测试日志入库成功，proxyValidatorType=%s，proxy=%s", proxyValidatorType.getName(), proxyInfo.getUrlStr()));
+            logger.info(String.format("已通过代理评分定时：代理测试日志入库成功，proxyValidatorType=%s，proxy=%s", proxyValidatorType.getName(), proxyInfo.getUrlStr()));
         }
 
         // 如果所有代理检测器测试全部通过
         if (pass) {
-            proxyDataApiService.updatePassStatus(proxyData.getId());
-            logger.info(String.format("代理测试定时：代理测试通过，代理数据状态更新为：%s，proxyId=%s，", ProxyValidateStatus.PASS.getName(), proxyData.getId()));
+            proxyDataApiService.increaseScore(proxyData.getId(), 1);
+            logger.info(String.format("已通过代理评分定时：代理测试通过，代理数据得分+1，proxyId=%s，", proxyData.getId()));
         } else {
-            proxyDataApiService.updateFailedStatus(proxyData.getId());
-            logger.info(String.format("代理测试定时：代理测试失败，代理数据状态更新为：%s，proxyId=%s", ProxyValidateStatus.FAILED.getName(), proxyData.getId()));
+            proxyDataApiService.decreaseScore(proxyData.getId(), 1);
+            logger.info(String.format("已通过代理评分定时：代理测试失败，代理数据状得分-1，proxyId=%s", proxyData.getId()));
         }
     }
 
