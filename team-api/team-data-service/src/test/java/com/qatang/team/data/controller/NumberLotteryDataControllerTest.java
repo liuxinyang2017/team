@@ -6,6 +6,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.service.NumberLotteryDataApiService;
 import com.qatang.team.enums.YesNoStatus;
@@ -207,5 +208,42 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
         logger.info("[{}][{}]后{}期：", lotteryType.getName(), phase, n);
         List<NumberLotteryData> numberLotteryDataList = numberLotteryDataApiService.findNextPhaseList(lotteryType, phase, n);
         numberLotteryDataList.forEach(numberLotteryData -> logger.info("彩期：{}", numberLotteryData.getPhase()));
+    }
+
+    @Test
+    public void testFindByLotteryTypeAndPhase() {
+        String phase = "2017002";
+        NumberLotteryData numberLotteryData = numberLotteryDataApiService.findByLotteryTypeAndPhase(LotteryType.FC_SSQ, phase);
+        logger.info("根据彩种彩期获取到的彩果信息，彩果为：[{}]", numberLotteryData.getResult());
+    }
+
+    @Test
+    public void testFindByLotteryDataId() {
+        Long lotteryDataId = 1L;
+        List<NumberLotteryDetailData> list = numberLotteryDataApiService.findBylotteryDataId(lotteryDataId);
+        list.forEach(numberLotteryDetailData -> {
+            logger.info("获取到的详情信息：彩期是：[{}]", numberLotteryDetailData.getPhase());
+        });
+    }
+
+    @Test
+    public void testUpdateDetailData() {
+        LotteryType lotteryType = LotteryType.FC_SSQ;
+        String phase = "2017002";
+        Long poolAmount = 1000L;
+        Long saleAmount = 1000L;
+
+        List<NumberLotteryDetailData> list = Lists.newArrayList();
+        NumberLotteryDetailData numberLotteryDetailData = new NumberLotteryDetailData();
+        numberLotteryDetailData.setLotteryType(LotteryType.FC_SSQ);
+        numberLotteryDetailData.setPrizeKey("prize1");
+        numberLotteryDetailData.setPrizeName("一等奖");
+        numberLotteryDetailData.setPhase(phase);
+        numberLotteryDetailData.setPriority(1);
+        numberLotteryDetailData.setPrizeCount(10L);
+        numberLotteryDetailData.setPrizeAmount(1000L);
+
+        list.add(numberLotteryDetailData);
+        numberLotteryDataApiService.updateDetailData(lotteryType, phase, poolAmount, saleAmount, list);
     }
 }

@@ -3,6 +3,7 @@ package com.qatang.team.data.service;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
@@ -185,4 +186,36 @@ public interface NumberLotteryDataApiService {
      */
     @RequestMapping(value = "/findNextPhaseList", method = RequestMethod.GET)
     List<NumberLotteryData> findNextPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) throws NumberLotteryDataException;
+
+    /**
+     * 更新数字彩彩果详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param poolAmount poolAmount
+     * @param saleAmount saleAmount
+     * @param list 详情列表
+     * @return 跟新后的数字彩彩果
+     * @throws NumberLotteryDataException 异常
+     */
+    @RequestMapping(value = "/updateDetailData", method = RequestMethod.POST)
+    void  updateDetailData(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("poolAmount") Long poolAmount, @RequestParam("saleAmount") Long saleAmount, @RequestBody List<NumberLotteryDetailData> list) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种彩期获取详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @return 获取到的详情
+     * @throws NumberLotteryDataException 异常
+     */
+    @RequestMapping(value = "/findByLotteryTypeAndPhase", method = RequestMethod.GET)
+    NumberLotteryData findByLotteryTypeAndPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) throws NumberLotteryDataException;
+
+    /**
+     * 根据数字彩彩果对象id获取详情信息列表
+     * @param lotteryDataId 数字彩彩果对象id
+     * @return 获取到的详情列表
+     * @throws NumberLotteryDataException 异常
+     */
+    @RequestMapping(value = "/findBylotteryDataId", method = RequestMethod.GET)
+    List<NumberLotteryDetailData> findBylotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) throws NumberLotteryDataException;
 }

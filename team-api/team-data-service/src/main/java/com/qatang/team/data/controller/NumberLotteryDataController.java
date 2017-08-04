@@ -8,8 +8,10 @@ import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
+import com.qatang.team.data.service.NumberLotteryDetailDataInternalService;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
@@ -28,6 +30,9 @@ public class NumberLotteryDataController extends BaseController {
 
     @Autowired
     private NumberLotteryDataInternalService numberLotteryDataInternalService;
+
+    @Autowired
+    private NumberLotteryDetailDataInternalService numberLotteryDetailDataInternalService;
 
     /**
      * 创建数字彩彩果
@@ -343,5 +348,43 @@ public class NumberLotteryDataController extends BaseController {
     public List<NumberLotteryData> findNextPhaseList(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("n") int n) {
         logger.info("开始获取指定彩期之后n期");
         return numberLotteryDataInternalService.findNextPhaseList(lotteryType, phase, n);
+    }
+
+    /**
+     * 更新数字彩彩果详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param poolAmount 奖池金额
+     * @param saleAmount 销售金额
+     * @param list 详情列表
+     * @return 跟新后的数字彩彩果
+     */
+    @RequestMapping(value = "/updateDetailData", method = RequestMethod.POST)
+    public void updateDetailData(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("poolAmount") Long poolAmount, @RequestParam("saleAmount") Long saleAmount, @RequestBody List<NumberLotteryDetailData> list) {
+        logger.info("开始更新数字彩彩果详情");
+        numberLotteryDataInternalService.updateDetailData(lotteryType, phase, poolAmount, saleAmount, list);
+    }
+
+    /**
+     * 根据彩种彩期获取详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @return 获取到的详情列表
+     */
+    @RequestMapping(value = "/findByLotteryTypeAndPhase", method = RequestMethod.GET)
+    NumberLotteryData findByLotteryTypeAndPhase(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase) {
+        logger.info("根据彩种彩期获取详情");
+        return numberLotteryDataInternalService.findByLotteryTypeAndPhase(lotteryType, phase);
+    }
+
+    /**
+     * 根据数字彩彩果对象id获取详情信息列表
+     * @param lotteryDataId 数字彩彩果对象id
+     * @return 获取到的详情列表
+     */
+    @RequestMapping(value = "/findBylotteryDataId", method = RequestMethod.GET)
+    List<NumberLotteryDetailData> findBylotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) {
+        logger.info("根据数字彩彩果对象id获取详情信息列表");
+        return numberLotteryDetailDataInternalService.findBylotteryDataId(lotteryDataId);
     }
 }

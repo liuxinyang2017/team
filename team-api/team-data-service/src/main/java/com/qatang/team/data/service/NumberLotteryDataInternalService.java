@@ -5,6 +5,7 @@ import com.qatang.team.core.request.ApiRequestPage;
 import com.qatang.team.core.response.ApiResponse;
 import com.qatang.team.core.service.BaseInternalSerivce;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.enums.lottery.PhaseStatus;
@@ -164,4 +165,24 @@ public interface NumberLotteryDataInternalService extends BaseInternalSerivce {
      * @throws NumberLotteryDataException
      */
     List<NumberLotteryData> findNextPhaseList(LotteryType lotteryType, String phase, int n) throws NumberLotteryDataException;
+
+    /**
+     * 根据彩种彩期获取详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @return 获取到的详情列表
+     * @throws NumberLotteryDataException
+     */
+    NumberLotteryData findByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException;
+
+    /**
+     * 更新数字彩彩果详情
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param poolAmount 奖池金额
+     * @param saleAmount 销售金额
+     * @param list 详情列表
+     * @return 跟新后的数字彩彩果
+     */
+    void updateDetailData(LotteryType lotteryType, String phase, Long poolAmount, Long saleAmount, List<NumberLotteryDetailData> list) throws NumberLotteryDataException;
 }

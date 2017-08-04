@@ -100,4 +100,15 @@ public class NumberLotteryDetailDataInternalServiceImpl extends AbstractBaseInte
         Page<NumberLotteryDetailDataEntity> numberLotteryDetailDataEntityPage = numberLotteryDetailDataRepository.findAll(convertSpecification(request), convertPageable(requestPage));
         return convertApiResponse(numberLotteryDetailDataEntityPage, NumberLotteryDetailData.class);
     }
+
+    @Override
+    public List<NumberLotteryDetailData> findBylotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException {
+        List<NumberLotteryDetailDataEntity> list = numberLotteryDetailDataRepository.findBylotteryDataId(lotteryDataId);
+        if (list.size() == 0) {
+            String msg = String.format("根据彩果id[%s]获取数字彩彩果详情为空", lotteryDataId);
+            logger.error(msg);
+            throw new NumberLotteryDetailDataException(msg);
+        }
+        return BeanMapping.mapList(list, NumberLotteryDetailData.class);
+    }
 }

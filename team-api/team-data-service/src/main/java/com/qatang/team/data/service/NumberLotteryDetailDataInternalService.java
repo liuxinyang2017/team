@@ -45,4 +45,12 @@ public interface NumberLotteryDetailDataInternalService extends BaseInternalSeri
      * @throws NumberLotteryDetailDataException
      */
     ApiResponse<NumberLotteryDetailData> findAll(ApiRequest request, ApiRequestPage requestPage) throws NumberLotteryDetailDataException;
+
+    /**
+     * 根据数字彩彩果对象id获取详情信息列表
+     * @param lotteryDataId 数字彩彩果对象id
+     * @return 获取到的详情列表
+     * @throws NumberLotteryDetailDataException
+     */
+    List<NumberLotteryDetailData> findBylotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException;
 }

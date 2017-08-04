@@ -9,10 +9,13 @@ import com.qatang.team.core.service.impl.AbstractBaseInternalServiceImpl;
 import com.qatang.team.core.util.BeanMapping;
 import com.qatang.team.core.util.CoreDateUtils;
 import com.qatang.team.data.bean.NumberLotteryData;
+import com.qatang.team.data.bean.NumberLotteryDetailData;
 import com.qatang.team.data.bean.QNumberLotteryData;
 import com.qatang.team.data.entity.NumberLotteryDataEntity;
+import com.qatang.team.data.entity.NumberLotteryDetailDataEntity;
 import com.qatang.team.data.exception.NumberLotteryDataException;
 import com.qatang.team.data.repository.NumberLotteryDataRepository;
+import com.qatang.team.data.repository.NumberLotteryDetailDataRepository;
 import com.qatang.team.data.service.NumberLotteryDataInternalService;
 import com.qatang.team.enums.YesNoStatus;
 import com.qatang.team.enums.common.PageOrderType;
@@ -40,6 +43,9 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
 
     @Autowired
     private NumberLotteryDataRepository numberLotteryDataRepository;
+
+    @Autowired
+    private NumberLotteryDetailDataRepository numberLotteryDetailDataRepository;
 
     protected NumberLotteryDataEntity getNumberLotteryDataEntityWithNullCheckForUpdate(Long id) throws NumberLotteryDataException {
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findOneForUpdate(id);
@@ -358,5 +364,46 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
             throw new NumberLotteryDataException(msg);
         }
         return (List<NumberLotteryData>)apiResponse.getPagedData();
+    }
+
+    @Override
+    public NumberLotteryData findByLotteryTypeAndPhase(LotteryType lotteryType, String phase) throws NumberLotteryDataException {
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("根据彩种[%s],彩期[%s]获取数字彩彩果为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+        return BeanMapping.map(numberLotteryDataEntity, NumberLotteryData.class);
+    }
+
+    @Override
+    @Transactional
+    public void updateDetailData(LotteryType lotteryType, String phase, Long poolAmount, Long saleAmount, List<NumberLotteryDetailData> list) throws NumberLotteryDataException {
+        Assert.notNull(poolAmount, "奖池金额不可为空");
+        Assert.notNull(saleAmount, "销售金额不可为空");
+        NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
+        if (numberLotteryDataEntity == null) {
+            String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+        numberLotteryDataRepository.detach(numberLotteryDataEntity);
+        numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
+
+        numberLotteryDataEntity.setPoolAmount(poolAmount);
+        numberLotteryDataEntity.setSaleAmount(saleAmount);
+
+        List<NumberLotteryDetailDataEntity> numberLotteryDetailDataEntityList = numberLotteryDetailDataRepository.findBylotteryDataId(numberLotteryDataEntity.getId());
+        if (numberLotteryDetailDataEntityList.size() > 0) {
+            numberLotteryDetailDataRepository.delete(numberLotteryDetailDataEntityList);
+        }
+
+        Long lotteryDataId = numberLotteryDataEntity.getId();
+        List<NumberLotteryDetailDataEntity> numberLotteryDetailDataEntities = BeanMapping.mapList(list, NumberLotteryDetailDataEntity.class);
+        numberLotteryDetailDataEntities.forEach(numberLotteryDetailDataEntity -> {
+            numberLotteryDetailDataEntity.setLotteryDataId(lotteryDataId);
+        });
+        numberLotteryDetailDataRepository.save(numberLotteryDetailDataEntities);
     }
 }
