@@ -78,9 +78,9 @@ public class FetchNumberLotteryDetailDataController extends BaseController {
      * @return 抓取数据
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
-    FetchNumberLotteryDetailItemData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
+    FetchNumberLotteryDetailData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType")LotteryType lotteryType, @RequestParam("phase")String phase, @RequestParam("fetcher")FetcherType fetcherType) {
         logger.info("根据彩种彩期抓取器查询开奖详情抓取数据,彩种{},彩期{},抓取数据来源类型{}", lotteryType.getName(), phase, fetcherType.getName());
-        return fetchNumberLotteryDetailItemDataInternalService.findByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
+        return fetchNumberLotteryDetailDataInternalService.findByLotteryTypeAndPhaseAndFetcherType(lotteryType, phase, fetcherType);
     }
 
     /**

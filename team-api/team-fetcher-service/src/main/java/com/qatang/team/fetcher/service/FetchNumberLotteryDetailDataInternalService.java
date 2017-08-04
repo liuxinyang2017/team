@@ -46,11 +46,13 @@ public interface FetchNumberLotteryDetailDataInternalService extends BaseInterna
     FetchNumberLotteryDetailData get(Long id) throws FetchNumberLotteryDetailDataException;
 
     /**
-     * 修改数字彩开奖详情抓取数据对象
-     * @param fetchNumberLotteryDetailData 数字彩开奖详情抓取数据对象
-     * @return 修改后的数字彩开奖详情抓取数据
+     * 根据彩种彩期抓取器获取详情对象
+     * @param lotteryType 彩种
+     * @param phase 彩期
+     * @param fetcherType 抓取器
+     * @return 获取到的详情子对象
      * @throws FetchNumberLotteryDetailDataException 异常
      */
-    FetchNumberLotteryDetailData update(FetchNumberLotteryDetailData fetchNumberLotteryDetailData) throws FetchNumberLotteryDetailDataException;
+    FetchNumberLotteryDetailData findByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType) throws FetchNumberLotteryDetailDataException;
 
 }

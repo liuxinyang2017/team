@@ -40,7 +40,6 @@ public class FetchNumberLotteryDetailDataInternalServiceTest extends BaseTest {
         List<FetchNumberLotteryDetailItemData> fetchNumberLotteryResultData = Lists.newArrayList();
         FetchNumberLotteryDetailItemData fetchNumberLotteryDetailItemData = new FetchNumberLotteryDetailItemData();
         fetchNumberLotteryDetailItemData.setLotteryType(LotteryType.JC_GJ);
-        fetchNumberLotteryDetailItemData.setFetchDetailId(1L);
         fetchNumberLotteryDetailItemData.setFetchedTime(LocalDateTime.now());
         fetchNumberLotteryDetailItemData.setFetcherType(FetcherType.F_500W);
         fetchNumberLotteryDetailItemData.setPhase("20170802");
@@ -77,5 +76,12 @@ public class FetchNumberLotteryDetailDataInternalServiceTest extends BaseTest {
         list.forEach(numberLotteryFetchDetailData -> {
             logger.info("开奖详情抓取彩种[{}], 抓取来源[{}]", numberLotteryFetchDetailData.getLotteryType().getName(), numberLotteryFetchDetailData.getFetcherType().getName());
         });
+    }
+
+    @Test
+    public void testFindByLotteryTypeAndPhaseAndFetcherType() {
+        String phase = "20170801";
+        FetchNumberLotteryDetailData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataInternalService.findByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
+        logger.info("获取到的开奖详情对象结果：{}", fetchNumberLotteryDetailData.getResult());
     }
 }

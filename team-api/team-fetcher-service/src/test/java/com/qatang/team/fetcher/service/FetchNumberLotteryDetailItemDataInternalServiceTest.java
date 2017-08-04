@@ -12,7 +12,6 @@ import com.qatang.team.fetcher.bean.QFetchNumberLotteryDetailItemData;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,23 +22,6 @@ public class FetchNumberLotteryDetailItemDataInternalServiceTest extends BaseTes
 
     @Autowired
     private FetchNumberLotteryDetailItemDataInternalService fetchNumberLotteryDetailItemDataInternalService;
-
-    @Test
-    public void testSave() {
-        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailItemData = new FetchNumberLotteryDetailItemData();
-        fetchNumberLotteryDetailItemData.setLotteryType(LotteryType.FC_SSQ);
-        fetchNumberLotteryDetailItemData.setFetchDetailId(1L);
-        fetchNumberLotteryDetailItemData.setFetchedTime(LocalDateTime.now());
-        fetchNumberLotteryDetailItemData.setFetcherType(FetcherType.F_500W);
-        fetchNumberLotteryDetailItemData.setPhase("20170801");
-        fetchNumberLotteryDetailItemData.setPrizeAmount(100L);
-        fetchNumberLotteryDetailItemData.setPrizeCount(1L);
-        fetchNumberLotteryDetailItemData.setPrizeKey("prize1");
-        fetchNumberLotteryDetailItemData.setPrizeName("一等家");
-
-        fetchNumberLotteryDetailItemData = fetchNumberLotteryDetailItemDataInternalService.save(fetchNumberLotteryDetailItemData);
-        logger.info("保存后的详情彩期是：{}", fetchNumberLotteryDetailItemData.getPhase());
-    }
 
     @Test
     public void testGet() {
@@ -72,12 +54,5 @@ public class FetchNumberLotteryDetailItemDataInternalServiceTest extends BaseTes
         fetchNumberLotteryResultData.forEach(fetchNumberLotteryDetailItemData -> {
             logger.info("开奖结果抓取彩期：[{}], 彩种:[{}]", fetchNumberLotteryDetailItemData.getPhase(), fetchNumberLotteryDetailItemData.getLotteryType().getName());
         });
-    }
-
-    @Test
-    public void testFindByLotteryTypeAndPhaseAndFetcherType() {
-        String phase = "20170801";
-        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailItemData = fetchNumberLotteryDetailItemDataInternalService.findByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
-        logger.info("获取到的开奖详情子对象奖级：{}", fetchNumberLotteryDetailItemData.getPrizeKey());
     }
 }

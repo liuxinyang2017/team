@@ -42,7 +42,6 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
         List<FetchNumberLotteryDetailItemData> fetchNumberLotteryResultData = Lists.newArrayList();
         FetchNumberLotteryDetailItemData fetchNumberLotteryDetailItemData = new FetchNumberLotteryDetailItemData();
         fetchNumberLotteryDetailItemData.setLotteryType(LotteryType.JC_ZQ);
-        fetchNumberLotteryDetailItemData.setFetchDetailId(1L);
         fetchNumberLotteryDetailItemData.setFetchedTime(LocalDateTime.now());
         fetchNumberLotteryDetailItemData.setFetcherType(FetcherType.F_500W);
         fetchNumberLotteryDetailItemData.setPhase("20170806");
@@ -62,7 +61,7 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
 
     @Test
     public void testGet() {
-        Long id = 1L;
+        Long id = 3L;
         FetchNumberLotteryDetailData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.get(id);
         logger.info("根据id[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", id, fetchNumberLotteryDetailData.getLotteryType().getName(), fetchNumberLotteryDetailData.getFetcherType().getName());
         Assert.assertNotNull(fetchNumberLotteryDetailData);
@@ -70,8 +69,8 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
 
     @Test
     public void testGetByLotteryTypeAndPhaseAndFetcherType() {
-        String phase = "20170806";
-        FetchNumberLotteryDetailItemData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.JC_ZQ, phase, FetcherType.F_500W);
+        String phase = "20170703";
+        FetchNumberLotteryDetailData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.JC_GYJ, phase, FetcherType.F_500W);
         logger.info("根据彩种[{}]，彩期[{}],抓取器[{}]获取开奖详情数据，彩种：{}，抓取来源：{}", LotteryType.FC_SSQ.getName(), phase, fetchNumberLotteryDetailData.getFetcherType().getName(), fetchNumberLotteryDetailData.getLotteryType().getName(), fetchNumberLotteryDetailData.getFetcherType().getName());
         Assert.assertNotNull(fetchNumberLotteryDetailData);
     }
@@ -79,7 +78,7 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual(QNumberLotteryFetchDetailData.id, 1L);
+        apiRequest.filterEqual(QNumberLotteryFetchDetailData.id, 3L);
         apiRequest.filterEqual(QNumberLotteryFetchDetailData.lotteryType, LotteryType.FC_SSQ);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
@@ -97,10 +96,17 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
 
     @Test
     public void testGetByDetailId() {
-        Long id = 1L;
+        Long id = 3L;
         List<FetchNumberLotteryDetailItemData> list = fetchNumberLotteryDetailDataApiService.getByDetailId(id);
         list.forEach(fetchNumberLotteryDetailItemData -> {
             logger.info("获取到的开奖详情子对象彩期是：{}", fetchNumberLotteryDetailItemData.getPhase());
         });
+    }
+
+    @Test
+    public void testFindByLotteryTypeAndPhaseAndFetcherType() {
+        String phase = "20170801";
+        FetchNumberLotteryDetailData fetchNumberLotteryDetailData = fetchNumberLotteryDetailDataApiService.getByLotteryTypeAndPhaseAndFetcherType(LotteryType.FC_SSQ, phase, FetcherType.F_500W);
+        logger.info("获取到的开奖详情对象结果：{}", fetchNumberLotteryDetailData.getResult());
     }
 }

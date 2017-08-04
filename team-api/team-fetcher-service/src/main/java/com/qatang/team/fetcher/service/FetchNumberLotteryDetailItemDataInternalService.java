@@ -19,14 +19,6 @@ import java.util.List;
 public interface FetchNumberLotteryDetailItemDataInternalService extends BaseInternalSerivce {
 
     /**
-     * 保存开奖详情抓取数据内部子对象
-     * @param fetchNumberLotteryDetailItemData 开奖详情内部子对象
-     * @return 保存后的开奖详情内部子对象
-     * @throws FetchNumberLotteryDetailItemDataException 异常
-     */
-    FetchNumberLotteryDetailItemData save(FetchNumberLotteryDetailItemData fetchNumberLotteryDetailItemData) throws FetchNumberLotteryDetailItemDataException;
-
-    /**
      * 根据id获取开奖详情抓取数据内部子对象
      * @param id 主键id
      * @return 获取到的数据对象
@@ -51,13 +43,4 @@ public interface FetchNumberLotteryDetailItemDataInternalService extends BaseInt
      */
     ApiResponse<FetchNumberLotteryDetailItemData> findAll(ApiRequest request, ApiRequestPage requestPage) throws FetchNumberLotteryDetailItemDataException;
 
-    /**
-     * 根据彩种彩期抓取器获取详情子对象
-     * @param lotteryType 彩种
-     * @param phase 彩期
-     * @param fetcherType 抓取器
-     * @return 获取到的详情子对象
-     * @throws FetchNumberLotteryDetailItemDataException 异常
-     */
-    FetchNumberLotteryDetailItemData findByLotteryTypeAndPhaseAndFetcherType(LotteryType lotteryType, String phase, FetcherType fetcherType) throws FetchNumberLotteryDetailItemDataException;
 }

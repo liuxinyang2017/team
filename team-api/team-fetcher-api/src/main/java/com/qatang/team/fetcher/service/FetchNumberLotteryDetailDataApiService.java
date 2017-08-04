@@ -61,7 +61,7 @@ public interface FetchNumberLotteryDetailDataApiService {
      * @throws FetchNumberLotteryDetailDataException 异常
      */
     @RequestMapping(value = "/getByLotteryTypeAndPhaseAndFetcherType", method = RequestMethod.POST)
-    FetchNumberLotteryDetailItemData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("fetcher") FetcherType fetcherType) throws FetchNumberLotteryDetailDataException;
+    FetchNumberLotteryDetailData getByLotteryTypeAndPhaseAndFetcherType(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("fetcher") FetcherType fetcherType) throws FetchNumberLotteryDetailDataException;
 
     /**
      * 自定义查询开奖详情抓取数据
