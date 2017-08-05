@@ -2,6 +2,7 @@ package com.qatang.team.scheduler.quartz.phase.ssq;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.qatang.team.constants.GlobalConstants;
 import com.qatang.team.core.component.request.ApiPageRequestHelper;
@@ -27,10 +28,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +48,7 @@ public class SsqDetailScheduler {
     @Autowired
     private FetchNumberLotteryDetailDataApiService fetchNumberLotteryDetailDataApiService;
 
-    @Scheduled(fixedDelay = 60 * 1000L, initialDelay = 30 * 1000L)
+    @Scheduled(fixedDelay = 5 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
         try {
             logger.info(String.format("双色球开奖详情录入定时：开始处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
@@ -82,18 +80,18 @@ public class SsqDetailScheduler {
                     }
 
                     if (fetchNumberLotteryDetailDataList.size() < GlobalConstants.FETCH_DATA_MIN_COUNT) {
-                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取数据数量是(%s)，小于最小对比数量(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), fetchNumberLotteryDetailDataList.size(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取数据数量是(%s)，小于最小对比数量(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), fetchNumberLotteryDetailDataList.size(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
 
                     Long poolAmount = comparePoolAmount(fetchNumberLotteryDetailDataList);
                     if (poolAmount == null || poolAmount <= 0L) {
-                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取奖池金额数据结果一致的数量小于(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取奖池金额数据结果一致的数量小于(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
                     Long saleAmount = compareSaleAmount(fetchNumberLotteryDetailDataList);
                     if (saleAmount == null || saleAmount <= 0L) {
-                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取销售额金额数据结果一致的数量小于(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取销售额金额数据结果一致的数量小于(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
 
@@ -101,16 +99,16 @@ public class SsqDetailScheduler {
                     fetchNumberLotteryDetailDataList.forEach(detail -> allItemDataList.addAll(fetchNumberLotteryDetailDataApiService.getByDetailId(detail.getId())));
                     List<NumberLotteryDetailData> dataList = compareDetail(allItemDataList);
                     if (dataList == null || dataList.isEmpty()) {
-                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取详情数据结果一致的数量小于(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)的抓取详情数据结果一致的数量小于(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
                     numberLotteryDataApiService.updateDetailData(lotteryType, numberLotteryData.getPhase(), poolAmount, saleAmount, dataList);
                     logger.info(String.format("双色球开奖详情录入定时：(%s)(%s)更新开奖详情成功", lotteryType.getName(), numberLotteryData.getPhase()));
                 });
             } else {
-                logger.info(String.format("双色球开奖详情录入定时：未查询到(%s)状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.CLOSED.getName()));
+                logger.info(String.format("双色球开奖详情录入定时：未查询到(%s)状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
             }
-            logger.info(String.format("双色球开奖详情录入定时：结束处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.CLOSED.getName()));
+            logger.info(String.format("双色球开奖详情录入定时：结束处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -141,31 +139,46 @@ public class SsqDetailScheduler {
     }
 
     private List<NumberLotteryDetailData> compareDetail(List<FetchNumberLotteryDetailItemData> itemDataList) {
+        Multimap<String, String> groupKeyMultimap = ArrayListMultimap.create();
+
+        // 先按prizyKey分
+        Set<String> prizeKeySet = itemDataList.stream().map(FetchNumberLotteryDetailItemData::getPrizeKey).collect(Collectors.toSet());
+
         Multimap<String, FetchNumberLotteryDetailItemData> multimap = ArrayListMultimap.create();
         for (FetchNumberLotteryDetailItemData itemData : itemDataList) {
             String key = itemData.getPrizeKey() + "_" + itemData.getPrizeCount() + "_" + itemData.getPrizeAmount();
             multimap.put(key, itemData);
+            // prizeKey对应的数据key列表
+            groupKeyMultimap.put(itemData.getPrizeKey(), key);
         }
 
         List<NumberLotteryDetailData> resultList = Lists.newArrayList();
-        for (String key : multimap.keySet()) {
-            List<FetchNumberLotteryDetailItemData> values = Lists.newArrayList(multimap.get(key));
-            if (values.size() < GlobalConstants.FETCH_DATA_MIN_COUNT) {
-                return Lists.newArrayList();
+        for (String groupKey : prizeKeySet) {
+            List<String> dataKeyList = Lists.newArrayList(groupKeyMultimap.get(groupKey));
+            for (String key : dataKeyList) {
+                List<FetchNumberLotteryDetailItemData> values = Lists.newArrayList(multimap.get(key));
+                if (values.size() < GlobalConstants.FETCH_DATA_MIN_COUNT) {
+                    continue;
+                }
+                FetchNumberLotteryDetailItemData itemData = values.get(0);
+                NumberLotteryDetailData numberLotteryDetailData = new NumberLotteryDetailData();
+                numberLotteryDetailData.setLotteryType(lotteryType);
+                numberLotteryDetailData.setPhase(itemData.getPhase());
+                numberLotteryDetailData.setPrizeKey(itemData.getPrizeKey());
+                numberLotteryDetailData.setPrizeName(itemData.getPrizeName());
+                numberLotteryDetailData.setPrizeCount(itemData.getPrizeCount());
+                numberLotteryDetailData.setPrizeAmount(itemData.getPrizeAmount());
+                numberLotteryDetailData.setPriority(0);
+                resultList.add(numberLotteryDetailData);
+                break;
             }
-            FetchNumberLotteryDetailItemData itemData = values.get(0);
-            NumberLotteryDetailData numberLotteryDetailData = new NumberLotteryDetailData();
-            numberLotteryDetailData.setLotteryType(lotteryType);
-            numberLotteryDetailData.setPhase(itemData.getPhase());
-            numberLotteryDetailData.setPrizeKey(key);
-            numberLotteryDetailData.setPrizeName(itemData.getPrizeName());
-            numberLotteryDetailData.setPrizeCount(itemData.getPrizeCount());
-            numberLotteryDetailData.setPrizeAmount(itemData.getPrizeAmount());
-            numberLotteryDetailData.setPriority(0);
-            resultList.add(numberLotteryDetailData);
         }
 
-        Collections.sort(resultList, Comparator.comparing(NumberLotteryDetailData::getPrizeKey));
+        if (resultList.size() != prizeKeySet.size()) {
+            return Lists.newArrayList();
+        }
+
+        resultList.sort(Comparator.comparing(NumberLotteryDetailData::getPrizeKey));
         return resultList;
     }
 }

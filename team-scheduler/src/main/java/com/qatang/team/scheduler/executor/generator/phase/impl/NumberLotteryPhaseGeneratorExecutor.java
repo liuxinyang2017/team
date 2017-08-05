@@ -67,7 +67,7 @@ public class NumberLotteryPhaseGeneratorExecutor extends AbstractPhaseGeneratorE
             if (response == null || response.getPagedData().isEmpty()) {
                 logger.info(String.format("数字彩彩期生成定时：未查询到(%s)的彩期数据，从当前年份的第1期开始，生成200期数据", lotteryType.getName()));
                 PhaseInfo startPhaseInfo = StartPhaseInfoBuilder.build(lotteryType);
-                createNumberLotteryData(startPhaseInfo, 92);
+                createNumberLotteryData(startPhaseInfo, 200);
                 logger.info(String.format("数字彩彩期生成定时：初始化(%s)的彩期数据成功！", lotteryType.getName()));
             }
         }

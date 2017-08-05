@@ -76,13 +76,13 @@ public class SsqResultScheduler {
                     }
 
                     if (fetchNumberLotteryResultDataList.size() < GlobalConstants.FETCH_DATA_MIN_COUNT) {
-                        logger.info(String.format("双色球开奖结果录入定时：(%s)(%s)的抓取数据数量是(%s)，小于最小对比数量(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), fetchNumberLotteryResultDataList.size(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖结果录入定时：(%s)(%s)的抓取数据数量是(%s)，小于最小对比数量(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), fetchNumberLotteryResultDataList.size(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
 
                     String result = compareResult(fetchNumberLotteryResultDataList);
                     if (StringUtils.isEmpty(result)) {
-                        logger.info(String.format("双色球开奖结果录入定时：(%s)(%s)的抓取数据结果一致的数量小于(%s)，，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
+                        logger.info(String.format("双色球开奖结果录入定时：(%s)(%s)的抓取数据结果一致的数量小于(%s)，等待下一次定时处理", lotteryType.getName(), numberLotteryData.getPhase(), GlobalConstants.FETCH_DATA_MIN_COUNT));
                         return;
                     }
                     numberLotteryDataApiService.updateResult(lotteryType, numberLotteryData.getPhase(), result);

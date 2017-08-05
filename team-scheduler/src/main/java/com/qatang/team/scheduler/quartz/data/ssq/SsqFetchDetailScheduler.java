@@ -40,7 +40,7 @@ public class SsqFetchDetailScheduler {
     @Qualifier("commonPhaseFetchDetailExecutor")
     private IPhaseFetchDataExecutor commonPhaseFetchDetailExecutor;
 
-    @Scheduled(fixedDelay = 60 * 1000L, initialDelay = 30 * 1000L)
+    @Scheduled(fixedDelay = 5 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
         try {
             logger.info(String.format("双色球开奖详情抓取定时：开始处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));

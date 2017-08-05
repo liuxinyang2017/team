@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
+import com.qatang.team.fetcher.worker.ssq.impl.SsqNeteaseFetcher;
 import com.qatang.team.fetcher.worker.ssq.impl.SsqOfficialFetcher;
 
 /**
@@ -15,6 +16,7 @@ public class NumberLotteryFetcherFactory {
 
     static  {
         numberLotteryFetcherTable.put(LotteryType.FC_SSQ, FetcherType.F_OFFICIAL, new SsqOfficialFetcher());
+        numberLotteryFetcherTable.put(LotteryType.FC_SSQ, FetcherType.F_NETEASE, new SsqNeteaseFetcher());
 
     }
 

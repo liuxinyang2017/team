@@ -1,6 +1,6 @@
 CREATE DATABASE `zy_team` DEFAULT CHARACTER SET=utf8;
 
-user `zy_team`;
+use `zy_team`;
 
 CREATE TABLE `number_lottery_data` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,

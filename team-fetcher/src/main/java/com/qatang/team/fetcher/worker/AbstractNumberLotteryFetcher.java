@@ -39,13 +39,13 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
      * 获取开奖号码抓取地址
      * @return 开奖号码抓取地址
      */
-    protected abstract String getResultFetchUrl();
+    protected abstract String getResultFetchUrl(String phase);
 
     /**
      * 获取开奖详情抓取地址
      * @return 开奖详情抓取地址
      */
-    protected abstract String getDetailFetchUrl();
+    protected abstract String getDetailFetchUrl(String phase);
 
     /**
      * 获取抓取网站字符编码
@@ -102,7 +102,7 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
             throw new FetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖号码，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
-        Document doc = this.fetch(this.getResultFetchUrl(), this.getFetchEncoding(), proxyInfo);
+        Document doc = this.fetch(this.getResultFetchUrl(phase), this.getFetchEncoding(), proxyInfo);
         try {
             return parseResultDoc(phase, doc, proxyInfo);
         } catch (Exception e) {
@@ -117,7 +117,7 @@ public abstract class AbstractNumberLotteryFetcher implements INumberLotteryFetc
             throw new FetcherException("彩期不能为空");
         }
         logger.info(String.format("开始抓开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase));
-        Document doc = this.fetch(this.getDetailFetchUrl(), this.getFetchEncoding(), proxyInfo);
+        Document doc = this.fetch(this.getDetailFetchUrl(phase), this.getFetchEncoding(), proxyInfo);
         try {
             return parseDetailDoc(phase, doc, proxyInfo);
         } catch (Exception e) {

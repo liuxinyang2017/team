@@ -12,6 +12,7 @@ public enum FetcherType {
     F_500W(2, "500万"),
     F_AICAI(3, "爱彩"),
     F_OKOOO(4, "澳客"),
+    F_NETEASE(5, "网易"),
     ;
 
     private static final Object _LOCK = new Object();

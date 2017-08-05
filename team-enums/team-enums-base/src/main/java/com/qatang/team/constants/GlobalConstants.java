@@ -27,7 +27,7 @@ public class GlobalConstants {
     /**
      * 抓取结果开始对比的最小数量
      */
-    public final static int FETCH_DATA_MIN_COUNT = 1;
+    public final static int FETCH_DATA_MIN_COUNT = 2;
 
     /**
      * 正在使用的代理抓取器类型
@@ -51,7 +51,8 @@ public class GlobalConstants {
      * 正在使用的代理检测器类型
      */
     public final static List<FetcherType> FETCHER_TYPE_LIST = Lists.newArrayList(
-            FetcherType.F_OFFICIAL
+            FetcherType.F_OFFICIAL,
+            FetcherType.F_NETEASE
     );
 
     /**

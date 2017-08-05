@@ -63,10 +63,10 @@ public class CommonPhaseFetchDetailExecutor extends AbstractPhaseFetchDataExecut
             NumberLotteryFetchResult fetchDetail = numberLotteryFetcher.fetchDetail(phase, proxyInfo);
 
             FetchNumberLotteryDetailData detailData = new FetchNumberLotteryDetailData();
-            detailData.setLotteryType(numberLotteryData.getLotteryType());
+            detailData.setLotteryType(lotteryType);
             detailData.setFetchedTime(fetchDetail.getFetchedTime());
             detailData.setFetcherType(fetcherType);
-            detailData.setPhase(detailData.getPhase());
+            detailData.setPhase(phase);
             detailData.setResult(fetchDetail.getResult());
             detailData.setPoolAmount(fetchDetail.getPoolAmount());
             detailData.setSaleAmount(fetchDetail.getSaleAmount());

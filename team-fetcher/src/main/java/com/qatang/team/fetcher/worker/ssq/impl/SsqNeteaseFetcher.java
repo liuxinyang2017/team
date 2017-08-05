@@ -25,8 +25,8 @@ import java.util.Map;
  * 双色球官方数据抓取器
  * @author qatang
  */
-public class SsqOfficialFetcher extends AbstractSsqFetcher {
-    private final FetcherType fetcherType = FetcherType.F_OFFICIAL;
+public class SsqNeteaseFetcher extends AbstractSsqFetcher {
+    private final FetcherType fetcherType = FetcherType.F_NETEASE;
 
     @Override
     protected FetcherType getFetcherType() {
@@ -35,12 +35,12 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
 
     @Override
     protected String getResultFetchUrl(String phase) {
-        return "http://www.cwl.gov.cn/kjxx/ssq/hmhz/";
+        return "http://caipiao.163.com/award/ssq/" + phase + ".html";
     }
 
     @Override
     protected String getDetailFetchUrl(String phase) {
-        return "http://www.cwl.gov.cn/kjxx/ssq/hmhz/";
+        return "http://caipiao.163.com/award/ssq/" + phase + ".html";
     }
 
     @Override
@@ -55,18 +55,18 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
         numberLotteryFetchResult.setPhase(phase);
 
-        boolean fetched = false;
-        Elements elements = document.select("table.hz tbody tr");
-        for (Element tr : elements) {
-            Elements tdList = tr.select("td");
-            if (phase.equals(tdList.first().text())) {
-                Elements redElements = tdList.get(1).select("p.haoma span");
-                String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
-                String blue = tdList.get(2).select("p.haoma span").get(0).text().trim();
+        Elements redElements = document.select("#zj_area span.red_ball");
+        Elements blueElements = document.select("#zj_area span.blue_ball");
 
+        String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
+        String blue = blueElements.get(0).text();
+
+        boolean fetched = false;
+        if (red.length == 6) {
+            if (StringUtils.isNotEmpty(red[0]) && StringUtils.isNotEmpty(blue)
+                    && red[0].length() == 2 && blue.length() == 2) {
                 numberLotteryFetchResult.setResult(CoreLotteryUtils.formatSsq(red, blue));
                 fetched = true;
-                break;
             }
         }
 
@@ -88,61 +88,33 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
         numberLotteryFetchResult.setPhase(phase);
 
-        // 先获取详情抓取地址
-        String detailUrl = null;
-        Elements elements = document.select("table.hz tbody tr");
-        for (Element tr : elements) {
-            Elements tdList = tr.select("td");
-            if (phase.equals(tdList.first().text())) {
-                detailUrl = tdList.get(6).select("a").attr("href");
-                detailUrl = "http://www.cwl.gov.cn/kjxx/ssq/kjgg/" +  StringUtils.substringAfterLast(detailUrl, "/");
-                break;
-            }
-        }
+        Elements redElements = document.select("#zj_area span.red_ball");
+        Elements blueElements = document.select("#zj_area span.blue_ball");
+        Elements saleAmountElements = document.select("#sale");
+        Elements poolAmountElements = document.select("#pool");
+        Elements detailElements = document.select("#bonus tbody tr");
+        detailElements.remove(0);
 
-        if (Strings.isNullOrEmpty(detailUrl)) {
-            String msg = String.format("未抓取到开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase);
-            logger.error(msg);
-            throw new FetcherException(msg);
-        }
+        String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
+        String blue = blueElements.get(0).text();
+        String saleAmount = saleAmountElements.get(0).text();
+        String poolAmount = poolAmountElements.get(0).text();
 
-        // 再抓取详情数据
-        Document detailDocument = this.fetch(detailUrl, this.getFetchEncoding(), proxyInfo);
-
-        Elements detailElements = detailDocument.select("li.caizhong span");
-        String fetchedPhase = detailElements.get(0).text().substring(1, 8);
-        String saleAmount = detailElements.get(2).select("i").text();
-        String poolAmount = detailElements.get(3).select("i").text();
-        if (Strings.isNullOrEmpty(fetchedPhase)
-                || Strings.isNullOrEmpty(saleAmount)
+        if (Strings.isNullOrEmpty(saleAmount)
                 || Strings.isNullOrEmpty(poolAmount)) {
             String msg = String.format("未抓取到开奖详情，lotteryType=%s，fetcherType=%s, phase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase);
             logger.error(msg);
             throw new FetcherException(msg);
         }
 
-        if (!fetchedPhase.equals(phase)) {
-            String msg = String.format("开奖详情抓取异常：彩期不一致，lotteryType=%s，fetcherType=%s, phase=%s，fetchedPhase=%s", this.getLotteryType().getName(), this.getFetcherType().getName(), phase, fetchedPhase);
-            logger.error(msg);
-            throw new FetcherException(msg);
-        }
+        numberLotteryFetchResult.setResult(CoreLotteryUtils.formatSsq(red, blue));
         numberLotteryFetchResult.setSaleAmount(CoreMathUtils.mul(Longs.tryParse(StringUtils.replace(saleAmount, ",", "")), 100));
         numberLotteryFetchResult.setPoolAmount(CoreMathUtils.mul(Longs.tryParse(StringUtils.replace(poolAmount, ",", "")), 100));
 
-        Elements detailElements2 = detailDocument.select("li.haoma3 span");
-        String[] red = new String[]{detailElements2.get(0).text(),
-                detailElements2.get(1).text(),
-                detailElements2.get(2).text(),
-                detailElements2.get(3).text(),
-                detailElements2.get(4).text(),
-                detailElements2.get(5).text()};
-        String blue = detailElements2.get(6).text();
-        numberLotteryFetchResult.setResult(CoreLotteryUtils.formatSsq(red, blue));
-
         List<NumberLotteryFetchDetail> numberLotteryFetchDetailList = Lists.newArrayList();
-        Elements detailElements3 = detailDocument.select("table.mt17 tbody tr");
-        for (Element tr : detailElements3) {
+        for (Element tr : detailElements) {
             Elements tdList = tr.select("td");
+
             String prizeName = tdList.get(0).text();
             String prizeCount = tdList.get(1).text();
             String prizeAmount = tdList.get(2).text();
@@ -160,6 +132,8 @@ public class SsqOfficialFetcher extends AbstractSsqFetcher {
             numberLotteryFetchDetail.setPrizeAmount(CoreMathUtils.mul(Longs.tryParse(prizeAmount), 100));
             numberLotteryFetchDetailList.add(numberLotteryFetchDetail);
         }
+
+
 
         if (Strings.isNullOrEmpty(numberLotteryFetchResult.getResult())
                 || numberLotteryFetchResult.getSaleAmount() <= 0

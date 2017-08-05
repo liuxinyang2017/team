@@ -391,8 +391,21 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         numberLotteryDataRepository.detach(numberLotteryDataEntity);
         numberLotteryDataEntity = this.getNumberLotteryDataEntityWithNullCheckForUpdate(numberLotteryDataEntity.getId());
 
+        PhaseStatus fromStatus = numberLotteryDataEntity.getPhaseStatus();
+        PhaseStatus toStatus = PhaseStatus.RESULT_DETAIL_SET;
+
+        try {
+            PhaseStatus.checkStatusFlow(fromStatus, toStatus);
+        } catch (StatusFlowException e) {
+            String msg = String.format("更新状态失败, id=%s, fromStatus=%s, toStatus=%s", numberLotteryDataEntity.getId(), fromStatus.getName(), toStatus.getName());
+            logger.error(msg);
+            throw new NumberLotteryDataException(msg);
+        }
+
         numberLotteryDataEntity.setPoolAmount(poolAmount);
         numberLotteryDataEntity.setSaleAmount(saleAmount);
+        numberLotteryDataEntity.setPhaseStatus(toStatus);
+        numberLotteryDataEntity.setResultDetailTime(LocalDateTime.now());
 
         List<NumberLotteryDetailDataEntity> numberLotteryDetailDataEntityList = numberLotteryDetailDataRepository.findBylotteryDataId(numberLotteryDataEntity.getId());
         if (numberLotteryDetailDataEntityList.size() > 0) {
