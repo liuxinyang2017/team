@@ -382,9 +382,9 @@ public class NumberLotteryDataController extends BaseController {
      * @param lotteryDataId 数字彩彩果对象id
      * @return 获取到的详情列表
      */
-    @RequestMapping(value = "/findBylotteryDataId", method = RequestMethod.GET)
-    List<NumberLotteryDetailData> findBylotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) {
+    @RequestMapping(value = "/findByLotteryDataId", method = RequestMethod.GET)
+    List<NumberLotteryDetailData> findByLotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) {
         logger.info("根据数字彩彩果对象id获取详情信息列表");
-        return numberLotteryDetailDataInternalService.findBylotteryDataId(lotteryDataId);
+        return numberLotteryDetailDataInternalService.findByLotteryDataId(lotteryDataId);
     }
 }

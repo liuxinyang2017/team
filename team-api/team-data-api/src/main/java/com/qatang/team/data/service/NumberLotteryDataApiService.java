@@ -198,7 +198,7 @@ public interface NumberLotteryDataApiService {
      * @throws NumberLotteryDataException 异常
      */
     @RequestMapping(value = "/updateDetailData", method = RequestMethod.POST)
-    void  updateDetailData(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("poolAmount") Long poolAmount, @RequestParam("saleAmount") Long saleAmount, @RequestBody List<NumberLotteryDetailData> list) throws NumberLotteryDataException;
+    void updateDetailData(@RequestParam("lotteryType") LotteryType lotteryType, @RequestParam("phase") String phase, @RequestParam("poolAmount") Long poolAmount, @RequestParam("saleAmount") Long saleAmount, @RequestBody List<NumberLotteryDetailData> list) throws NumberLotteryDataException;
 
     /**
      * 根据彩种彩期获取详情
@@ -216,6 +216,6 @@ public interface NumberLotteryDataApiService {
      * @return 获取到的详情列表
      * @throws NumberLotteryDataException 异常
      */
-    @RequestMapping(value = "/findBylotteryDataId", method = RequestMethod.GET)
-    List<NumberLotteryDetailData> findBylotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) throws NumberLotteryDataException;
+    @RequestMapping(value = "/findByLotteryDataId", method = RequestMethod.GET)
+    List<NumberLotteryDetailData> findByLotteryDataId(@RequestParam("lotteryDataId") Long lotteryDataId) throws NumberLotteryDataException;
 }

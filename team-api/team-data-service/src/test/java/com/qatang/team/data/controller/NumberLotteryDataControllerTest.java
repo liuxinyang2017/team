@@ -220,7 +220,7 @@ public class NumberLotteryDataControllerTest extends AbstractControllerTest {
     @Test
     public void testFindByLotteryDataId() {
         Long lotteryDataId = 1L;
-        List<NumberLotteryDetailData> list = numberLotteryDataApiService.findBylotteryDataId(lotteryDataId);
+        List<NumberLotteryDetailData> list = numberLotteryDataApiService.findByLotteryDataId(lotteryDataId);
         list.forEach(numberLotteryDetailData -> {
             logger.info("获取到的详情信息：彩期是：[{}]", numberLotteryDetailData.getPhase());
         });

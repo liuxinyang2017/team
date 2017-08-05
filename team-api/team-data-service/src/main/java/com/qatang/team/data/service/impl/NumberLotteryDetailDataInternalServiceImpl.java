@@ -102,13 +102,8 @@ public class NumberLotteryDetailDataInternalServiceImpl extends AbstractBaseInte
     }
 
     @Override
-    public List<NumberLotteryDetailData> findBylotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException {
+    public List<NumberLotteryDetailData> findByLotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException {
         List<NumberLotteryDetailDataEntity> list = numberLotteryDetailDataRepository.findBylotteryDataId(lotteryDataId);
-        if (list.size() == 0) {
-            String msg = String.format("根据彩果id[%s]获取数字彩彩果详情为空", lotteryDataId);
-            logger.error(msg);
-            throw new NumberLotteryDetailDataException(msg);
-        }
         return BeanMapping.mapList(list, NumberLotteryDetailData.class);
     }
 }

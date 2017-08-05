@@ -52,5 +52,5 @@ public interface NumberLotteryDetailDataInternalService extends BaseInternalSeri
      * @return 获取到的详情列表
      * @throws NumberLotteryDetailDataException
      */
-    List<NumberLotteryDetailData> findBylotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException;
+    List<NumberLotteryDetailData> findByLotteryDataId(Long lotteryDataId) throws NumberLotteryDetailDataException;
 }

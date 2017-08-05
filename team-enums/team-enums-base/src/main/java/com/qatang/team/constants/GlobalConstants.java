@@ -25,6 +25,11 @@ public class GlobalConstants {
     public final static int PROXY_FAILED_TEST_COUNT = 3;
 
     /**
+     * 抓取结果开始对比的最小数量
+     */
+    public final static int FETCH_DATA_MIN_COUNT = 1;
+
+    /**
      * 正在使用的代理抓取器类型
      */
     public final static List<ProxyFetcherType> PROXY_FETCHER_TYPE_LIST = Lists.newArrayList(

@@ -10,7 +10,7 @@ import com.qatang.team.core.wrapper.PageableWrapper;
 import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryResultData;
-import com.qatang.team.fetcher.bean.QNumberLotteryFetchResultData;
+import com.qatang.team.fetcher.bean.QFetchNumberLotteryResultData;
 import com.qatang.team.fetcher.exception.FetchNumberLotteryResultDataException;
 import com.qatang.team.fetcher.service.FetchNumberLotteryResultDataInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +94,7 @@ public class FetchNumberLotteryResultDataController extends BaseController{
             List<Object> valueList = filter.getValueList();
 
             switch (filed) {
-                case QNumberLotteryFetchResultData.lotteryType:
+                case QFetchNumberLotteryResultData.lotteryType:
                     if (value != null) {
                         value = LotteryType.get((int)value);
                         filter.setValue(value);
@@ -104,7 +104,7 @@ public class FetchNumberLotteryResultDataController extends BaseController{
                         filter.setValueList(valueList);
                     }
                     break;
-                case QNumberLotteryFetchResultData.fetcherType:
+                case QFetchNumberLotteryResultData.fetcherType:
                     if (value != null) {
                         value = FetcherType.get((int)value);
                         filter.setValue(value);
@@ -114,7 +114,7 @@ public class FetchNumberLotteryResultDataController extends BaseController{
                         filter.setValueList(valueList);
                     }
                     break;
-                case QNumberLotteryFetchResultData.createdTime:
+                case QFetchNumberLotteryResultData.createdTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);
@@ -124,7 +124,7 @@ public class FetchNumberLotteryResultDataController extends BaseController{
                         filter.setValueList(valueList);
                     }
                     break;
-                case QNumberLotteryFetchResultData.updatedTime:
+                case QFetchNumberLotteryResultData.updatedTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);
@@ -134,7 +134,7 @@ public class FetchNumberLotteryResultDataController extends BaseController{
                         filter.setValueList(valueList);
                     }
                     break;
-                case QNumberLotteryFetchResultData.fetchedTime:
+                case QFetchNumberLotteryResultData.fetchedTime:
                     if (value != null) {
                         value = CoreDateUtils.parseLocalDateTime((String)value);
                         filter.setValue(value);

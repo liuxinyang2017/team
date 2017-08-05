@@ -8,7 +8,7 @@ import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.BaseTest;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryResultData;
-import com.qatang.team.fetcher.bean.QNumberLotteryFetchResultData;
+import com.qatang.team.fetcher.bean.QFetchNumberLotteryResultData;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +59,11 @@ public class FetchNumberLotteryResultDataInternalServiceTest extends BaseTest {
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual(QNumberLotteryFetchResultData.id, 1L);
+        apiRequest.filterEqual(QFetchNumberLotteryResultData.id, 1L);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
-        apiRequestPage.addOrder(QNumberLotteryFetchResultData.createdTime);
-        apiRequestPage.addOrder(QNumberLotteryFetchResultData.id);
+        apiRequestPage.addOrder(QFetchNumberLotteryResultData.createdTime);
+        apiRequestPage.addOrder(QFetchNumberLotteryResultData.id);
         ApiResponse<FetchNumberLotteryResultData> numberLotteryFetchResultDataApiResponse = fetchNumberLotteryResultDataInternalService.findAll(apiRequest, apiRequestPage);
         logger.info("查询总数为：{}", numberLotteryFetchResultDataApiResponse.getPageTotal());
 

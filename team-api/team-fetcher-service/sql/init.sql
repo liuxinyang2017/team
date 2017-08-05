@@ -17,7 +17,9 @@ CREATE TABLE `proxy_data` (
   `score` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_host_port` (`host`, `port`),
-  INDEX `idx_status_created_time` (`proxy_validate_status`, `created_time`)
+  INDEX `idx_status_created_time` (`proxy_validate_status`, `created_time`),
+  INDEX `idx_status_failed_count` (`proxy_validate_status`, `failed_count`),
+  INDEX `idx_status_score` (`proxy_validate_status`, `score`, `created_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `proxy_validate_log` (
@@ -32,9 +34,7 @@ CREATE TABLE `proxy_validate_log` (
   `spent_mills` int(11) NOT NULL DEFAULT 0,
   `success`  TINYINT(3) NOT NULL,
   `message`  varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  INDEX `idx_proxy_validator_type` (`proxy_validator_type`),
-  INDEX `idx_success` (`success`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `fetcher_log` (
@@ -68,8 +68,7 @@ CREATE TABLE `fetch_number_lottery_detail_data` (
   `pool_amount` bigint(20) NOT NULL DEFAULT 0,
   `sale_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
-  INDEX `idx_lottery_type` (`lottery_type`)
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `fetch_number_lottery_result_data` (
@@ -82,9 +81,7 @@ CREATE TABLE `fetch_number_lottery_result_data` (
   `fetched_time` TIMESTAMP NULL DEFAULT NULL,
   `result`  varchar(255)  NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`),
-  INDEX `idx_lottery_type` (`lottery_type`),
-  INDEX `idx_fetcher_type` (`fetcher_type`)
+  UNIQUE KEY `uk_lottery_type_phase_fetcher_type` (`lottery_type`, `phase`, `fetcher_type`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `fetch_number_lottery_detail_item_data` (
@@ -101,5 +98,5 @@ CREATE TABLE `fetch_number_lottery_detail_item_data` (
   `prize_count` bigint(20) NOT NULL DEFAULT 0,
   `prize_amount` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  INDEX `idx_lottery_type` (`lottery_type`)
+  INDEX `idx_detail_id` (`fetch_detail_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;

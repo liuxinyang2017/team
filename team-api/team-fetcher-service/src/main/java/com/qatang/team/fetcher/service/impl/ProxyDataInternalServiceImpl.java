@@ -145,7 +145,6 @@ public class ProxyDataInternalServiceImpl extends AbstractBaseInternalServiceImp
         return BeanMapping.map(proxyDataEntity, ProxyData.class);
     }
 
-
     @Override
     @Transactional
     public ProxyData updateBeginTestTime(Long id, LocalDateTime beginTestTime) throws ProxyDataException {

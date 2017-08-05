@@ -23,12 +23,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 双色球开奖详情抓取定时
+ * 双色球开奖结果抓取定时
  * @author qatang
  */
 @Component
-@ConditionalOnProperty("scheduler.ssq.detail.on")
-public class SsqDetailScheduler {
+@ConditionalOnProperty("scheduler.ssq.fetch.result.on")
+public class SsqFetchResultScheduler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final LotteryType lotteryType = LotteryType.FC_SSQ;
@@ -37,17 +37,17 @@ public class SsqDetailScheduler {
     private NumberLotteryDataApiService numberLotteryDataApiService;
 
     @Autowired
-    @Qualifier("commonPhaseFetchDetailExecutor")
-    private IPhaseFetchDataExecutor commonPhaseFetchDetailExecutor;
+    @Qualifier("commonPhaseFetchResultExecutor")
+    private IPhaseFetchDataExecutor commonPhaseFetchResultExecutor;
 
     @Scheduled(fixedDelay = 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
         try {
-            logger.info(String.format("双色球开奖详情抓取定时：开始处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
+            logger.info(String.format("双色球开奖结果抓取定时：开始处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.CLOSED.getName()));
             // 查询所有状态为 待处理 的代理数据对象
             ApiRequest apiRequest = ApiRequest.newInstance()
                     .filterEqual(QNumberLotteryData.lotteryType, lotteryType)
-                    .filterEqual(QNumberLotteryData.phaseStatus, PhaseStatus.RESULT_SET);
+                    .filterEqual(QNumberLotteryData.phaseStatus, PhaseStatus.CLOSED);
 
             ApiRequestPage apiRequestPage = ApiRequestPage.newInstance()
                     .paging(0, 100)
@@ -56,11 +56,11 @@ public class SsqDetailScheduler {
 
             List<NumberLotteryData> numberLotteryDataList = ApiPageRequestHelper.request(pageableWrapper, numberLotteryDataApiService::findAll);
             if (numberLotteryDataList != null && !numberLotteryDataList.isEmpty()) {
-                numberLotteryDataList.forEach(numberLotteryData -> commonPhaseFetchDetailExecutor.executeFetcher(numberLotteryData));
+                numberLotteryDataList.forEach(numberLotteryData -> commonPhaseFetchResultExecutor.executeFetcher(numberLotteryData));
             } else {
-                logger.info(String.format("双色球开奖详情抓取定时：未查询到(%s)状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
+                logger.info(String.format("双色球开奖结果抓取定时：未查询到(%s)状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.CLOSED.getName()));
             }
-            logger.info(String.format("双色球开奖详情抓取定时：结束处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.RESULT_SET.getName()));
+            logger.info(String.format("双色球开奖结果抓取定时：结束处理(%s)所有状态为(%s)的彩期数据", lotteryType.getName(), PhaseStatus.CLOSED.getName()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

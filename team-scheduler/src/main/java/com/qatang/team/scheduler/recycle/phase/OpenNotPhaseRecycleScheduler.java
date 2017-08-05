@@ -24,8 +24,8 @@ import java.util.List;
  * @author qatang
  */
 @Component
-@ConditionalOnProperty("scheduler.pending.phase.recycle.on")
-public class PendingPhaseRecycleScheduler {
+@ConditionalOnProperty("scheduler.open.not.phase.recycle.on")
+public class OpenNotPhaseRecycleScheduler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired

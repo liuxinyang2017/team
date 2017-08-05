@@ -9,7 +9,7 @@ import com.qatang.team.enums.fetcher.FetcherType;
 import com.qatang.team.enums.lottery.LotteryType;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailData;
 import com.qatang.team.fetcher.bean.FetchNumberLotteryDetailItemData;
-import com.qatang.team.fetcher.bean.QNumberLotteryFetchDetailData;
+import com.qatang.team.fetcher.bean.QFetchNumberLotteryDetailData;
 import com.qatang.team.fetcher.service.FetchNumberLotteryDetailDataApiService;
 import com.qatang.team.fetcher.wrapper.FetchNumberLotteryDetailWrapper;
 import org.junit.Assert;
@@ -78,12 +78,12 @@ public class FetchNumberLotteryDetailDataControllerTest extends AbstractControll
     @Test
     public void testFindAll() {
         ApiRequest apiRequest = ApiRequest.newInstance();
-        apiRequest.filterEqual(QNumberLotteryFetchDetailData.id, 3L);
-        apiRequest.filterEqual(QNumberLotteryFetchDetailData.lotteryType, LotteryType.FC_SSQ);
+        apiRequest.filterEqual(QFetchNumberLotteryDetailData.id, 3L);
+        apiRequest.filterEqual(QFetchNumberLotteryDetailData.lotteryType, LotteryType.FC_SSQ);
         ApiRequestPage apiRequestPage = ApiRequestPage.newInstance();
         apiRequestPage.paging(0, 10);
-        apiRequestPage.addOrder(QNumberLotteryFetchDetailData.createdTime);
-        apiRequestPage.addOrder(QNumberLotteryFetchDetailData.id);
+        apiRequestPage.addOrder(QFetchNumberLotteryDetailData.createdTime);
+        apiRequestPage.addOrder(QFetchNumberLotteryDetailData.id);
         PageableWrapper pageableWrapper = new PageableWrapper(apiRequest, apiRequestPage);
         ApiResponse<FetchNumberLotteryDetailData> numberLotteryFetchDetailDataApiResponse = fetchNumberLotteryDetailDataApiService.findAll(pageableWrapper);
         logger.info("查询总数：{}", numberLotteryFetchDetailDataApiResponse.getTotal());
