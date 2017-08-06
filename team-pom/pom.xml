@@ -67,7 +67,7 @@
         <profile>
             <id>production</id>
             <properties>
-                <branch>production</branch>
+                <branch></branch>
                 <loggin.path></loggin.path>
             </properties>
             <activation>
@@ -321,6 +321,21 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>1.5.4.RELEASE</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                            <configuration>
+                                <finalName>${project.build.finalName}${branch}</finalName>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

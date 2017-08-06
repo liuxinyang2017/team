@@ -40,7 +40,7 @@ public class PassProxyValidatorScheduler {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    private ExecutorService executor = Executors.newFixedThreadPool(2);
 
     @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
