@@ -2,7 +2,6 @@ package com.qatang.team.fetcher.worker.ssq.impl;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.primitives.Longs;
 import com.qatang.team.core.util.CoreLotteryUtils;
 import com.qatang.team.core.util.CoreMathUtils;
@@ -19,14 +18,13 @@ import org.jsoup.select.Elements;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 双色球官方数据抓取器
  * @author qatang
  */
-public class SsqNeteaseFetcher extends AbstractSsqFetcher {
-    private final FetcherType fetcherType = FetcherType.F_NETEASE;
+public class Ssq500wFetcher extends AbstractSsqFetcher {
+    private final FetcherType fetcherType = FetcherType.F_500W;
 
     @Override
     protected FetcherType getFetcherType() {
@@ -35,17 +33,17 @@ public class SsqNeteaseFetcher extends AbstractSsqFetcher {
 
     @Override
     protected String getResultFetchUrl(String phase) {
-        return "http://caipiao.163.com/award/ssq/" + phase + ".html";
+        return "http://kaijiang.500.com/shtml/ssq/" + StringUtils.substring(phase, 2) + ".shtml";
     }
 
     @Override
     protected String getDetailFetchUrl(String phase) {
-        return "http://caipiao.163.com/award/ssq/" + phase + ".html";
+        return "http://kaijiang.500.com/shtml/ssq/" + StringUtils.substring(phase, 2) + ".shtml";
     }
 
     @Override
     protected String getFetchEncoding() {
-        return "UTF-8";
+        return "gb2312";
     }
 
     @Override
@@ -55,8 +53,8 @@ public class SsqNeteaseFetcher extends AbstractSsqFetcher {
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
         numberLotteryFetchResult.setPhase(phase);
 
-        Elements redElements = document.select("#zj_area span.red_ball");
-        Elements blueElements = document.select("#zj_area span.blue_ball");
+        Elements redElements = document.select(".ball_box01 ul li.ball_red");
+        Elements blueElements = document.select(".ball_box01 ul li.ball_blue");
 
         String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
         String blue = blueElements.get(0).text();
@@ -88,17 +86,18 @@ public class SsqNeteaseFetcher extends AbstractSsqFetcher {
         numberLotteryFetchResult.setFetcherType(this.getFetcherType());
         numberLotteryFetchResult.setPhase(phase);
 
-        Elements redElements = document.select("#zj_area span.red_ball");
-        Elements blueElements = document.select("#zj_area span.blue_ball");
-        Elements saleAmountElements = document.select("#sale");
-        Elements poolAmountElements = document.select("#pool");
-        Elements detailElements = document.select("#bonus tbody tr");
+        Elements redElements = document.select(".ball_box01 ul li.ball_red");
+        Elements blueElements = document.select(".ball_box01 ul li.ball_blue");
+        Elements amountElements = document.select("span.cfont1");
+        Elements detailElements = document.select(".kj_tablelist02").get(1).select("tbody tr");
         detailElements.remove(0);
+        detailElements.remove(0);
+        detailElements.remove(detailElements.size() - 1);
 
         String[] red = redElements.stream().map(Element::text).toArray(String[]::new);
         String blue = blueElements.get(0).text();
-        String saleAmount = saleAmountElements.get(0).text();
-        String poolAmount = poolAmountElements.get(0).text();
+        String saleAmount = StringUtils.replace(amountElements.get(0).text(), "元", "");
+        String poolAmount = StringUtils.replace(amountElements.get(1).text(), "元", "");
 
         if (Strings.isNullOrEmpty(saleAmount)
                 || Strings.isNullOrEmpty(poolAmount)) {
@@ -129,7 +128,7 @@ public class SsqNeteaseFetcher extends AbstractSsqFetcher {
             numberLotteryFetchDetail.setPrizeKey(prizeKey);
             numberLotteryFetchDetail.setPrizeName(prizeName);
             numberLotteryFetchDetail.setPrizeCount(Longs.tryParse(prizeCount));
-            numberLotteryFetchDetail.setPrizeAmount(CoreMathUtils.mul(Longs.tryParse(prizeAmount), 100));
+            numberLotteryFetchDetail.setPrizeAmount(CoreMathUtils.mul(Longs.tryParse(StringUtils.replace(prizeAmount, ",", "")), 100));
             numberLotteryFetchDetailList.add(numberLotteryFetchDetail);
         }
 
