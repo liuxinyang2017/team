@@ -28,7 +28,6 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-data-api</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
     </dependencies>
 

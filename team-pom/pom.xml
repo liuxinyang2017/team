@@ -42,40 +42,21 @@
         <profile>
             <id>dev</id>
             <properties>
-                <branch>dev</branch>
+                <jdbc.url>jdbc:mysql://192.168.0.27:3306/zy_team?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;zeroDateTimeBehavior=convertToNull</jdbc.url>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>123456</jdbc.password>
             </properties>
             <activation>
-                <property>
-                    <name>team.build.type</name>
-                    <value>dev</value>
-                </property>
                 <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>qa</id>
-            <properties>
-                <branch>qa</branch>
-            </properties>
-            <activation>
-                <property>
-                    <name>team.build.type</name>
-                    <value>qa</value>
-                </property>
             </activation>
         </profile>
         <profile>
             <id>production</id>
             <properties>
-                <branch></branch>
-                <loggin.path></loggin.path>
+                <jdbc.url>jdbc:mysql://rm-2ze341l284yk7c3k1.mysql.rds.aliyuncs.com:3306/zy_team?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;zeroDateTimeBehavior=convertToNull</jdbc.url>
+                <jdbc.username>qatang</jdbc.username>
+                <jdbc.password>qatang</jdbc.password>
             </properties>
-            <activation>
-                <property>
-                    <name>team.build.type</name>
-                    <value>production</value>
-                </property>
-            </activation>
         </profile>
     </profiles>
 
@@ -242,59 +223,50 @@
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-core-base</artifactId>
                 <version>${team.core.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-core-api</artifactId>
                 <version>${team.core.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-core-service</artifactId>
                 <version>${team.core.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <!-- enum -->
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-enums-base</artifactId>
                 <version>${team.enums.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-enums-converter</artifactId>
                 <version>${team.enums.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <!-- api -->
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-data-api</artifactId>
                 <version>${team.api.data.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-fetcher-api</artifactId>
                 <version>${team.api.fetcher.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <!-- fetcher -->
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-fetcher</artifactId>
                 <version>${team.fetcher.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
             <!-- generator -->
             <dependency>
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-generator</artifactId>
                 <version>${team.generator.version}</version>
-                <classifier>${branch}</classifier>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -302,6 +274,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -331,9 +308,6 @@
                             <goals>
                                 <goal>repackage</goal>
                             </goals>
-                            <configuration>
-                                <finalName>${project.build.finalName}${branch}</finalName>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -347,18 +321,6 @@
                     <source>${java.source.version}</source>
                     <target>${java.target.version}</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>default-jar</id>
-                        <configuration>
-                            <classifier>${branch}</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

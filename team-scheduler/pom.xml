@@ -20,22 +20,18 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-fetcher</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-data-api</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-fetcher-api</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-generator</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
 
         <dependency>

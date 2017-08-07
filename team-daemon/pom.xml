@@ -16,17 +16,14 @@
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-core-base</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-enums-base</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>com.qatang.team</groupId>
             <artifactId>team-data-api</artifactId>
-            <classifier>${branch}</classifier>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
