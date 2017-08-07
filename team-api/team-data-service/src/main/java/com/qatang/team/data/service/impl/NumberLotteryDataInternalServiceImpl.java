@@ -384,7 +384,7 @@ public class NumberLotteryDataInternalServiceImpl extends AbstractBaseInternalSe
         Assert.notNull(saleAmount, "销售金额不可为空");
         NumberLotteryDataEntity numberLotteryDataEntity = numberLotteryDataRepository.findByLotteryTypeAndPhase(lotteryType, phase);
         if (numberLotteryDataEntity == null) {
-            String msg = String.format("指定当前期，根据彩种[%s]、彩期[%s]获取指定彩期为空", lotteryType.getName(), phase);
+            String msg = String.format("更改开奖结果详情，根据彩种[%s]、彩期[%s]获取开奖结果信息为空", lotteryType.getName(), phase);
             logger.error(msg);
             throw new NumberLotteryDataException(msg);
         }
