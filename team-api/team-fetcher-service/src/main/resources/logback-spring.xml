@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <if condition='isDefined("LOG_FILE")'>
+        <then>
+            <property scope="context" name="LogFile" value="${LOG_FILE}" />
+            <property scope="context" name="LogLevel" value="INFO" />
+            <property scope="context" name="LogAppender" value="ROLLING_FILE" />
+        </then>
+        <else>
+            <property scope="context" name="LogFolder" value="${LOG_FILE}" />
+            <property scope="context" name="LogLevel" value="INFO" />
+            <property scope="context" name="LogAppender" value="CONSOLE" />
+        </else>
+    </if>
+
+    <appender name="ROLLING_FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LogFile}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LogFile}-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <maxHistory>15</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <root level="${LogLevel}">
+        <appender-ref ref="${LogAppender}"/>
+    </root>
+
+</configuration>

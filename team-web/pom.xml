@@ -29,6 +29,10 @@
             <groupId>com.qatang.team</groupId>
             <artifactId>team-data-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

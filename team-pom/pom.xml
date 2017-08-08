@@ -81,6 +81,7 @@
         <icu.version>56.1</icu.version>
         <jackson.version>2.8.8</jackson.version>
         <feign.jackson.version>9.5.0</feign.jackson.version>
+        <org.codehaus.janino.version>2.7.8</org.codehaus.janino.version>
 
         <!-- project -->
         <team.core.version>1.0.0-SNAPSHOT</team.core.version>
@@ -211,6 +212,11 @@
                 <groupId>io.github.openfeign</groupId>
                 <artifactId>feign-jackson</artifactId>
                 <version>${feign.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>${org.codehaus.janino.version}</version>
             </dependency>
 
             <!-- project -->
