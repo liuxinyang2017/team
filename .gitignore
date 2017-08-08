@@ -8,3 +8,4 @@ target/
 .DS_Store/
 logs/
 **/src/main/resources/*.properties
+properties/
