@@ -8,4 +8,4 @@ target/
 .DS_Store/
 logs/
 **/src/main/resources/*.properties
-properties/
+**/deploy/properties/application_prod.properties

@@ -42,20 +42,16 @@
         <profile>
             <id>dev</id>
             <properties>
-                <jdbc.url>jdbc:mysql://192.168.0.27:3306/zy_team?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;zeroDateTimeBehavior=convertToNull</jdbc.url>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password>123456</jdbc.password>
+                <profile.id>dev</profile.id>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
         <profile>
-            <id>production</id>
+            <id>prod</id>
             <properties>
-                <jdbc.url>jdbc:mysql://rm-2ze341l284yk7c3k1.mysql.rds.aliyuncs.com:3306/zy_team?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;zeroDateTimeBehavior=convertToNull</jdbc.url>
-                <jdbc.username>qatang</jdbc.username>
-                <jdbc.password>qatang</jdbc.password>
+                <profile.id>prod</profile.id>
             </properties>
         </profile>
     </profiles>
