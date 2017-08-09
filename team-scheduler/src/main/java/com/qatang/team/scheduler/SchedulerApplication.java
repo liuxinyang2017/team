@@ -16,21 +16,10 @@ import javax.annotation.PreDestroy;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(value = {"com.qatang.team"})
-public class SchedulerApplication implements CommandLineRunner {
+public class SchedulerApplication {
     protected static final transient Logger logger = LoggerFactory.getLogger(SchedulerApplication.class);
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SchedulerApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        logger.error("team scheduler start!");
-        Thread.currentThread().join();
-    }
-
-    @PreDestroy
-    private void onDestroy() {
-        logger.error("team scheduler stop!");
     }
 }
