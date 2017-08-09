@@ -41,7 +41,8 @@ public class WaitingTestProxyValidatorScheduler {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    @Autowired
+    private ExecutorService proxyTestExecutor;
 
     @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
@@ -72,7 +73,7 @@ public class WaitingTestProxyValidatorScheduler {
     }
 
     private void doExecute(ProxyData proxyData, CountDownLatch latch) {
-        executor.submit(() -> {
+        proxyTestExecutor.submit(() -> {
             try {
                 proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
                 // 开始测试
@@ -84,11 +85,5 @@ public class WaitingTestProxyValidatorScheduler {
             }
             latch.countDown();
         });
-    }
-
-    @PreDestroy
-    public void shutdown() {
-        executor.shutdown();
-        logger.error("代理测试定时：线程池关闭成功");
     }
 }

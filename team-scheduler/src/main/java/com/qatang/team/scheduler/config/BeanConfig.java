@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 /**
  * @author wangzhiliang
  */
@@ -17,4 +20,8 @@ public class BeanConfig {
         return new CustomObjectMapper();
     }
 
+    @Bean(destroyMethod="shutdown")
+    public Executor proxyTestExecutor() {
+        return Executors.newFixedThreadPool(2);
+    }
 }
