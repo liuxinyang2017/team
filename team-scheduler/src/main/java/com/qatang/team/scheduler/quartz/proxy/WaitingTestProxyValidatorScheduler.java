@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -83,5 +84,11 @@ public class WaitingTestProxyValidatorScheduler {
             }
             latch.countDown();
         });
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        executor.shutdown();
+        logger.error("代理测试定时：线程池关闭成功");
     }
 }
