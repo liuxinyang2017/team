@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
@@ -21,7 +22,7 @@ public class BeanConfig {
     }
 
     @Bean(destroyMethod="shutdown")
-    public Executor proxyTestExecutor() {
+    public ExecutorService proxyTestExecutor() {
         return Executors.newFixedThreadPool(2);
     }
 }
