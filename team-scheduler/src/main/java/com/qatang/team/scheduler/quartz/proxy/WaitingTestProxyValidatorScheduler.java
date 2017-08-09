@@ -41,8 +41,8 @@ public class WaitingTestProxyValidatorScheduler {
     @Autowired
     private ProxyDataApiService proxyDataApiService;
 
-//    @Autowired
-//    private ExecutorService proxyTestExecutor;
+    @Autowired
+    private ExecutorService proxyTestExecutor;
 
     @Scheduled(fixedDelay = 60 * 60 * 1000L, initialDelay = 30 * 1000L)
     public void run() {
@@ -59,9 +59,9 @@ public class WaitingTestProxyValidatorScheduler {
             List<ProxyData> proxyDataList = ApiPageRequestHelper.request(pageableWrapper, proxyDataApiService::findAll);
             if (proxyDataList != null && !proxyDataList.isEmpty()) {
                 logger.info(String.format("代理测试定时：开始进行测试，查询到状态为(%s)的代理数据(%s)条", ProxyValidateStatus.WAITING_TEST.getName(), proxyDataList.size()));
-//                CountDownLatch latch = new CountDownLatch(proxyDataList.size());
-                proxyDataList.forEach(proxyData -> this.doExecute(proxyData));
-//                latch.await();
+                CountDownLatch latch = new CountDownLatch(proxyDataList.size());
+                proxyDataList.forEach(proxyData -> this.doExecute(proxyData, latch));
+                latch.await();
                 logger.info(String.format("代理测试定时：完成(%s)条代理数据的测试", proxyDataList.size()));
             } else {
                 logger.info(String.format("代理测试定时：未查询到状态为(%s)的代理数据", ProxyValidateStatus.WAITING_TEST.getName()));
@@ -72,8 +72,8 @@ public class WaitingTestProxyValidatorScheduler {
         }
     }
 
-    private void doExecute(ProxyData proxyData) {
-//        proxyTestExecutor.submit(() -> {
+    private void doExecute(ProxyData proxyData, CountDownLatch latch) {
+        proxyTestExecutor.submit(() -> {
             try {
                 proxyDataApiService.updateBeginTestTime(proxyData.getId(), LocalDateTime.now());
                 // 开始测试
@@ -83,7 +83,7 @@ public class WaitingTestProxyValidatorScheduler {
                 logger.error("代理测试定时：由于异常中断测试流程");
                 logger.error(e.getMessage(), e);
             }
-//            latch.countDown();
-//        });
+            latch.countDown();
+        });
     }
 }
