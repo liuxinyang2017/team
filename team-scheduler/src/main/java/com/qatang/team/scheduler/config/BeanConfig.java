@@ -20,8 +20,8 @@ public class BeanConfig {
         return new CustomObjectMapper();
     }
 
-    @Bean(destroyMethod="shutdown")
-    public Executor proxyTestExecutor() {
-        return Executors.newFixedThreadPool(2);
-    }
+//    @Bean(destroyMethod="shutdown")
+//    public Executor proxyTestExecutor() {
+//        return Executors.newFixedThreadPool(2);
+//    }
 }
