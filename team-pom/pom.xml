@@ -84,12 +84,12 @@
         <org.codehaus.janino.version>2.7.8</org.codehaus.janino.version>
 
         <!-- project -->
-        <team.core.version>1.0.0-SNAPSHOT</team.core.version>
-        <team.enums.version>1.0.0-SNAPSHOT</team.enums.version>
-        <team.api.data.version>1.0.0-SNAPSHOT</team.api.data.version>
-        <team.api.fetcher.version>1.0.0-SNAPSHOT</team.api.fetcher.version>
-        <team.fetcher.version>1.0.0-SNAPSHOT</team.fetcher.version>
-        <team.generator.version>1.0.0-SNAPSHOT</team.generator.version>
+        <team.core.version>${project.version}</team.core.version>
+        <team.enums.version>${project.version}</team.enums.version>
+        <team.api.data.version>${project.version}</team.api.data.version>
+        <team.api.fetcher.version>${project.version}</team.api.fetcher.version>
+        <team.fetcher.version>${project.version}</team.fetcher.version>
+        <team.generator.version>${project.version}</team.generator.version>
     </properties>
 
     <dependencyManagement>
