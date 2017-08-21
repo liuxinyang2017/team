@@ -22,6 +22,7 @@
         <module>team-scheduler</module>
         <module>team-api-gateway</module>
         <module>team-generator</module>
+        <module>team-manager</module>
     </modules>
 
     <build>

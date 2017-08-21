@@ -82,6 +82,9 @@
         <jackson.version>2.8.8</jackson.version>
         <feign.jackson.version>9.5.0</feign.jackson.version>
         <org.codehaus.janino.version>2.7.8</org.codehaus.janino.version>
+        <shiro.version>1.2.3</shiro.version>
+        <aliyun.oss.version>2.6.0</aliyun.oss.version>
+        <fastjson.version>1.2.29</fastjson.version>
 
         <!-- project -->
         <team.core.version>${project.version}</team.core.version>
@@ -90,6 +93,7 @@
         <team.api.fetcher.version>${project.version}</team.api.fetcher.version>
         <team.fetcher.version>${project.version}</team.fetcher.version>
         <team.generator.version>${project.version}</team.generator.version>
+        <team.manager.core.version>${project.version}</team.manager.core.version>
     </properties>
 
     <dependencyManagement>
@@ -115,6 +119,26 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -218,6 +242,36 @@
                 <artifactId>janino</artifactId>
                 <version>${org.codehaus.janino.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-web</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-aspectj</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun.oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
             <!-- project -->
             <!-- core -->
@@ -269,6 +323,12 @@
                 <groupId>com.qatang.team</groupId>
                 <artifactId>team-generator</artifactId>
                 <version>${team.generator.version}</version>
+            </dependency>
+            <!-- manager-->
+            <dependency>
+                <groupId>com.qatang.team</groupId>
+                <artifactId>team-manager-core</artifactId>
+                <version>${team.manager.core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
