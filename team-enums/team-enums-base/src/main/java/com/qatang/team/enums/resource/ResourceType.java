@@ -1,4 +1,4 @@
-package com.qatang.team.enums.resouce;
+package com.qatang.team.enums.resource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
