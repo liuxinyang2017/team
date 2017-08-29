@@ -2,7 +2,7 @@ package com.qatang.team.manager.controller.resource;
 
 
 import com.qatang.team.enums.EnableDisableStatus;
-import com.qatang.team.enums.resouce.ResourceType;
+import com.qatang.team.enums.resource.ResourceType;
 import com.qatang.team.manager.core.constants.GlobalConstants;
 import com.qatang.team.manager.core.controller.AbstractController;
 import com.qatang.team.manager.entity.resource.ResourceEntity;
