@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.UUID;
+import static com.qatang.team.manager.core.constants.GlobalConstants.USER_SESSION_ID;
 
-import static com.zhangyu.arsenal.core.constants.GlobalConstants.USER_SESSION_ID;
+
 
 /**
  * @author jinsheng

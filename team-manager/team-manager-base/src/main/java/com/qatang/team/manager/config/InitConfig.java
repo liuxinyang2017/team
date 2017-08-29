@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
  * @since 2016-04-26 16:43
  */
 @Configuration
-@Import(value = {BeanConfig.class, JpaConfig.class, ShiroConfig.class, ServiceConfig.class})
+@Import(value = {BeanConfig.class, JpaConfig.class, ShiroConfig.class})
 public class InitConfig {
 
 }
